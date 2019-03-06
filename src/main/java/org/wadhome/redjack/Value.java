@@ -20,9 +20,7 @@ public enum Value {
     private String symbol;
     private int points;
 
-    Value(
-            String symbol,
-            int points) {
+    Value(String symbol, int points) {
         this.symbol = symbol;
         this.points = points;
     }

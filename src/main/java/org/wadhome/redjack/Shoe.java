@@ -39,9 +39,9 @@ public class Shoe extends CardStack {
     }
 
     @Override
-    protected void cardDrawCheck() {
+    protected void extraHandlingOnCardDraw() {
         if (hasCutCardBeenDrawn()) {
-            Display.showMessage("Cut card was drawn.");
+            Display.showMessage("Cut card was drawn. Will shuffle after this hand.");
         }
     }
 

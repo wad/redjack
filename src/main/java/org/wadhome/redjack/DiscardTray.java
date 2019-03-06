@@ -9,7 +9,7 @@ public class DiscardTray extends CardStack {
     }
 
     @Override
-    protected void cardDrawCheck() {
+    protected void extraHandlingOnCardDraw() {
     }
 
     public void addCards(Set<Card> cardsToAdd) {

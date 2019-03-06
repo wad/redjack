@@ -191,6 +191,7 @@ public class BasicStrategyHardHandsTest extends BasicStrategyTestHelper {
     public void testSumsOfFifteen() {
         TableRules tableRulesCannotSurrender = new TableRules();
         tableRulesCannotSurrender.canSurrender = false;
+
         for (Value upcardValue : Value.values()) {
             switch (upcardValue) {
                 case Two:
@@ -234,6 +235,7 @@ public class BasicStrategyHardHandsTest extends BasicStrategyTestHelper {
     public void testSumsOfSixteen() {
         TableRules tableRulesCannotSurrender = new TableRules();
         tableRulesCannotSurrender.canSurrender = false;
+
         for (Value upcardValue : Value.values()) {
             switch (upcardValue) {
                 case Two:
@@ -293,6 +295,7 @@ public class BasicStrategyHardHandsTest extends BasicStrategyTestHelper {
     public void testSumsOfSeventeen() {
         TableRules tableRulesCannotSurrender = new TableRules();
         tableRulesCannotSurrender.canSurrender = false;
+
         for (Value upcardValue : Value.values()) {
             switch (upcardValue) {
                 case Two:

@@ -226,6 +226,11 @@ class BasicStrategy {
             int numSplitsSoFar,
             MoneyPile bankrollAvailable,
             TableRules tableRules) {
+
+        if (hand.getNumCards() != 2) {
+            throw new RuntimeException("Bug! Hand: " + hand);
+        }
+
         Value value = hand.getFirstCard().getValue();
         Value upcardValue = dealerUpcard.getValue();
         boolean splitsAllUsedUp = numSplitsSoFar >= tableRules.getMaxNumSplits();
@@ -293,7 +298,7 @@ class BasicStrategy {
                 return Split;
             case Seven:
                 if (upcardValue.isTen()) {
-                    if (tableRules.canSurrender() && hand.getNumCards() == 2) {
+                    if (tableRules.canSurrender()) {
                         return Surrender;
                     }
                 }

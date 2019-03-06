@@ -32,5 +32,5 @@ public abstract class CardStack {
         return topCard;
     }
 
-    protected abstract void cardDrawCheck();
+    protected abstract void extraHandlingOnCardDraw();
 }

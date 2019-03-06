@@ -25,6 +25,6 @@ public class Deck extends CardStack {
     }
 
     @Override
-    protected void cardDrawCheck() {
+    protected void extraHandlingOnCardDraw() {
     }
 }
