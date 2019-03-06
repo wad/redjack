@@ -1,0 +1,42 @@
+package org.wadhome.redjack;
+
+public enum Value
+{
+    Two("2", 2),
+    Three("3", 3),
+    Four("4", 4),
+    Five("5", 5),
+    Six("6", 6),
+    Seven("7", 7),
+    Eight("8", 8),
+    Nine("9", 9),
+    Ten("T", 10),
+    Jack("J", 10),
+    Queen("Q", 10),
+    King("K", 10),
+    Ace("A", 1); // Can also be 11 points.
+
+    public static final int OPTIONAL_EXTRA_ACE_POINTS = 10;
+
+    private String symbol;
+    private int points;
+
+    Value(
+            String symbol,
+            int points)
+    {
+        this.symbol = symbol;
+        this.points = points;
+    }
+
+    public int getPoints()
+    {
+        return points;
+    }
+
+    @Override
+    public String toString()
+    {
+        return symbol;
+    }
+}
