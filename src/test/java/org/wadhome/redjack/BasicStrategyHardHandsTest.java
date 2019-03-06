@@ -332,6 +332,8 @@ public class BasicStrategyHardHandsTest extends BasicStrategyTestHelper {
 
     @Test
     public void testSumsOfFifteen() {
+        TableRules tableRulesCannotSurrender = new TableRules();
+        tableRulesCannotSurrender.canSurrender = false;
         for (Value dealerUpcardValue : Value.values()) {
             switch (dealerUpcardValue) {
                 case Two:
@@ -385,7 +387,25 @@ public class BasicStrategyHardHandsTest extends BasicStrategyTestHelper {
                             c7(),
                             c8(),
                             new Card(0, Suite.Clubs, dealerUpcardValue)));
-                    // todo: handle conditions where can't surrender
+
+                    // todo: handle case where can't surrender due to more than 2 cards in hand
+
+                    // handle conditions where can't surrender due to table rules
+                    assertEquals(BlackjackPlay.Hit, compute(
+                            tableRulesCannotSurrender,
+                            c5(),
+                            cT(),
+                            new Card(0, Suite.Clubs, dealerUpcardValue)));
+                    assertEquals(BlackjackPlay.Hit, compute(
+                            tableRulesCannotSurrender,
+                            c6(),
+                            c9(),
+                            new Card(0, Suite.Clubs, dealerUpcardValue)));
+                    assertEquals(BlackjackPlay.Hit, compute(
+                            tableRulesCannotSurrender,
+                            c7(),
+                            c8(),
+                            new Card(0, Suite.Clubs, dealerUpcardValue)));
                     break;
             }
         }
@@ -393,6 +413,8 @@ public class BasicStrategyHardHandsTest extends BasicStrategyTestHelper {
 
     @Test
     public void testSumsOfSixteen() {
+        TableRules tableRulesCannotSurrender = new TableRules();
+        tableRulesCannotSurrender.canSurrender = false;
         for (Value dealerUpcardValue : Value.values()) {
             switch (dealerUpcardValue) {
                 case Two:
@@ -421,10 +443,56 @@ public class BasicStrategyHardHandsTest extends BasicStrategyTestHelper {
                             new Card(0, Suite.Clubs, dealerUpcardValue)));
                     break;
                 case Nine:
+                    assertEquals(BlackjackPlay.Surrender, compute(
+                            c6(),
+                            cT(),
+                            new Card(0, Suite.Clubs, dealerUpcardValue)));
+                    assertEquals(BlackjackPlay.Surrender, compute(
+                            c7(),
+                            c9(),
+                            new Card(0, Suite.Clubs, dealerUpcardValue)));
+
+                    // todo: handle case where can't surrender due to more than 2 cards in hand
+
+                    // handle conditions where can't surrender due to table rules
+                    assertEquals(BlackjackPlay.Hit, compute(
+                            tableRulesCannotSurrender,
+                            c6(),
+                            cT(),
+                            new Card(0, Suite.Clubs, dealerUpcardValue)));
+                    assertEquals(BlackjackPlay.Hit, compute(
+                            tableRulesCannotSurrender,
+                            c7(),
+                            c9(),
+                            new Card(0, Suite.Clubs, dealerUpcardValue)));
+                    break;
                 case Ten:
                 case Jack:
                 case Queen:
                 case King:
+                    assertEquals(BlackjackPlay.Surrender, compute(
+                            c6(),
+                            cT(),
+                            new Card(0, Suite.Clubs, dealerUpcardValue)));
+                    assertEquals(BlackjackPlay.Surrender, compute(
+                            c7(),
+                            c9(),
+                            new Card(0, Suite.Clubs, dealerUpcardValue)));
+
+                    // todo: handle case where can't surrender due to more than 2 cards in hand
+
+                    // handle conditions where can't surrender due to table rules
+                    assertEquals(BlackjackPlay.Stand, compute(
+                            tableRulesCannotSurrender,
+                            c6(),
+                            cT(),
+                            new Card(0, Suite.Clubs, dealerUpcardValue)));
+                    assertEquals(BlackjackPlay.Stand, compute(
+                            tableRulesCannotSurrender,
+                            c7(),
+                            c9(),
+                            new Card(0, Suite.Clubs, dealerUpcardValue)));
+                    break;
                 case Ace:
                     assertEquals(BlackjackPlay.Surrender, compute(
                             c6(),
@@ -434,7 +502,20 @@ public class BasicStrategyHardHandsTest extends BasicStrategyTestHelper {
                             c7(),
                             c9(),
                             new Card(0, Suite.Clubs, dealerUpcardValue)));
-                    // todo: handle conditions where can't surrender
+
+                    // todo: handle case where can't surrender due to more than 2 cards in hand
+
+                    // handle conditions where can't surrender due to table rules
+                    assertEquals(BlackjackPlay.Hit, compute(
+                            tableRulesCannotSurrender,
+                            c6(),
+                            cT(),
+                            new Card(0, Suite.Clubs, dealerUpcardValue)));
+                    assertEquals(BlackjackPlay.Hit, compute(
+                            tableRulesCannotSurrender,
+                            c7(),
+                            c9(),
+                            new Card(0, Suite.Clubs, dealerUpcardValue)));
                     break;
             }
         }
@@ -442,6 +523,8 @@ public class BasicStrategyHardHandsTest extends BasicStrategyTestHelper {
 
     @Test
     public void testSumsOfSeventeen() {
+        TableRules tableRulesCannotSurrender = new TableRules();
+        tableRulesCannotSurrender.canSurrender = false;
         for (Value dealerUpcardValue : Value.values()) {
             switch (dealerUpcardValue) {
                 case Two:
@@ -474,7 +557,20 @@ public class BasicStrategyHardHandsTest extends BasicStrategyTestHelper {
                             c8(),
                             c9(),
                             new Card(0, Suite.Clubs, dealerUpcardValue)));
-                    // todo: handle conditions where can't surrender
+
+                    // todo: handle case where can't surrender due to more than 2 cards in hand
+
+                    // handle conditions where can't surrender due to table rules
+                    assertEquals(BlackjackPlay.Stand, compute(
+                            tableRulesCannotSurrender,
+                            c7(),
+                            cT(),
+                            new Card(0, Suite.Clubs, dealerUpcardValue)));
+                    assertEquals(BlackjackPlay.Stand, compute(
+                            tableRulesCannotSurrender,
+                            c8(),
+                            c9(),
+                            new Card(0, Suite.Clubs, dealerUpcardValue)));
                     break;
             }
         }
