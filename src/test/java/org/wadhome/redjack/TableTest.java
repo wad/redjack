@@ -2,24 +2,29 @@ package org.wadhome.redjack;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 public class TableTest extends TestHelper {
+
     @Test
-    public void testSimple() {
-        int tableNumber = 1;
-        Casino casino = new Casino("TestTable");
-        casino.createTable(tableNumber, TableRules.getDefaultRules());
-        Table table = casino.getTable(tableNumber);
-        table.prepareForPlay();
+    public void testSimplePlay() {
+        TableRules tableRules = TableRules.getDefaultRules();
+        Table table = new Table(0, tableRules);
+        Shoe shoe = table.getShoe();
+        shoe.dumpAllCards();
 
-        Player alex = new Player(
-                "Alex",
+        Player abe = new Player(
+                "Abe",
                 PlayerGender.male,
-                new MoneyPile(50000L),
+                new MoneyPile(10000L),
                 PlayerSmarts.BasicStrategy);
-        table.assignPlayerToHand(1, alex);
+        int handNumber = 0;
+        table.assignPlayerToHand(handNumber, abe);
 
-        table.placeBet(1, new MoneyPile(1000L));
-
+        table.placeBet(handNumber, new MoneyPile(1000L));
+        shoe.addCardToBottom(cT(), cT(), cT(), cT());
         table.playRound();
+
+        assertEquals("$100.00", abe.getBankroll().toString());
     }
 }

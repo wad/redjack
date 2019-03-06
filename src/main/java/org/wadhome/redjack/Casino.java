@@ -19,6 +19,7 @@ public class Casino {
                 tableNumber,
                 tableRules);
         tables.put(tableNumber, table);
+        table.showPreparationMessages();
     }
 
     public Table getTable(int tableNumber) {

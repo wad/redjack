@@ -7,7 +7,7 @@ public class Shoe extends CardStack {
     private int numDecks;
     private int numCardsAfterCutCard;
 
-    public Shoe(
+    Shoe(
             int shoeNumber,
             int numDecks) {
         setStackNumber(shoeNumber);
@@ -22,11 +22,13 @@ public class Shoe extends CardStack {
         }
     }
 
-    public int getNumDecks() {
-        return numDecks;
+    void dumpAllCards() {
+        while(hasCards()) {
+            drawTopCard();
+        }
     }
 
-    public void placeCutCard(int numCardsAfterCutCardInShoe) {
+    void placeCutCard(int numCardsAfterCutCardInShoe) {
         if (numCardsAfterCutCardInShoe > TableRules.NUM_CARDS_PER_DECK * numDecks) {
             throw new RuntimeException("Invalid cut card position: " + numCardsAfterCutCardInShoe);
         }
@@ -34,7 +36,7 @@ public class Shoe extends CardStack {
         numCardsAfterCutCard = numCardsAfterCutCardInShoe;
     }
 
-    public boolean hasCutCardBeenDrawn() {
+    boolean hasCutCardBeenDrawn() {
         return cards.size() <= this.numCardsAfterCutCard;
     }
 
@@ -45,7 +47,7 @@ public class Shoe extends CardStack {
         }
     }
 
-    public void shuffle() {
+    void shuffle() {
         Collections.shuffle(cards);
     }
 }

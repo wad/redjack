@@ -26,7 +26,9 @@ public class Table {
         for (int i = 0; i < MAX_HANDS_PER_TABLE; i++) {
             hands.put(i, new PlayerHand(i));
         }
+    }
 
+    public void showPreparationMessages() {
         show("The dealer is preparing table " + tableNumber + " for blackjack.");
         show(tableRules.toString());
     }
@@ -42,7 +44,7 @@ public class Table {
     void prepareForPlay() {
         int numCardsInDiscardTray = discardTray.cards.size();
         while (discardTray.hasCards()) {
-            shoe.addCard(discardTray.drawTopCard());
+            shoe.addCardToBottom(discardTray.drawTopCard());
         }
 
         if (numCardsInDiscardTray > 0) {
@@ -63,7 +65,7 @@ public class Table {
         for (int i = 0; i < numBurnCards; i++) {
             Card burnCard = shoe.drawTopCard();
             show("The dealer burned a card from the show: " + burnCard.print(false) + ".");
-            discardTray.addCard(burnCard);
+            discardTray.addCardToBottom(burnCard);
         }
     }
 
@@ -117,6 +119,11 @@ public class Table {
     }
 
     public boolean playRound() {
+        if (!anyHandsHaveBets()) {
+            show("No hands have bets.");
+            return false;
+        }
+
         dealCardsToPlayers();
         dealFirstDealerCard();
         dealCardsToPlayers();
@@ -131,6 +138,15 @@ public class Table {
         }
         cleanupTable();
         return shoe.hasCutCardBeenDrawn();
+    }
+
+    private boolean anyHandsHaveBets() {
+        for (int handNumber = 0; handNumber < MAX_HANDS_PER_TABLE; handNumber++) {
+            if (hands.get(handNumber).getBetAmount().hasMoney()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void dealCardsToPlayers() {

@@ -1,48 +1,68 @@
 package org.wadhome.redjack;
 
-public class TestHelper {
+class TestHelper {
+
+    // The deck number cycles, so that the sets in hands don't collapse duplicate cards.
+    private int deckNumber = 0;
 
     Card c(Value value) {
-        return new Card(0, Suite.Clubs, value);
+        checkDeckNumber();
+        return new Card(deckNumber++, Suite.Clubs, value);
     }
 
     Card c2() {
-        return new Card(0, Suite.Spades, Value.Two);
+        checkDeckNumber();
+        return new Card(deckNumber++, Suite.Spades, Value.Two);
     }
 
     Card c3() {
-        return new Card(0, Suite.Spades, Value.Three);
+        checkDeckNumber();
+        return new Card(deckNumber++, Suite.Spades, Value.Three);
     }
 
     Card c4() {
-        return new Card(0, Suite.Spades, Value.Four);
+        checkDeckNumber();
+        return new Card(deckNumber++, Suite.Spades, Value.Four);
     }
 
     Card c5() {
-        return new Card(0, Suite.Spades, Value.Five);
+        checkDeckNumber();
+        return new Card(deckNumber++, Suite.Spades, Value.Five);
     }
 
     Card c6() {
-        return new Card(0, Suite.Spades, Value.Six);
+        checkDeckNumber();
+        return new Card(deckNumber++, Suite.Spades, Value.Six);
     }
 
     Card c7() {
-        return new Card(0, Suite.Spades, Value.Seven);
+        checkDeckNumber();
+        return new Card(deckNumber++, Suite.Spades, Value.Seven);
     }
 
     Card c8() {
-        return new Card(0, Suite.Spades, Value.Eight);
+        checkDeckNumber();
+        return new Card(deckNumber++, Suite.Spades, Value.Eight);
     }
 
     Card c9() {
-        return new Card(0, Suite.Spades, Value.Nine);
+        checkDeckNumber();
+        return new Card(deckNumber++, Suite.Spades, Value.Nine);
     }
 
     Card cT() {
-        return new Card(0, Suite.Spades, Value.Ten);
+        checkDeckNumber();
+        return new Card(deckNumber++, Suite.Spades, Value.Ten);
     }
 
     Card cA() {
-        return new Card(0, Suite.Spades, Value.Ace);
+        checkDeckNumber();
+        return new Card(deckNumber++, Suite.Spades, Value.Ace);
+    }
+
+    private void checkDeckNumber() {
+        if (deckNumber > Deck.MAX_DECK_NUMBER) {
+            deckNumber = 0;
+        }
     }
 }

@@ -35,4 +35,14 @@ public class Card {
 
         return (deckNumber * 1000) + (value.ordinal() * 10) + (suite.ordinal());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Card card = (Card) o;
+        return deckNumber == card.deckNumber &&
+                suite == card.suite &&
+                value == card.value;
+    }
 }
