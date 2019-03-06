@@ -13,18 +13,23 @@ public class PlayTest {
 
         Player alex = new Player(
                 "Alex",
+                PlayerGender.male,
                 new MoneyPile(50000L),
                 PlayerSmarts.BasicStrategy);
         table.assignPlayerToHand(1, alex);
         table.assignPlayerToHand(2, alex);
 
         Player becky = new Player(
-                "Becky", new MoneyPile(50000L),
+                "Becky",
+                PlayerGender.female,
+                new MoneyPile(50000L),
                 PlayerSmarts.BasicStrategy);
         table.assignPlayerToHand(3, becky);
 
         Player charles = new Player(
-                "Charles", new MoneyPile(10000L),
+                "Charles",
+                PlayerGender.male,
+                new MoneyPile(10000L),
                 PlayerSmarts.BasicStrategy);
         table.assignPlayerToHand(5, charles);
 

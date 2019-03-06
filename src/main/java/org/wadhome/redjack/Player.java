@@ -2,20 +2,39 @@ package org.wadhome.redjack;
 
 public class Player {
     private String playerName;
+    private PlayerGender playerGender;
     private MoneyPile bankroll;
     private PlayerSmarts playerSmarts;
 
     public Player(
             String playerName,
+            PlayerGender playerGender,
             MoneyPile bankroll,
             PlayerSmarts playerSmarts) {
         this.playerName = playerName;
+        this.playerGender = playerGender;
         this.bankroll = bankroll;
         this.playerSmarts = playerSmarts;
     }
 
     public String getPlayerName() {
         return playerName;
+    }
+
+    public PlayerGender getPlayerGender() {
+        return playerGender;
+    }
+
+
+    public String getGenderPronoun() {
+        switch(getPlayerGender()) {
+            case male:
+                return "his";
+            case female:
+                return "her";
+            default:
+                throw new RuntimeException("Bug");
+        }
     }
 
     public MoneyPile getBankroll() {

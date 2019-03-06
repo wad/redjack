@@ -13,6 +13,7 @@ public class TableTest extends TestHelper {
 
         Player alex = new Player(
                 "Alex",
+                PlayerGender.male,
                 new MoneyPile(50000L),
                 PlayerSmarts.BasicStrategy);
         table.assignPlayerToHand(1, alex);
