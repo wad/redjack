@@ -213,7 +213,8 @@ public class BasicStrategyHardHandsTest extends BasicStrategyTestHelper {
                     assertEquals(BlackjackPlay.Surrender, compute(c6(), c9(), c(upcardValue)));
                     assertEquals(BlackjackPlay.Surrender, compute(c7(), c8(), c(upcardValue)));
 
-                    // todo: handle case where can't surrender due to more than 2 cards in hand
+                    // handle case where can't surrender due to more than 2 cards in hand
+                    assertEquals(BlackjackPlay.Hit, compute(c5(), c4(), c6(), c(upcardValue)));
 
                     // handle conditions where can't surrender due to table rules
                     assertEquals(BlackjackPlay.Hit, compute(tableRulesCannotSurrender, c5(), cT(), c(upcardValue)));
@@ -247,7 +248,8 @@ public class BasicStrategyHardHandsTest extends BasicStrategyTestHelper {
                     assertEquals(BlackjackPlay.Surrender, compute(c6(), cT(), c(upcardValue)));
                     assertEquals(BlackjackPlay.Surrender, compute(c7(), c9(), c(upcardValue)));
 
-                    // todo: handle case where can't surrender due to more than 2 cards in hand
+                    // handle case where can't surrender due to more than 2 cards in hand
+                    assertEquals(BlackjackPlay.Hit, compute(c3(), c4(), c9(), c(upcardValue)));
 
                     // handle conditions where can't surrender due to table rules
                     assertEquals(BlackjackPlay.Hit, compute(tableRulesCannotSurrender, c6(), cT(), c(upcardValue)));
@@ -260,7 +262,8 @@ public class BasicStrategyHardHandsTest extends BasicStrategyTestHelper {
                     assertEquals(BlackjackPlay.Surrender, compute(c6(), cT(), c(upcardValue)));
                     assertEquals(BlackjackPlay.Surrender, compute(c7(), c9(), c(upcardValue)));
 
-                    // todo: handle case where can't surrender due to more than 2 cards in hand
+                    // handle case where can't surrender due to more than 2 cards in hand
+                    assertEquals(BlackjackPlay.Stand, compute(c2(), c4(), cT(), c(upcardValue)));
 
                     // handle conditions where can't surrender due to table rules
                     assertEquals(BlackjackPlay.Stand, compute(tableRulesCannotSurrender, c6(), cT(), c(upcardValue)));
@@ -270,7 +273,8 @@ public class BasicStrategyHardHandsTest extends BasicStrategyTestHelper {
                     assertEquals(BlackjackPlay.Surrender, compute(c6(), cT(), c(upcardValue)));
                     assertEquals(BlackjackPlay.Surrender, compute(c7(), c9(), c(upcardValue)));
 
-                    // todo: handle case where can't surrender due to more than 2 cards in hand
+                    // handle case where can't surrender due to more than 2 cards in hand
+                    assertEquals(BlackjackPlay.Hit, compute(c2(), c4(), cT(), c(upcardValue)));
 
                     // handle conditions where can't surrender due to table rules
                     assertEquals(BlackjackPlay.Hit, compute(tableRulesCannotSurrender, c6(), cT(), c(upcardValue)));
@@ -305,7 +309,8 @@ public class BasicStrategyHardHandsTest extends BasicStrategyTestHelper {
                     assertEquals(BlackjackPlay.Surrender, compute(c7(), cT(), c(upcardValue)));
                     assertEquals(BlackjackPlay.Surrender, compute(c8(), c9(), c(upcardValue)));
 
-                    // todo: handle case where can't surrender due to more than 2 cards in hand
+                    // handle case where can't surrender due to more than 2 cards in hand
+                    assertEquals(BlackjackPlay.Stand, compute(c2(), c5(), cT(), c(upcardValue)));
 
                     // handle conditions where can't surrender due to table rules
                     assertEquals(BlackjackPlay.Stand, compute(tableRulesCannotSurrender, c7(), cT(), c(upcardValue)));

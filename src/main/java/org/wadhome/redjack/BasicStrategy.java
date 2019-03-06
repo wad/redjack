@@ -98,7 +98,7 @@ class BasicStrategy {
         }
 
         // take care of the surrender scenarios now
-        if (tableRules.canSurrender()) {
+        if (tableRules.canSurrender() && hand.getNumCards() == 2) {
             if (sum == 15 && (upcardValue.isTen() || upcardValue == Ace)) {
                 return Surrender;
             }
@@ -285,7 +285,7 @@ class BasicStrategy {
                 return Split;
             case Seven:
                 if (upcardValue.isTen()) {
-                    if (tableRules.canSurrender()) {
+                    if (tableRules.canSurrender() && hand.getNumCards() == 2) {
                         return Surrender;
                     }
                 }
