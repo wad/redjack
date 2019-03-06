@@ -1,7 +1,6 @@
 package org.wadhome.redjack;
 
-public class Player
-{
+public class Player {
     private String playerName;
     private MoneyPile bankroll;
     private PlayerSmarts playerSmarts;
@@ -9,20 +8,17 @@ public class Player
     public Player(
             String playerName,
             MoneyPile bankroll,
-            PlayerSmarts playerSmarts)
-    {
+            PlayerSmarts playerSmarts) {
         this.playerName = playerName;
         this.bankroll = bankroll;
         this.playerSmarts = playerSmarts;
     }
 
-    public String getPlayerName()
-    {
+    public String getPlayerName() {
         return playerName;
     }
 
-    public MoneyPile getBankroll()
-    {
+    public MoneyPile getBankroll() {
         return this.bankroll;
     }
 
@@ -30,10 +26,8 @@ public class Player
             PlayerHand hand,
             Card dealerUpcard,
             int numSplitsSoFar,
-            TableRules tableRules)
-    {
-        switch (playerSmarts)
-        {
+            TableRules tableRules) {
+        switch (playerSmarts) {
             case BasicStrategy:
                 return BasicStrategy.compute(
                         hand,
@@ -49,8 +43,7 @@ public class Player
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return playerName;
     }
 }

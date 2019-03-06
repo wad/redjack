@@ -1,18 +1,15 @@
 package org.wadhome.redjack;
 
-import static org.wadhome.redjack.TableRules.*;
-
 import java.util.Collections;
 import java.util.Set;
 
-public class DealerHand extends Hand
-{
-    public boolean shouldHit(TableRules tableRules)
-    {
+import static org.wadhome.redjack.TableRules.DEALER_STAND_TOTAL;
+
+public class DealerHand extends Hand {
+    public boolean shouldHit(TableRules tableRules) {
         final int seven = Value.Ace.getPoints() + Value.Six.getPoints();
         boolean isSoftSeventeen = hasAtLeastOneAce() && computeMinSum() == seven;
-        if (isSoftSeventeen && tableRules.mustHitSoftSeventeen())
-        {
+        if (isSoftSeventeen && tableRules.mustHitSoftSeventeen()) {
             return true;
         }
 
@@ -20,14 +17,12 @@ public class DealerHand extends Hand
     }
 
     @Override
-    protected boolean hasAnyCardsHelper()
-    {
+    protected boolean hasAnyCardsHelper() {
         return false;
     }
 
     @Override
-    protected Set<Card> removeCardsHelper()
-    {
+    protected Set<Card> removeCardsHelper() {
         return Collections.emptySet();
     }
 }

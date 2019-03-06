@@ -1,84 +1,77 @@
 package org.wadhome.redjack;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
-public class HandTest
-{
+import static org.junit.Assert.*;
+
+public class HandTest extends TestHelper {
     @Test
-    public void testIsBustSimple()
-    {
+    public void testIsBustSimple() {
         Hand hand = new PlayerHand(0);
         assertFalse(hand.isBust());
-        hand.addCard(new Card(Value.Two));
+        hand.addCard(c2());
         assertFalse(hand.isBust());
-        hand.addCard(new Card(Value.Queen));
+        hand.addCard(cT());
         assertFalse(hand.isBust());
-        hand.addCard(new Card(Value.Jack));
+        hand.addCard(cT());
         assertTrue(hand.isBust());
     }
 
     @Test
-    public void testIsBustWithAce()
-    {
+    public void testIsBustWithAce() {
         Hand hand = new PlayerHand(0);
-        hand.addCard(new Card(Value.Ace));
+        hand.addCard(cA());
         assertFalse(hand.isBust());
-        hand.addCard(new Card(Value.Five));
+        hand.addCard(c5());
         assertFalse(hand.isBust());
-        hand.addCard(new Card(Value.Two));
+        hand.addCard(c2());
         assertFalse(hand.isBust());
-        hand.addCard(new Card(Value.Ten));
+        hand.addCard(cT());
         assertFalse(hand.isBust());
-        hand.addCard(new Card(Value.Jack));
+        hand.addCard(cT());
         assertTrue(hand.isBust());
     }
 
     @Test
-    public void testIsBlackjack()
-    {
+    public void testIsBlackjack() {
         Hand hand = new PlayerHand(0);
-        hand.addCard(new Card(Value.Ace));
+        hand.addCard(cA());
         assertFalse(hand.isBlackjack());
-        hand.addCard(new Card(Value.Queen));
+        hand.addCard(cT());
         assertTrue(hand.isBlackjack());
-        hand.addCard(new Card(Value.Jack));
+        hand.addCard(cT());
         assertFalse(hand.isBlackjack());
     }
 
     @Test
-    public void testIsBlackjackNoAces()
-    {
+    public void testIsBlackjackNoAces() {
         Hand hand = new PlayerHand(0);
-        hand.addCard(new Card(Value.Two));
+        hand.addCard(c2());
         assertFalse(hand.isBlackjack());
-        hand.addCard(new Card(Value.Queen));
+        hand.addCard(cT());
         assertFalse(hand.isBlackjack());
     }
 
     @Test
-    public void testCompareSame()
-    {
+    public void testCompareSame() {
         Hand hand1 = new PlayerHand(1);
-        hand1.addCard(new Card(Value.Two));
-        hand1.addCard(new Card(Value.Queen));
+        hand1.addCard(c2());
+        hand1.addCard(cT());
         Hand hand2 = new PlayerHand(2);
-        hand2.addCard(new Card(Value.Two));
-        hand2.addCard(new Card(Value.Queen));
+        hand2.addCard(c2());
+        hand2.addCard(cT());
 
         assertEquals(ComparisonResult.same, hand1.compareWith(hand2));
     }
 
     @Test
-    public void testCompareNotSame()
-    {
+    public void testCompareNotSame() {
         Hand hand1 = new PlayerHand(1);
-        hand1.addCard(new Card(Value.Two));
-        hand1.addCard(new Card(Value.Nine));
+        hand1.addCard(c2());
+        hand1.addCard(c9());
         Hand hand2 = new PlayerHand(2);
-        hand2.addCard(new Card(Value.Two));
-        hand2.addCard(new Card(Value.Queen));
+        hand2.addCard(c2());
+        hand2.addCard(cT());
 
         assertEquals(ComparisonResult.ThisLoses, hand1.compareWith(hand2));
         assertEquals(ComparisonResult.ThisWins, hand2.compareWith(hand1));

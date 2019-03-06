@@ -3,19 +3,16 @@ package org.wadhome.redjack;
 import static org.wadhome.redjack.BlackjackPlay.*;
 import static org.wadhome.redjack.Value.*;
 
-class BasicStrategy
-{
+class BasicStrategy {
     static BlackjackPlay compute(
             PlayerHand hand,
             Card dealerUpcard,
             int numSplitsSoFar,
             MoneyPile bankrollAvailable,
-            TableRules tableRules)
-    {
+            TableRules tableRules) {
         validateHand(hand);
 
-        if (hand.isPair())
-        {
+        if (hand.isPair()) {
             return handlePair(
                     hand,
                     dealerUpcard,
@@ -24,8 +21,7 @@ class BasicStrategy
                     tableRules);
         }
 
-        if (hand.hasAtLeastOneAce())
-        {
+        if (hand.hasAtLeastOneAce()) {
             return handleSoftHand(
                     hand,
                     dealerUpcard,
@@ -47,103 +43,82 @@ class BasicStrategy
             Card dealerUpcard,
             boolean isAfterSplit,
             MoneyPile bankrollAvailable,
-            TableRules tableRules)
-    {
+            TableRules tableRules) {
         Value upcardValue = dealerUpcard.getValue();
         int sum = hand.computeMaxSum();
 
-        if (sum == TableRules.MAX_VALID_HAND_POINTS)
-        {
+        if (sum == TableRules.MAX_VALID_HAND_POINTS) {
             return Stand;
         }
 
         boolean isDoubleDownPermittedHere = true;
-        if (isAfterSplit && !tableRules.canDoubleDownAfterSplit())
-        {
+        if (isAfterSplit && !tableRules.canDoubleDownAfterSplit()) {
             isDoubleDownPermittedHere = false;
         }
 
         boolean hasFundsToCoverDoubleDown = bankrollAvailable.isGreaterThanOrEqualTo(hand.getBetAmount());
-        if (!hasFundsToCoverDoubleDown)
-        {
+        if (!hasFundsToCoverDoubleDown) {
             isDoubleDownPermittedHere = false;
         }
 
-        if (sum <= 8)
-        {
+        if (sum <= 8) {
             return Hit;
         }
 
-        if (sum == 9)
-        {
-            if (upcardValue.ordinal() >= Three.ordinal() && upcardValue.ordinal() <= Six.ordinal())
-            {
-                if (isDoubleDownPermittedHere && tableRules.getDoubleDownOptions() == TableRules.DoubleDownOptions.Any)
-                {
+        if (sum == 9) {
+            if (upcardValue.ordinal() >= Three.ordinal() && upcardValue.ordinal() <= Six.ordinal()) {
+                if (isDoubleDownPermittedHere && tableRules.getDoubleDownOptions() == TableRules.DoubleDownOptions.Any) {
                     return DoubleDown;
                 }
             }
             return Hit;
         }
 
-        if (sum == 10)
-        {
-            if (upcardValue == Ten || upcardValue == Ace)
-            {
+        if (sum == 10) {
+            if (upcardValue == Ten || upcardValue == Ace) {
                 return Hit;
             }
             return isDoubleDownPermittedHere ? DoubleDown : Hit;
         }
 
-        if (sum == 11)
-        {
+        if (sum == 11) {
             return isDoubleDownPermittedHere ? DoubleDown : Hit;
         }
 
-        if (sum == 12)
-        {
-            if (upcardValue.ordinal() > Three.ordinal() && upcardValue.ordinal() < 7)
-            {
+        if (sum == 12) {
+            if (upcardValue.ordinal() > Three.ordinal() && upcardValue.ordinal() < 7) {
                 return Stand;
             }
             return Hit;
         }
 
         // Note: sum will be >= 13 at this point.
-        if (upcardValue.ordinal() <= Six.ordinal())
-        {
+        if (upcardValue.ordinal() <= Six.ordinal()) {
             return Stand;
         }
 
         // take care of the surrender scenarios now
-        if (tableRules.canSurrender())
-        {
-            if (sum == 15 && (upcardValue == Ten || upcardValue == Ace))
-            {
+        if (tableRules.canSurrender()) {
+            if (sum == 15 && (upcardValue == Ten || upcardValue == Ace)) {
                 return Surrender;
             }
-            if (sum == 16 && (upcardValue == Nine || upcardValue == Ten || upcardValue == Ace))
-            {
+            if (sum == 16 && (upcardValue == Nine || upcardValue == Ten || upcardValue == Ace)) {
                 return Surrender;
             }
-            if (sum == 17 && upcardValue == Ace)
-            {
+            if (sum == 17 && upcardValue == Ace) {
                 return Surrender;
             }
         }
 
-        if (sum == 16 && upcardValue == Ten)
-        {
+        if (sum == 16 && upcardValue == Ten) {
             return Stand;
         }
 
-        if (sum >= 17)
-        {
+        if (sum >= 17) {
             return Stand;
         }
 
-        if (upcardValue.ordinal() >= Seven.ordinal())
-        {
+        if (upcardValue.ordinal() >= Seven.ordinal()) {
             return Hit;
         }
 
@@ -155,18 +130,15 @@ class BasicStrategy
             Card dealerUpcard,
             boolean isAfterSplit,
             MoneyPile bankrollAvailable,
-            TableRules tableRules)
-    {
+            TableRules tableRules) {
         int sumWithLowAces = 0;
-        for (Card card : hand.cards)
-        {
+        for (Card card : hand.cards) {
             sumWithLowAces = card.getValue().getPoints();
         }
 
         int eleven = TableRules.MAX_VALID_HAND_POINTS - OPTIONAL_EXTRA_ACE_POINTS;
         boolean notReallySoftHand = sumWithLowAces >= eleven;
-        if (notReallySoftHand)
-        {
+        if (notReallySoftHand) {
             return handleHardHand(
                     hand,
                     dealerUpcard,
@@ -178,77 +150,61 @@ class BasicStrategy
         Value upcardValue = dealerUpcard.getValue();
 
         boolean isDoubleDownPermittedHere = true;
-        if (isAfterSplit && !tableRules.canDoubleDownAfterSplit())
-        {
+        if (isAfterSplit && !tableRules.canDoubleDownAfterSplit()) {
             isDoubleDownPermittedHere = false;
         }
 
         boolean hasFundsToCoverDoubleDown = bankrollAvailable.isGreaterThanOrEqualTo(hand.getBetAmount());
-        if (!hasFundsToCoverDoubleDown)
-        {
+        if (!hasFundsToCoverDoubleDown) {
             isDoubleDownPermittedHere = false;
         }
 
         int sumWithoutOneAce = sumWithLowAces - 1;
 
-        if (sumWithoutOneAce == 8)
-        {
-            if (upcardValue == Six)
-            {
-                if (isDoubleDownPermittedHere && tableRules.getDoubleDownOptions() == TableRules.DoubleDownOptions.Any)
-                {
+        if (sumWithoutOneAce == 8) {
+            if (upcardValue == Six) {
+                if (isDoubleDownPermittedHere && tableRules.getDoubleDownOptions() == TableRules.DoubleDownOptions.Any) {
                     return DoubleDown;
                 }
                 return Stand;
             }
         }
-        if (sumWithoutOneAce >= 8)
-        {
+        if (sumWithoutOneAce >= 8) {
             return Stand;
         }
 
-        if (sumWithoutOneAce == 7)
-        {
-            if (upcardValue == Seven || upcardValue == Eight)
-            {
+        if (sumWithoutOneAce == 7) {
+            if (upcardValue == Seven || upcardValue == Eight) {
                 return Stand;
             }
-            if (upcardValue.ordinal() >= Nine.ordinal())
-            {
+            if (upcardValue.ordinal() >= Nine.ordinal()) {
                 return Hit;
             }
-            if (isDoubleDownPermittedHere && tableRules.getDoubleDownOptions() == TableRules.DoubleDownOptions.Any)
-            {
+            if (isDoubleDownPermittedHere && tableRules.getDoubleDownOptions() == TableRules.DoubleDownOptions.Any) {
                 return DoubleDown;
             }
             return Stand;
         }
 
-        if (upcardValue.ordinal() >= Seven.ordinal())
-        {
+        if (upcardValue.ordinal() >= Seven.ordinal()) {
             return Hit;
         }
 
         boolean tryDoubling = false;
         if (sumWithoutOneAce <= 3
-                && (upcardValue == Five || upcardValue == Six))
-        {
+                && (upcardValue == Five || upcardValue == Six)) {
             tryDoubling = true;
         }
         if (sumWithoutOneAce <= 5
-                && (upcardValue == Four || upcardValue == Five || upcardValue == Six))
-        {
+                && (upcardValue == Four || upcardValue == Five || upcardValue == Six)) {
             tryDoubling = true;
         }
         if (sumWithoutOneAce == 6
-                && (upcardValue == Three || upcardValue == Four || upcardValue == Five || upcardValue == Six))
-        {
+                && (upcardValue == Three || upcardValue == Four || upcardValue == Five || upcardValue == Six)) {
             tryDoubling = true;
         }
-        if (tryDoubling)
-        {
-            if (isDoubleDownPermittedHere && tableRules.getDoubleDownOptions() == TableRules.DoubleDownOptions.Any)
-            {
+        if (tryDoubling) {
+            if (isDoubleDownPermittedHere && tableRules.getDoubleDownOptions() == TableRules.DoubleDownOptions.Any) {
                 return DoubleDown;
             }
         }
@@ -261,29 +217,24 @@ class BasicStrategy
             Card dealerUpcard,
             int numSplitsSoFar,
             MoneyPile bankrollAvailable,
-            TableRules tableRules)
-    {
+            TableRules tableRules) {
         Value value = hand.getFirstCard().getValue();
         Value upcardValue = dealerUpcard.getValue();
         boolean splitsAllUsedUp = numSplitsSoFar >= tableRules.getMaxNumSplits();
 
         boolean isDoubleDownPermittedHere = true;
         boolean hasFundsToCoverDoubleDown = bankrollAvailable.isGreaterThanOrEqualTo(hand.getBetAmount());
-        if (!hasFundsToCoverDoubleDown)
-        {
+        if (!hasFundsToCoverDoubleDown) {
             isDoubleDownPermittedHere = false;
         }
 
-        switch (value)
-        {
+        switch (value) {
             case Two:
             case Three:
-                if (upcardValue.ordinal() > Seven.ordinal())
-                {
+                if (upcardValue.ordinal() > Seven.ordinal()) {
                     return Hit;
                 }
-                if (splitsAllUsedUp)
-                {
+                if (splitsAllUsedUp) {
                     return handleHardHand(
                             hand,
                             dealerUpcard,
@@ -293,14 +244,11 @@ class BasicStrategy
                 }
                 return Split;
             case Four:
-                if (upcardValue.ordinal() < Five.ordinal())
-                {
+                if (upcardValue.ordinal() < Five.ordinal()) {
                     return Hit;
                 }
-                if (upcardValue == Five || upcardValue == Six)
-                {
-                    if (splitsAllUsedUp)
-                    {
+                if (upcardValue == Five || upcardValue == Six) {
+                    if (splitsAllUsedUp) {
                         return handleHardHand(
                                 hand,
                                 dealerUpcard,
@@ -312,26 +260,21 @@ class BasicStrategy
                 }
                 return Hit;
             case Five:
-                if (upcardValue == Ten || upcardValue == Ace)
-                {
+                if (upcardValue == Ten || upcardValue == Ace) {
                     return Hit;
                 }
-                if (numSplitsSoFar > 0 && !tableRules.canDoubleDownAfterSplit())
-                {
+                if (numSplitsSoFar > 0 && !tableRules.canDoubleDownAfterSplit()) {
                     return Hit;
                 }
-                if (isDoubleDownPermittedHere)
-                {
+                if (isDoubleDownPermittedHere) {
                     return DoubleDown;
                 }
                 return Hit;
             case Six:
-                if (upcardValue.ordinal() > Six.ordinal())
-                {
+                if (upcardValue.ordinal() > Six.ordinal()) {
                     return Hit;
                 }
-                if (splitsAllUsedUp)
-                {
+                if (splitsAllUsedUp) {
                     return handleHardHand(
                             hand,
                             dealerUpcard,
@@ -341,19 +284,15 @@ class BasicStrategy
                 }
                 return Split;
             case Seven:
-                if (upcardValue == Ten)
-                {
-                    if (tableRules.canSurrender())
-                    {
+                if (upcardValue == Ten) {
+                    if (tableRules.canSurrender()) {
                         return Surrender;
                     }
                 }
-                if (upcardValue.ordinal() > Seven.ordinal())
-                {
+                if (upcardValue.ordinal() > Seven.ordinal()) {
                     return Hit;
                 }
-                if (splitsAllUsedUp)
-                {
+                if (splitsAllUsedUp) {
                     return handleHardHand(
                             hand,
                             dealerUpcard,
@@ -363,8 +302,7 @@ class BasicStrategy
                 }
                 return Split;
             case Eight:
-                if (splitsAllUsedUp)
-                {
+                if (splitsAllUsedUp) {
                     return handleHardHand(
                             hand,
                             dealerUpcard,
@@ -374,12 +312,10 @@ class BasicStrategy
                 }
                 return Split;
             case Nine:
-                if (upcardValue == Seven || upcardValue == Ten || upcardValue == Ace)
-                {
+                if (upcardValue == Seven || upcardValue == Ten || upcardValue == Ace) {
                     return Stand;
                 }
-                if (splitsAllUsedUp)
-                {
+                if (splitsAllUsedUp) {
                     return handleHardHand(
                             hand,
                             dealerUpcard,
@@ -395,12 +331,10 @@ class BasicStrategy
                 return Stand;
             case Ace:
                 boolean acesHaveAlreadyBeenSplit = !tableRules.canHitSplitAces() && numSplitsSoFar > 0;
-                if (acesHaveAlreadyBeenSplit)
-                {
+                if (acesHaveAlreadyBeenSplit) {
                     return Hit;
                 }
-                if (splitsAllUsedUp)
-                {
+                if (splitsAllUsedUp) {
                     return handleSoftHand(
                             hand,
                             dealerUpcard,
@@ -414,18 +348,14 @@ class BasicStrategy
         }
     }
 
-    private static void validateHand(PlayerHand hand)
-    {
-        if (hand.getNumCards() < 2)
-        {
+    private static void validateHand(PlayerHand hand) {
+        if (hand.getNumCards() < 2) {
             throw new RuntimeException("Less than 2 cards.");
         }
-        if (hand.isBust())
-        {
+        if (hand.isBust()) {
             throw new RuntimeException("Already busted.");
         }
-        if (hand.isBlackjack())
-        {
+        if (hand.isBlackjack()) {
             throw new RuntimeException("Already blackjack.");
         }
     }

@@ -2,35 +2,28 @@ package org.wadhome.redjack;
 
 import java.util.List;
 
-public abstract class CardStack
-{
+public abstract class CardStack {
     protected List<Card> cards;
     private int stackNumber;
 
-    protected void setStackNumber(int stackNumber)
-    {
+    protected void setStackNumber(int stackNumber) {
         this.stackNumber = stackNumber;
     }
 
-    protected int getStackNumber()
-    {
+    protected int getStackNumber() {
         return stackNumber;
     }
 
-    boolean hasCards()
-    {
+    boolean hasCards() {
         return !cards.isEmpty();
     }
 
-    protected void addCard(Card card)
-    {
+    protected void addCard(Card card) {
         cards.add(card);
     }
 
-    protected Card drawTopCard()
-    {
-        if (!hasCards())
-        {
+    protected Card drawTopCard() {
+        if (!hasCards()) {
             throw new RuntimeException("Cannot draw, no card available in stack " + stackNumber + "!");
         }
 

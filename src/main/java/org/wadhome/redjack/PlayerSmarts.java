@@ -1,7 +1,6 @@
 package org.wadhome.redjack;
 
-public enum PlayerSmarts
-{
+public enum PlayerSmarts {
     BasicStrategy,
     CardCounter
 }

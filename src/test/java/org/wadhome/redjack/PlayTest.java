@@ -2,11 +2,9 @@ package org.wadhome.redjack;
 
 import org.junit.Test;
 
-public class PlayTest
-{
+public class PlayTest {
     @Test
-    public void testRunningIt()
-    {
+    public void testRunningIt() {
         int tableNumber = 1;
         Casino casino = new Casino("TestMe");
         casino.createTable(tableNumber, TableRules.getHomeCasinoRules());

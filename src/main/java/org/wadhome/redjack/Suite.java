@@ -1,7 +1,6 @@
 package org.wadhome.redjack;
 
-public enum Suite
-{
+public enum Suite {
     Spades("♠"),
     Hearts("♥"),
     Clubs("♣"),
@@ -9,14 +8,12 @@ public enum Suite
 
     private String symbol;
 
-    Suite(String symbol)
-    {
+    Suite(String symbol) {
         this.symbol = symbol;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return symbol;
     }
 }

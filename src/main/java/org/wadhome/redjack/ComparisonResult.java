@@ -1,7 +1,6 @@
 package org.wadhome.redjack;
 
-public enum ComparisonResult
-{
+public enum ComparisonResult {
     ThisLoses,
     same,
     ThisWins

@@ -1,7 +1,6 @@
 package org.wadhome.redjack;
 
-public enum Value
-{
+public enum Value {
     Two("2", 2),
     Three("3", 3),
     Four("4", 4),
@@ -23,20 +22,17 @@ public enum Value
 
     Value(
             String symbol,
-            int points)
-    {
+            int points) {
         this.symbol = symbol;
         this.points = points;
     }
 
-    public int getPoints()
-    {
+    public int getPoints() {
         return points;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return symbol;
     }
 }

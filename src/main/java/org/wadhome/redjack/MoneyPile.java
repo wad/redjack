@@ -1,83 +1,67 @@
 package org.wadhome.redjack;
 
-public class MoneyPile
-{
+public class MoneyPile {
     long numCents;
 
-    public MoneyPile(long numCents)
-    {
+    public MoneyPile(long numCents) {
         this.numCents = numCents;
         validate();
     }
 
-    public void add(MoneyPile moneyToAdd)
-    {
+    public void add(MoneyPile moneyToAdd) {
         this.numCents += moneyToAdd.numCents;
         validate();
     }
 
-    public void subtract(MoneyPile moneyToSubtract)
-    {
+    public void subtract(MoneyPile moneyToSubtract) {
         this.numCents -= moneyToSubtract.numCents;
         validate();
     }
 
-    public boolean isLessThan(MoneyPile target)
-    {
+    public boolean isLessThan(MoneyPile target) {
         return this.numCents < target.numCents;
     }
 
-    public boolean isGreaterThan(MoneyPile target)
-    {
+    public boolean isGreaterThan(MoneyPile target) {
         return this.numCents > target.numCents;
     }
 
-    public boolean isGreaterThanOrEqualTo(MoneyPile target)
-    {
+    public boolean isGreaterThanOrEqualTo(MoneyPile target) {
         return this.numCents >= target.numCents;
     }
 
-    public boolean isZero()
-    {
+    public boolean isZero() {
         return numCents == 0L;
     }
 
-    public MoneyPile copy()
-    {
+    public MoneyPile copy() {
         return new MoneyPile(numCents);
     }
 
-    public MoneyPile computeHalf()
-    {
+    public MoneyPile computeHalf() {
         return new MoneyPile(this.numCents >> 1);
     }
 
-    public MoneyPile computeOneAndHalf()
-    {
+    public MoneyPile computeOneAndHalf() {
         return new MoneyPile(this.numCents + (this.numCents >> 1));
     }
 
-    public MoneyPile computeDouble()
-    {
+    public MoneyPile computeDouble() {
         return new MoneyPile(this.numCents + this.numCents);
     }
 
-    private void validate()
-    {
-        if (numCents < 0L)
-        {
+    private void validate() {
+        if (numCents < 0L) {
             throw new RuntimeException("Cannot have a negative money pile.");
         }
     }
 
-    public static MoneyPile zero()
-    {
+    public static MoneyPile zero() {
         return new MoneyPile(0L);
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         long dollars = numCents / 100;
         long cents = numCents % 100;
         String dollarString = String.valueOf(dollars);

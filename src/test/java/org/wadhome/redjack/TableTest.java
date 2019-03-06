@@ -2,11 +2,9 @@ package org.wadhome.redjack;
 
 import org.junit.Test;
 
-public class TableTest
-{
+public class TableTest extends TestHelper {
     @Test
-    public void testSimple()
-    {
+    public void testSimple() {
         int tableNumber = 1;
         Casino casino = new Casino("TestTable");
         casino.createTable(tableNumber, TableRules.getHomeCasinoRules());
@@ -20,9 +18,6 @@ public class TableTest
         table.assignPlayerToHand(1, alex);
 
         table.placeBet(1, new MoneyPile(1000L));
-        table.placeBet(2, new MoneyPile(2500L));
-        table.placeBet(3, new MoneyPile(1000L));
-        table.placeBet(5, new MoneyPile(10000L));
 
         table.playRound();
     }

@@ -1,7 +1,6 @@
 package org.wadhome.redjack;
 
-public enum BlackjackPlay
-{
+public enum BlackjackPlay {
     Hit,
     Stand,
     DoubleDown,
