@@ -2,6 +2,10 @@ package org.wadhome.redjack;
 
 public class TestHelper {
 
+    Card c(Value value) {
+        return new Card(0, Suite.Clubs, value);
+    }
+
     Card c2() {
         return new Card(0, Suite.Spades, Value.Two);
     }

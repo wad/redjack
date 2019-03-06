@@ -11,13 +11,6 @@ public class PlayerHand extends Hand {
     private int handNumber;
     private List<SplitHand> splitHands = new ArrayList<>();
 
-    // just used in test code
-    PlayerHand(Card card1, Card card2) {
-        this(0);
-        addCard(card1);
-        addCard(card2);
-    }
-
     public PlayerHand(int handNumber) {
         this.handNumber = handNumber;
     }

@@ -5,26 +5,28 @@ public class BasicStrategyTestHelper extends TestHelper {
     MoneyPile bankroll = new MoneyPile(1000000);
     TableRules rules = TableRules.getHomeCasinoRules();
 
-    // todo: update to take more than 3 cards
-    BlackjackPlay compute(
-            Card playerCard1,
-            Card playerCard2,
-            Card dealerUpcard) {
-        return BasicStrategy.compute(
-                new PlayerHand(playerCard1, playerCard2),
-                dealerUpcard,
-                0,
-                this.bankroll,
-                this.rules);
+    BlackjackPlay compute(Card... cards) {
+        return compute(this.rules, cards);
     }
 
     BlackjackPlay compute(
             TableRules tableRules,
-            Card playerCard1,
-            Card playerCard2,
-            Card dealerUpcard) {
+            Card... cards) {
+        int numCards = cards.length;
+        if (numCards < 3)
+        {
+            throw new RuntimeException("Bug in test code!");
+        }
+        Card dealerUpcard = cards[numCards - 1];
+
+        PlayerHand playerHand = new PlayerHand(0);
+        for (int i = 0; i < numCards - 1; i++)
+        {
+            playerHand.addCard(cards[i]);
+        }
+
         return BasicStrategy.compute(
-                new PlayerHand(playerCard1, playerCard2),
+                playerHand,
                 dealerUpcard,
                 0,
                 bankroll,
