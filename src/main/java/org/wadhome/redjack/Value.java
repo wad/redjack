@@ -35,4 +35,27 @@ public enum Value {
     public String toString() {
         return symbol;
     }
+
+    public boolean isTen() {
+        switch (this) {
+            case Two:
+            case Three:
+            case Four:
+            case Five:
+            case Six:
+            case Seven:
+            case Eight:
+            case Nine:
+                return false;
+            case Ten:
+            case Jack:
+            case Queen:
+            case King:
+                return true;
+            case Ace:
+                return false;
+            default:
+                throw new RuntimeException("Bug!");
+        }
+    }
 }

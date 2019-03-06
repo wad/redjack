@@ -1,7 +1,6 @@
 package org.wadhome.redjack;
 
 public class Card {
-    // todo: compress these three values to just in encoded in bits in a single int
     private int deckNumber;
     private Suite suite;
     private Value value;

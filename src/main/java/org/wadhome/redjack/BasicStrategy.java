@@ -75,7 +75,7 @@ class BasicStrategy {
         }
 
         if (sum == 10) {
-            if (upcardValue == Ten || upcardValue == Ace) {
+            if (upcardValue.isTen() || upcardValue == Ace) {
                 return Hit;
             }
             return isDoubleDownPermittedHere ? DoubleDown : Hit;
@@ -86,7 +86,7 @@ class BasicStrategy {
         }
 
         if (sum == 12) {
-            if (upcardValue.ordinal() > Three.ordinal() && upcardValue.ordinal() < 7) {
+            if (upcardValue.ordinal() > Three.ordinal() && upcardValue.ordinal() < Seven.ordinal()) {
                 return Stand;
             }
             return Hit;
@@ -99,10 +99,10 @@ class BasicStrategy {
 
         // take care of the surrender scenarios now
         if (tableRules.canSurrender()) {
-            if (sum == 15 && (upcardValue == Ten || upcardValue == Ace)) {
+            if (sum == 15 && (upcardValue.isTen() || upcardValue == Ace)) {
                 return Surrender;
             }
-            if (sum == 16 && (upcardValue == Nine || upcardValue == Ten || upcardValue == Ace)) {
+            if (sum == 16 && (upcardValue == Nine || upcardValue.isTen() || upcardValue == Ace)) {
                 return Surrender;
             }
             if (sum == 17 && upcardValue == Ace) {
@@ -110,7 +110,7 @@ class BasicStrategy {
             }
         }
 
-        if (sum == 16 && upcardValue == Ten) {
+        if (sum == 16 && upcardValue.isTen()) {
             return Stand;
         }
 
@@ -260,7 +260,7 @@ class BasicStrategy {
                 }
                 return Hit;
             case Five:
-                if (upcardValue == Ten || upcardValue == Ace) {
+                if (upcardValue.isTen() || upcardValue == Ace) {
                     return Hit;
                 }
                 if (numSplitsSoFar > 0 && !tableRules.canDoubleDownAfterSplit()) {
@@ -284,7 +284,7 @@ class BasicStrategy {
                 }
                 return Split;
             case Seven:
-                if (upcardValue == Ten) {
+                if (upcardValue.isTen()) {
                     if (tableRules.canSurrender()) {
                         return Surrender;
                     }
@@ -312,7 +312,7 @@ class BasicStrategy {
                 }
                 return Split;
             case Nine:
-                if (upcardValue == Seven || upcardValue == Ten || upcardValue == Ace) {
+                if (upcardValue == Seven || upcardValue.isTen() || upcardValue == Ace) {
                     return Stand;
                 }
                 if (splitsAllUsedUp) {
