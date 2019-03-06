@@ -7,7 +7,7 @@ public class TableTest extends TestHelper {
     public void testSimple() {
         int tableNumber = 1;
         Casino casino = new Casino("TestTable");
-        casino.createTable(tableNumber, TableRules.getHomeCasinoRules());
+        casino.createTable(tableNumber, TableRules.getDefaultRules());
         Table table = casino.getTable(tableNumber);
         table.prepareForPlay();
 

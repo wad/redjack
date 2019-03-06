@@ -48,8 +48,20 @@ public class PlayerHand extends Hand {
                 && firstCard.getValue() == secondCard.getValue();
     }
 
-    public void splitTheHand() {
-        // todo
+    public boolean canHandBeSplit(TableRules tableRules) {
+        if (!isPair()) {
+            return false;
+        }
+        int numSplitsSoFar = splitHands.size() - 1;
+        return numSplitsSoFar < tableRules.getMaxNumSplits();
+    }
+
+    public void splitTheHand(TableRules tableRules) {
+        if (!canHandBeSplit(tableRules)) {
+            throw new RuntimeException("Cannot split hand");
+        }
+
+
     }
 
     @Override

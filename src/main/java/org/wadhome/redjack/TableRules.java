@@ -34,8 +34,23 @@ public class TableRules {
     boolean canSurrender = true;
     boolean sevenCardCharlie = true;
 
-    public static TableRules getHomeCasinoRules() {
+    private TableRules() {
+        // use a creator method
+    }
+
+    public static TableRules getDefaultRules() {
         return new TableRules();
+    }
+
+    @Override
+    public String toString() {
+        // todo: show all the rules
+        StringBuilder builder = new StringBuilder();
+        builder.append("===================\n");
+        builder.append("=================== Table rules\n");
+        builder.append("=================== Number of decks: ").append(getNumDecks()).append("\n");
+        builder.append("===================");
+        return builder.toString();
     }
 
     public MoneyPile getMinBet() {

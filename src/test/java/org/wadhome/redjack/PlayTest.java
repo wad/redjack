@@ -7,7 +7,7 @@ public class PlayTest {
     public void testRunningIt() {
         int tableNumber = 1;
         Casino casino = new Casino("TestMe");
-        casino.createTable(tableNumber, TableRules.getHomeCasinoRules());
+        casino.createTable(tableNumber, TableRules.getDefaultRules());
         Table table = casino.getTable(tableNumber);
         table.prepareForPlay();
 

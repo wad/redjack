@@ -31,7 +31,7 @@ public class BasicStrategyHardHandsTest extends BasicStrategyTestHelper {
 
     @Test
     public void testSumsOfNine() {
-        TableRules doubleDownLimited = new TableRules();
+        TableRules doubleDownLimited = TableRules.getDefaultRules();
         doubleDownLimited.doubleDownOptions = TableRules.DoubleDownOptions.TenAndAceOnly;
 
         for (Value upcardValue : Value.values()) {
@@ -189,7 +189,7 @@ public class BasicStrategyHardHandsTest extends BasicStrategyTestHelper {
 
     @Test
     public void testSumsOfFifteen() {
-        TableRules tableRulesCannotSurrender = new TableRules();
+        TableRules tableRulesCannotSurrender = TableRules.getDefaultRules();
         tableRulesCannotSurrender.canSurrender = false;
 
         for (Value upcardValue : Value.values()) {
@@ -233,7 +233,7 @@ public class BasicStrategyHardHandsTest extends BasicStrategyTestHelper {
 
     @Test
     public void testSumsOfSixteen() {
-        TableRules tableRulesCannotSurrender = new TableRules();
+        TableRules tableRulesCannotSurrender = TableRules.getDefaultRules();
         tableRulesCannotSurrender.canSurrender = false;
 
         for (Value upcardValue : Value.values()) {
@@ -293,7 +293,7 @@ public class BasicStrategyHardHandsTest extends BasicStrategyTestHelper {
 
     @Test
     public void testSumsOfSeventeen() {
-        TableRules tableRulesCannotSurrender = new TableRules();
+        TableRules tableRulesCannotSurrender = TableRules.getDefaultRules();
         tableRulesCannotSurrender.canSurrender = false;
 
         for (Value upcardValue : Value.values()) {

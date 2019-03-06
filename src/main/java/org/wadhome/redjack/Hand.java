@@ -97,6 +97,21 @@ public abstract class Hand {
         return maxSum;
     }
 
+    public boolean isTwentyOne() {
+        int minSum = computeMinSum();
+        if (minSum == TableRules.MAX_VALID_HAND_POINTS) {
+            return true;
+        }
+        if (minSum > TableRules.MAX_VALID_HAND_POINTS) {
+            return false;
+        }
+        //noinspection RedundantIfStatement
+        if (computeMaxSum() == TableRules.MAX_VALID_HAND_POINTS) {
+            return true;
+        }
+        return false;
+    }
+
     public boolean isBust() {
         return computeMinSum() > TableRules.MAX_VALID_HAND_POINTS;
     }

@@ -3,7 +3,7 @@ package org.wadhome.redjack;
 public class BasicStrategyTestHelper extends TestHelper {
 
     MoneyPile bankroll = new MoneyPile(1000000);
-    TableRules rules = TableRules.getHomeCasinoRules();
+    TableRules rules = TableRules.getDefaultRules();
 
     BlackjackPlay compute(Card... cards) {
         return compute(this.rules, cards);

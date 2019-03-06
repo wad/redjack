@@ -30,8 +30,8 @@ public class MoneyPile {
         return this.numCents >= target.numCents;
     }
 
-    public boolean isZero() {
-        return numCents == 0L;
+    public boolean hasMoney() {
+        return numCents > 0L;
     }
 
     public MoneyPile copy() {

@@ -112,7 +112,7 @@ public class BasicStrategySplitHandsTest extends BasicStrategyTestHelper {
 
     @Test
     public void testPairOfSevens() {
-        TableRules tableRulesCannotSurrender = new TableRules();
+        TableRules tableRulesCannotSurrender = TableRules.getDefaultRules();
         tableRulesCannotSurrender.canSurrender = false;
 
         for (Value upcardValue : Value.values()) {

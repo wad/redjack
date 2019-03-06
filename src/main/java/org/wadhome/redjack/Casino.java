@@ -9,7 +9,7 @@ public class Casino {
 
     public Casino(String casinoName) {
         this.casinoName = casinoName;
-        Display.showMessage("Casino " + casinoName + " created.");
+        Display.showMessage("Welcome to the " + casinoName + " casino.");
     }
 
     public void createTable(

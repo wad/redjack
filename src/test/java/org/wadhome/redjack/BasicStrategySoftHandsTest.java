@@ -122,7 +122,7 @@ public class BasicStrategySoftHandsTest extends BasicStrategyTestHelper {
 
     @Test
     public void testAceWithSeven() {
-        TableRules tableRulesDoubleDownLimited = new TableRules();
+        TableRules tableRulesDoubleDownLimited = TableRules.getDefaultRules();
         tableRulesDoubleDownLimited.doubleDownOptions = TableRules.DoubleDownOptions.TenAndAceOnly;
 
         for (Value upcardValue : Value.values()) {
@@ -168,7 +168,7 @@ public class BasicStrategySoftHandsTest extends BasicStrategyTestHelper {
 
     @Test
     public void testAceWithEight() {
-        TableRules tableRulesDoubleDownLimited = new TableRules();
+        TableRules tableRulesDoubleDownLimited = TableRules.getDefaultRules();
         tableRulesDoubleDownLimited.doubleDownOptions = TableRules.DoubleDownOptions.TenAndAceOnly;
 
         for (Value upcardValue : Value.values()) {
@@ -204,7 +204,7 @@ public class BasicStrategySoftHandsTest extends BasicStrategyTestHelper {
 
     @Test
     public void testAceWithNine() {
-        TableRules tableRulesDoubleDownLimited = new TableRules();
+        TableRules tableRulesDoubleDownLimited = TableRules.getDefaultRules();
         tableRulesDoubleDownLimited.doubleDownOptions = TableRules.DoubleDownOptions.TenAndAceOnly;
 
         for (Value upcardValue : Value.values()) {

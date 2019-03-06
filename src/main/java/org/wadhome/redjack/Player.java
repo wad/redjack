@@ -26,12 +26,12 @@ public class Player {
     }
 
 
-    public String getGenderPronoun() {
+    public String getGenderPronoun(boolean shouldCapitalize) {
         switch(getPlayerGender()) {
             case male:
-                return "his";
+                return shouldCapitalize ? "His" : "his";
             case female:
-                return "her";
+                return shouldCapitalize ? "Her" : "her";
             default:
                 throw new RuntimeException("Bug");
         }
