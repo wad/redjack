@@ -107,6 +107,11 @@ public abstract class Hand {
                 && hasAtLeastOneTenPointCard();
     }
 
+    public boolean isCharlie() {
+        return cards.size() == TableRules.NUM_CARDS_IN_CHARLIE_HAND
+                && !isBust();
+    }
+
     public ComparisonResult compareWith(Hand hand) {
         int thisSum = computeMaxSum();
         int thatSum = hand.computeMaxSum();

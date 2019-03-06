@@ -241,6 +241,10 @@ public class Table {
                                         hand.setBetAmount(MoneyPile.zero());
                                         shallContinue = false;
                                     }
+                                    if (hand.isCharlie()) {
+                                        handlePlayerCharlie(hand);
+                                        shallContinue = false;
+                                    }
                                     break;
                                 case Stand:
                                     shallContinue = false;
@@ -258,7 +262,7 @@ public class Table {
                                     }
                                     shallContinue = false;
                                     break;
-                                case Split: // no splits yet!
+                                case Split:
                                     // todo: code up splits
                                 case Surrender:
                                     handlePlayerSurrender(hand);
@@ -272,6 +276,17 @@ public class Table {
                 }
             }
         }
+    }
+
+    private void handlePlayerCharlie(PlayerHand hand) {
+        Player player = hand.getPlayer();
+        MoneyPile betAmount = hand.getBetAmount();
+        player.getBankroll().add(betAmount); // original bet returned
+        MoneyPile winnings = betAmount.computeDouble();
+        show(hand, "got a seven-card charlie, and won " + winnings + ".");
+        player.getBankroll().add(winnings);
+        discardTray.addCards(hand.removeCards());
+        hand.setBetAmount(MoneyPile.zero());
     }
 
     private void handlePlayerSurrender(PlayerHand hand) {

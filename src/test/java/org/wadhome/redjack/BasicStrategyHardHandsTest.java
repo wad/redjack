@@ -327,9 +327,4 @@ public class BasicStrategyHardHandsTest extends BasicStrategyTestHelper {
             assertEquals(BlackjackPlay.Stand, compute(c9(), cT(), c(upcardValue)));
         }
     }
-
-    @Test
-    public void testSingle() {
-        assertEquals(BlackjackPlay.Hit, compute(c2(), cT(), c(Value.Seven)));
-    }
 }

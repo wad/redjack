@@ -61,6 +61,10 @@ class BasicStrategy {
             isDoubleDownPermittedHere = false;
         }
 
+        if (hand.getNumCards() != 2) {
+            isDoubleDownPermittedHere = false;
+        }
+
         if (sum <= 8) {
             return Hit;
         }
@@ -133,7 +137,7 @@ class BasicStrategy {
             TableRules tableRules) {
         int sumWithLowAces = 0;
         for (Card card : hand.cards) {
-            sumWithLowAces = card.getValue().getPoints();
+            sumWithLowAces += card.getValue().getPoints();
         }
 
         int eleven = TableRules.MAX_VALID_HAND_POINTS - OPTIONAL_EXTRA_ACE_POINTS;
@@ -156,6 +160,10 @@ class BasicStrategy {
 
         boolean hasFundsToCoverDoubleDown = bankrollAvailable.isGreaterThanOrEqualTo(hand.getBetAmount());
         if (!hasFundsToCoverDoubleDown) {
+            isDoubleDownPermittedHere = false;
+        }
+
+        if (hand.getNumCards() != 2) {
             isDoubleDownPermittedHere = false;
         }
 
@@ -191,11 +199,11 @@ class BasicStrategy {
         }
 
         boolean tryDoubling = false;
-        if (sumWithoutOneAce <= 3
+        if ((sumWithoutOneAce == 2 || sumWithoutOneAce == 3)
                 && (upcardValue == Five || upcardValue == Six)) {
             tryDoubling = true;
         }
-        if (sumWithoutOneAce <= 5
+        if ((sumWithoutOneAce == 4 || sumWithoutOneAce == 5)
                 && (upcardValue == Four || upcardValue == Five || upcardValue == Six)) {
             tryDoubling = true;
         }
