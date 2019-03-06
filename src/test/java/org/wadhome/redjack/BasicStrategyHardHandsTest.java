@@ -31,6 +31,9 @@ public class BasicStrategyHardHandsTest extends BasicStrategyTestHelper {
 
     @Test
     public void testSumsOfNine() {
+        TableRules doubleDownLimited = new TableRules();
+        doubleDownLimited.doubleDownOptions = TableRules.DoubleDownOptions.TenAndAceOnly;
+
         for (Value upcardValue : Value.values()) {
             switch (upcardValue) {
                 case Two:
@@ -45,6 +48,8 @@ public class BasicStrategyHardHandsTest extends BasicStrategyTestHelper {
                 case Five:
                 case Six:
                     assertEquals(BlackjackPlay.DoubleDown, compute(c2(), c7(), c(upcardValue)));
+                    assertEquals(BlackjackPlay.Hit, compute(doubleDownLimited, c2(), c7(), c(upcardValue)));
+                    assertEquals(BlackjackPlay.Hit, compute(c2(), c3(), c4(), c(upcardValue)));
                     assertEquals(BlackjackPlay.DoubleDown, compute(c3(), c6(), c(upcardValue)));
                     assertEquals(BlackjackPlay.DoubleDown, compute(c4(), c5(), c(upcardValue)));
                     break;
