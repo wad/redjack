@@ -176,16 +176,15 @@ public class Table {
     }
 
     private void handleInsurance() {
-        // todo
+        if (dealerHand.getFirstCard().getValue() == Value.Ace) {
+            show("Dealer decides not to ask for insurance.");
+            // todo
+        }
     }
 
     private boolean handleDealerBlackjack() {
-        if (dealerHand.getFirstCard().getValue() != Value.Ten) {
-            return false;
-        }
-
         if (!dealerHand.isBlackjack()) {
-            show("Dealer checks the hole card, and it's not an ace. No blackjack for the dealer.");
+            show("Dealer checks the hole card. No blackjack for the dealer.");
             return false;
         }
 
@@ -289,7 +288,7 @@ public class Table {
         if (hand.isBust()) {
             show("Seat " + hand.getSeatNumber()
                     + " : " + player.getPlayerName()
-                    + " decides to hit with " + player.getGenderPronoun(false)
+                    + " decides to hit with " + player.getHisHer(false)
                     + " hand of " + initialHand
                     + ", and got a " + hitCard
                     + ". Hand is now " + hand.showCardsWithTotal()
@@ -307,18 +306,18 @@ public class Table {
         if (hand.isTwentyOne()) {
             show("Seat " + hand.getSeatNumber()
                     + " : " + player.getPlayerName()
-                    + " decides to hit with " + player.getGenderPronoun(false)
+                    + " decides to hit with " + player.getHisHer(false)
                     + " hand of " + initialHand
                     + ", and got a " + hitCard
                     + ". Hand is now " + hand.showCardsWithTotal()
-                    + ". " + player.getGenderPronoun(true) + " must now stand.");
+                    + ". " + player.getHisHer(true) + " must now stand.");
             return false;
         }
 
         // The hit didn't bust them, they can have another play if they want.
         show("Seat " + hand.getSeatNumber()
                 + " : " + player.getPlayerName()
-                + " decides to hit with " + player.getGenderPronoun(false)
+                + " decides to hit with " + player.getHisHer(false)
                 + " hand of " + initialHand
                 + ", and got a " + hitCard
                 + ". Hand is now " + hand.showCardsWithTotal());
@@ -328,15 +327,17 @@ public class Table {
     private void handlePlayerDoubleDown(
             String initialHand,
             PlayerHand hand) {
+
+        Player player = hand.getPlayer();
+        player.getBankroll().subtract(hand.getBetAmount());
         hand.setBetAmount(hand.getBetAmount().computeDouble());
         Card doubleDownCard = shoe.drawTopCard();
         hand.addCard(doubleDownCard);
-        Player player = hand.getPlayer();
 
         if (hand.isBust()) {
             show("Seat " + hand.getSeatNumber()
                     + " : " + player.getPlayerName()
-                    + " decides to double down with " + player.getGenderPronoun(false)
+                    + " decides to double down with " + player.getHisHer(false)
                     + " hand of " + initialHand
                     + ", and got a " + doubleDownCard
                     + ". Hand is now " + hand.showCardsWithTotal()
@@ -348,11 +349,11 @@ public class Table {
 
         show("Seat " + hand.getSeatNumber()
                 + " : " + player.getPlayerName()
-                + " decides to double down with " + player.getGenderPronoun(false)
+                + " decides to double down with " + player.getHisHer(false)
                 + " hand of " + initialHand
                 + ", and got a " + doubleDownCard
                 + ". Hand is now " + hand.showCardsWithTotal()
-                + ". That's a bust. Bet is now " + hand.getBetAmount().computeDouble() + ".");
+                + ". Must now stand. Bet is now " + hand.getBetAmount().computeDouble() + ".");
     }
 
     private void handlePlayerCharlie(
@@ -365,12 +366,12 @@ public class Table {
         MoneyPile winnings = betAmount.computeDouble();
         show("Seat " + hand.getSeatNumber()
                 + " : " + player.getPlayerName()
-                + " decides to hit with " + player.getGenderPronoun(false)
+                + " decides to hit with " + player.getHisHer(false)
                 + " hand of " + initialHand
                 + ", and got a " + hitCard
                 + ". Hand is now " + hand.showCardsWithTotal()
                 + ". That's a seven-card charlie! Win was double, "
-                + player.getGenderPronoun(false) + " got " + winnings + ".");
+                + player.getHeShe(false) + " got " + winnings + ".");
         player.getBankroll().add(winnings);
         discardTray.addCards(hand.removeCards());
         hand.setBetAmount(MoneyPile.zero());
@@ -387,7 +388,7 @@ public class Table {
         Player player = hand.getPlayer();
         MoneyPile halfBetAmount = hand.getBetAmount().computeHalf();
         show(hand, "surrendered, and loses half of "
-                + player.getGenderPronoun(false) + " bet (" + halfBetAmount + ").");
+                + player.getHisHer(false) + " bet (" + halfBetAmount + ").");
 
         // their original bet was already removed. This adds half back.
         player.getBankroll().add(halfBetAmount);
