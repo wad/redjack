@@ -21,7 +21,11 @@ public abstract class Hand {
     }
 
     boolean hasAnyCards() {
-        return !cards.isEmpty() || hasAnyCardsHelper();
+        return hasAnyCards(true);
+    }
+
+    boolean hasAnyCards(boolean shouldRecurse) {
+        return !cards.isEmpty() || (shouldRecurse && hasAnyCardsHelper());
     }
 
     protected abstract boolean hasAnyCardsHelper();

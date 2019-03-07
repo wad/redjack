@@ -35,7 +35,7 @@ public class TableRules {
     boolean canDoubleDownAfterSplit = true;
     DoubleDownOptions doubleDownOptions = DoubleDownOptions.Any;
     boolean canHitSplitAces = false;
-    int maxNumSplits = 3;
+    int maxNumSplits = 3; // This means that a hand can turn into a max of 4 split hands.
     int numBurnCards = 1;
     int numDecks = 6;
     int numCardsAfterCutCard = NUM_CARDS_AFTER_CUT_CARD_FOR_ONE_POINT_FIVE_DECKS;

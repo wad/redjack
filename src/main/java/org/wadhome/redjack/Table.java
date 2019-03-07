@@ -305,11 +305,18 @@ public class Table {
                         Player player = hand.getPlayer();
                         boolean shallContinue = true;
                         while (shallContinue) {
+
+//                            if (hand.getNumSplitsSoFar() > 0) {
+//
+//                            }
+
+                            // todo: could be operating on a split hand
                             String initialHand = hand.showCardsWithTotal();
-                            BlackjackPlay playerAction = player.getPlay(
-                                    hand,
-                                    dealerUpcard,
-                                    tableRules);
+
+                            // todo: iterate through split hands
+
+                            BlackjackPlay playerAction = player.getPlay(hand, dealerUpcard, tableRules);
+
                             switch (playerAction) {
                                 case Stand:
                                     show(hand, "decides to stand.");
@@ -438,13 +445,22 @@ public class Table {
         hand.setBetAmount(MoneyPile.zero());
     }
 
-    private boolean handlePlayerSplit(PlayerHand playerHand) {
+    private boolean handlePlayerSplit(PlayerHand hand) {
+        int numSplitsSoFar = hand.getNumSplitsSoFar();
+        if (numSplitsSoFar == 0) {
+            show(hand, "decides to split.");
+        } else {
+            show(hand, "decides to split again.");
+        }
 
-        show(playerHand, "decides to split.");
+        // this adds two split hands
+        hand.splitTheHand();
+
+
 
         // todo: handle aces differently
 
-        playerHand.splitTheHand();
+        hand.splitTheHand();
 
         //todo: check for blackjacks
 

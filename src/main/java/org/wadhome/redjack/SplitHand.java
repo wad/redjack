@@ -4,14 +4,18 @@ import java.util.Set;
 
 public class SplitHand extends Hand {
     private PlayerHand parentHand;
+    private int splitHandIndex;
 
-    public SplitHand(PlayerHand parentHand) {
+    public SplitHand(
+            PlayerHand parentHand,
+            int splitHandIndex) {
         this.parentHand = parentHand;
+        this.splitHandIndex = splitHandIndex;
     }
 
     @Override
     protected boolean hasAnyCardsHelper() {
-        return hasAnyCards();
+        return hasAnyCards(false);
     }
 
     @Override
