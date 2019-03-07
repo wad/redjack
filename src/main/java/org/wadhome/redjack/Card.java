@@ -23,10 +23,6 @@ public class Card {
         return value.toString() + suite.toString();
     }
 
-    public String print(boolean includeDeckNumber) {
-        return (includeDeckNumber ? deckNumber + ":" : "") + toString();
-    }
-
     @Override
     public int hashCode() {
         if (deckNumber > Deck.MAX_DECK_NUMBER) {

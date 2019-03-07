@@ -11,44 +11,44 @@ public class PlayerHand extends Hand {
     private int handNumber;
     private List<SplitHand> splitHands = new ArrayList<>();
 
-    public PlayerHand(int handNumber) {
+    PlayerHand(int handNumber) {
         this.handNumber = handNumber;
     }
 
-    public boolean isInUse() {
+    boolean isInUse() {
         return this.player != null;
     }
 
-    public Player getPlayer() {
+    Player getPlayer() {
         return player;
     }
 
-    public void setPlayer(Player player) {
+    void setPlayer(Player player) {
         this.player = player;
     }
 
-    public void removePlayer() {
+    void removePlayer() {
         this.player = null;
     }
 
-    public MoneyPile getBetAmount() {
+    MoneyPile getBetAmount() {
         return betAmount;
     }
 
-    public void setBetAmount(MoneyPile betAmount) {
+    void setBetAmount(MoneyPile betAmount) {
         this.betAmount = betAmount;
     }
 
-    public String getSeatNumber() {
+    String getSeatNumber() {
         return String.valueOf(handNumber + 1);
     }
 
-    public boolean isPair() {
+    boolean isPair() {
         return getNumCards() == 2
                 && firstCard.getValue() == secondCard.getValue();
     }
 
-    public boolean canHandBeSplit(TableRules tableRules) {
+    private boolean canHandBeSplit(TableRules tableRules) {
         if (!isPair()) {
             return false;
         }
@@ -56,11 +56,12 @@ public class PlayerHand extends Hand {
         return numSplitsSoFar < tableRules.getMaxNumSplits();
     }
 
-    public void splitTheHand(TableRules tableRules) {
+    void splitTheHand(TableRules tableRules) {
         if (!canHandBeSplit(tableRules)) {
             throw new RuntimeException("Cannot split hand");
         }
 
+        // todo
 
     }
 

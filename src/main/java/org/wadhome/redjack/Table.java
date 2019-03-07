@@ -13,7 +13,7 @@ public class Table {
     private Map<Integer, PlayerHand> hands;
     private DealerHand dealerHand;
 
-    public Table(
+    Table(
             int tableNumber,
             TableRules tableRules) {
         this.tableNumber = tableNumber;
@@ -28,17 +28,13 @@ public class Table {
         }
     }
 
-    public void showPreparationMessages() {
+    void showPreparationMessages() {
         show("The dealer is preparing table " + tableNumber + " for blackjack.");
         show(tableRules.toString());
     }
 
     Shoe getShoe() {
         return shoe;
-    }
-
-    public int getTableNumber() {
-        return tableNumber;
     }
 
     void prepareForPlay() {
@@ -64,24 +60,42 @@ public class Table {
         int numBurnCards = tableRules.getNumBurnCards();
         for (int i = 0; i < numBurnCards; i++) {
             Card burnCard = shoe.drawTopCard();
-            show("The dealer burned a card from the show: " + burnCard.print(false) + ".");
+            show("The dealer burned a card from the show: " + burnCard + ".");
             discardTray.addCardToBottom(burnCard);
         }
     }
 
-    public boolean assignPlayerToHand(
+    boolean areAnyHandsAvailable() {
+        for (int handNumber = 0; handNumber < MAX_HANDS_PER_TABLE; handNumber++) {
+            if (!hands.get(handNumber).isInUse()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    int getAnAvailableHandNumber() {
+        for (int handNumber = 0; handNumber < MAX_HANDS_PER_TABLE; handNumber++) {
+            if (!hands.get(handNumber).isInUse()) {
+                return handNumber;
+            }
+        }
+        throw new RuntimeException("No free hands.");
+    }
+
+    boolean isHandInUse(int handNumber) {
+        return hands.get(handNumber).isInUse();
+    }
+
+    void assignPlayerToHand(
             int handNumber,
             Player player) {
         PlayerHand hand = hands.get(handNumber);
         if (hand.isInUse()) {
-            show("Cannot seat player " + player.getPlayerName()
-                    + " at hand " + handNumber
-                    + ", it's occupied by " + hand.getPlayer() + ".");
-            return false;
+            throw new RuntimeException("Hand was in use, cannot assign.");
         }
 
         hand.setPlayer(player);
-        return true;
     }
 
     public void removePlayerFromHand(int handNumber) {
@@ -93,7 +107,7 @@ public class Table {
         hand.removePlayer();
     }
 
-    public void placeBet(
+    void placeBet(
             int handNumber,
             MoneyPile betAmount) {
         if (betAmount.isLessThan(tableRules.getMinBet())) {
@@ -118,7 +132,7 @@ public class Table {
         show(hand, "placed a bet of " + betAmount + ".");
     }
 
-    public boolean playRound() {
+    boolean playRound() {
         if (!anyHandsHaveBets()) {
             show("No hands have bets.");
             return false;

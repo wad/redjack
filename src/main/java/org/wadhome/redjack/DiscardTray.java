@@ -4,15 +4,16 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public class DiscardTray extends CardStack {
-    public DiscardTray(int numDecks) {
+
+    DiscardTray(int numDecks) {
         cards = new ArrayList<>(TableRules.NUM_CARDS_PER_DECK * numDecks);
+    }
+
+    void addCards(Set<Card> cardsToAdd) {
+        cards.addAll(cardsToAdd);
     }
 
     @Override
     protected void extraHandlingOnCardDraw() {
-    }
-
-    public void addCards(Set<Card> cardsToAdd) {
-        cards.addAll(cardsToAdd);
     }
 }

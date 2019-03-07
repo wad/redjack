@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Deck extends CardStack {
+
     static final int MAX_DECK_NUMBER = 9999;
 
-    public Deck(int deckNumber) {
+    Deck(int deckNumber) {
         if (deckNumber > MAX_DECK_NUMBER) {
             throw new RuntimeException("Deck number > " + MAX_DECK_NUMBER);
         }

@@ -25,7 +25,7 @@ public class BasicStrategyTestHelper extends TestHelper {
             playerHand.addCard(cards[i]);
         }
 
-        return BasicStrategy.compute(
+        return BasicStrategy.choosePlay(
                 playerHand,
                 dealerUpcard,
                 0,

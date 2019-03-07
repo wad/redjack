@@ -6,7 +6,8 @@ import java.util.Set;
 import static org.wadhome.redjack.TableRules.DEALER_STAND_TOTAL;
 
 public class DealerHand extends Hand {
-    public boolean shouldHit(TableRules tableRules) {
+
+    boolean shouldHit(TableRules tableRules) {
         final int seven = Value.Ace.getPoints() + Value.Six.getPoints();
         boolean isSoftSeventeen = hasAtLeastOneAce() && computeMinSum() == seven;
         if (isSoftSeventeen && tableRules.mustHitSoftSeventeen()) {

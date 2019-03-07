@@ -7,7 +7,7 @@ public class Player {
     private PlayerSmarts playerSmarts;
     private boolean takesMaxInsurance = false;
 
-    public Player(
+    Player(
             String playerName,
             PlayerGender playerGender,
             MoneyPile bankroll,
@@ -18,20 +18,17 @@ public class Player {
         this.playerSmarts = playerSmarts;
     }
 
-    public String getPlayerName() {
+    String getPlayerName() {
         return playerName;
     }
 
-    public PlayerGender getPlayerGender() {
-        return playerGender;
-    }
-
-    public void setTakesMaxInsurance(boolean takesMaxInsurance) {
+    void setTakesMaxInsurance(
+            @SuppressWarnings("SameParameterValue") boolean takesMaxInsurance) {
         this.takesMaxInsurance = takesMaxInsurance;
     }
 
-    public String getHisHer(boolean shouldCapitalize) {
-        switch(getPlayerGender()) {
+    String getHisHer(boolean shouldCapitalize) {
+        switch (playerGender) {
             case male:
                 return shouldCapitalize ? "His" : "his";
             case female:
@@ -41,8 +38,9 @@ public class Player {
         }
     }
 
-    public String getHeShe(boolean shouldCapitalize) {
-        switch(getPlayerGender()) {
+    String getHeShe(
+            @SuppressWarnings("SameParameterValue") boolean shouldCapitalize) {
+        switch (playerGender) {
             case male:
                 return shouldCapitalize ? "He" : "he";
             case female:
@@ -52,18 +50,18 @@ public class Player {
         }
     }
 
-    public MoneyPile getBankroll() {
+    MoneyPile getBankroll() {
         return this.bankroll;
     }
 
-    public BlackjackPlay getPlay(
+    BlackjackPlay getPlay(
             PlayerHand hand,
             Card dealerUpcard,
             int numSplitsSoFar,
             TableRules tableRules) {
         switch (playerSmarts) {
             case BasicStrategy:
-                return BasicStrategy.compute(
+                return BasicStrategy.choosePlay(
                         hand,
                         dealerUpcard,
                         numSplitsSoFar,
@@ -76,7 +74,7 @@ public class Player {
         }
     }
 
-    public MoneyPile getInsuranceBet(MoneyPile maximumInsuranceBet) {
+    MoneyPile getInsuranceBet(MoneyPile maximumInsuranceBet) {
         if (takesMaxInsurance) {
             if (bankroll.isGreaterThanOrEqualTo(maximumInsuranceBet)) {
                 return maximumInsuranceBet.copy();

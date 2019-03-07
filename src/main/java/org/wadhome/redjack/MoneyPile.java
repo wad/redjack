@@ -1,52 +1,52 @@
 package org.wadhome.redjack;
 
 public class MoneyPile {
-    long numCents;
+    private long numCents;
 
     public MoneyPile(long numCents) {
         this.numCents = numCents;
         validate();
     }
 
-    public void add(MoneyPile moneyToAdd) {
+    void add(MoneyPile moneyToAdd) {
         this.numCents += moneyToAdd.numCents;
         validate();
     }
 
-    public void subtract(MoneyPile moneyToSubtract) {
+    void subtract(MoneyPile moneyToSubtract) {
         this.numCents -= moneyToSubtract.numCents;
         validate();
     }
 
-    public boolean isLessThan(MoneyPile target) {
+    boolean isLessThan(MoneyPile target) {
         return this.numCents < target.numCents;
     }
 
-    public boolean isGreaterThan(MoneyPile target) {
+    boolean isGreaterThan(MoneyPile target) {
         return this.numCents > target.numCents;
     }
 
-    public boolean isGreaterThanOrEqualTo(MoneyPile target) {
+    boolean isGreaterThanOrEqualTo(MoneyPile target) {
         return this.numCents >= target.numCents;
     }
 
-    public boolean hasMoney() {
+    boolean hasMoney() {
         return numCents > 0L;
     }
 
-    public MoneyPile copy() {
+    MoneyPile copy() {
         return new MoneyPile(numCents);
     }
 
-    public MoneyPile computeHalf() {
+    MoneyPile computeHalf() {
         return new MoneyPile(this.numCents >> 1);
     }
 
-    public MoneyPile computeOneAndHalf() {
+    MoneyPile computeOneAndHalf() {
         return new MoneyPile(this.numCents + (this.numCents >> 1));
     }
 
-    public MoneyPile computeDouble() {
+    MoneyPile computeDouble() {
         return new MoneyPile(this.numCents + this.numCents);
     }
 
@@ -56,7 +56,7 @@ public class MoneyPile {
         }
     }
 
-    public static MoneyPile zero() {
+    static MoneyPile zero() {
         return new MoneyPile(0L);
     }
 

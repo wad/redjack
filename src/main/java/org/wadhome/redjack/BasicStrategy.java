@@ -4,7 +4,7 @@ import static org.wadhome.redjack.BlackjackPlay.*;
 import static org.wadhome.redjack.Value.*;
 
 class BasicStrategy {
-    static BlackjackPlay compute(
+    static BlackjackPlay choosePlay(
             PlayerHand hand,
             Card dealerUpcard,
             int numSplitsSoFar,
@@ -51,19 +51,10 @@ class BasicStrategy {
             return Stand;
         }
 
-        boolean isDoubleDownPermittedHere = true;
-        if (isAfterSplit && !tableRules.canDoubleDownAfterSplit()) {
-            isDoubleDownPermittedHere = false;
-        }
-
-        boolean hasFundsToCoverDoubleDown = bankrollAvailable.isGreaterThanOrEqualTo(hand.getBetAmount());
-        if (!hasFundsToCoverDoubleDown) {
-            isDoubleDownPermittedHere = false;
-        }
-
-        if (hand.getNumCards() != 2) {
-            isDoubleDownPermittedHere = false;
-        }
+        boolean isDoubleDownPermittedHere = canDoubleDown(
+                hand, isAfterSplit,
+                bankrollAvailable,
+                tableRules);
 
         if (sum <= 8) {
             return Hit;
@@ -153,19 +144,11 @@ class BasicStrategy {
 
         Value upcardValue = dealerUpcard.getValue();
 
-        boolean isDoubleDownPermittedHere = true;
-        if (isAfterSplit && !tableRules.canDoubleDownAfterSplit()) {
-            isDoubleDownPermittedHere = false;
-        }
-
-        boolean hasFundsToCoverDoubleDown = bankrollAvailable.isGreaterThanOrEqualTo(hand.getBetAmount());
-        if (!hasFundsToCoverDoubleDown) {
-            isDoubleDownPermittedHere = false;
-        }
-
-        if (hand.getNumCards() != 2) {
-            isDoubleDownPermittedHere = false;
-        }
+        boolean isDoubleDownPermittedHere = canDoubleDown(
+                hand,
+                isAfterSplit,
+                bankrollAvailable,
+                tableRules);
 
         int sumWithoutOneAce = sumWithLowAces - 1;
 
@@ -235,10 +218,10 @@ class BasicStrategy {
         Value upcardValue = dealerUpcard.getValue();
         boolean splitsAllUsedUp = numSplitsSoFar >= tableRules.getMaxNumSplits();
 
-        boolean isDoubleDownPermittedHere = true;
+        boolean canDoubleDown = true;
         boolean hasFundsToCoverDoubleDown = bankrollAvailable.isGreaterThanOrEqualTo(hand.getBetAmount());
         if (!hasFundsToCoverDoubleDown) {
-            isDoubleDownPermittedHere = false;
+            canDoubleDown = false;
         }
 
         switch (value) {
@@ -279,7 +262,7 @@ class BasicStrategy {
                 if (numSplitsSoFar > 0 && !tableRules.canDoubleDownAfterSplit()) {
                     return Hit;
                 }
-                if (isDoubleDownPermittedHere) {
+                if (canDoubleDown) {
                     return DoubleDown;
                 }
                 return Hit;
@@ -359,6 +342,24 @@ class BasicStrategy {
             default:
                 throw new RuntimeException("Bug!");
         }
+    }
+
+    private static boolean canDoubleDown(
+            PlayerHand hand,
+            boolean isAfterSplit,
+            MoneyPile bankrollAvailable,
+            TableRules tableRules) {
+
+        if (isAfterSplit && !tableRules.canDoubleDownAfterSplit()) {
+            return false;
+        }
+
+        boolean hasFundsToCoverDoubleDown = bankrollAvailable.isGreaterThanOrEqualTo(hand.getBetAmount());
+        if (!hasFundsToCoverDoubleDown) {
+            return false;
+        }
+
+        return hand.getNumCards() == 2;
     }
 
     private static void validateHand(PlayerHand hand) {
