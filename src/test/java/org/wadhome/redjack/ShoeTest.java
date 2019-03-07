@@ -16,19 +16,19 @@ public class ShoeTest extends TestHelper {
         shoe.addCardToBottom(c6(), c7());
         shoe.addCardToBottom(c8());
         assertEquals(4, shoe.cards.size());
-        assertEquals(c5(), shoe.drawTopCard());
-        assertEquals(c6(), shoe.drawTopCard());
-        assertEquals(c7(), shoe.drawTopCard());
-        assertEquals(c8(), shoe.drawTopCard());
+        assertEquals(c5().getValue(), shoe.drawTopCard().getValue());
+        assertEquals(c6().getValue(), shoe.drawTopCard().getValue());
+        assertEquals(c7().getValue(), shoe.drawTopCard().getValue());
+        assertEquals(c8().getValue(), shoe.drawTopCard().getValue());
         assertEquals(0, shoe.cards.size());
         shoe.addCardToTop(c5());
         shoe.addCardToTop(c6(), c7());
         shoe.addCardToTop(c8());
         assertEquals(4, shoe.cards.size());
-        assertEquals(c8(), shoe.drawTopCard());
-        assertEquals(c7(), shoe.drawTopCard());
-        assertEquals(c6(), shoe.drawTopCard());
-        assertEquals(c5(), shoe.drawTopCard());
+        assertEquals(c8().getValue(), shoe.drawTopCard().getValue());
+        assertEquals(c7().getValue(), shoe.drawTopCard().getValue());
+        assertEquals(c6().getValue(), shoe.drawTopCard().getValue());
+        assertEquals(c5().getValue(), shoe.drawTopCard().getValue());
         assertEquals(0, shoe.cards.size());
     }
 }

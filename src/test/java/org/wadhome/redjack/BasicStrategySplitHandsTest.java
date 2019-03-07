@@ -115,6 +115,9 @@ public class BasicStrategySplitHandsTest extends BasicStrategyTestHelper {
         TableRules tableRulesCannotSurrender = TableRules.getDefaultRules();
         tableRulesCannotSurrender.canSurrender = false;
 
+        TableRules tableRulesCanSurrender = TableRules.getDefaultRules();
+        tableRulesCanSurrender.canSurrender = true;
+
         for (Value upcardValue : Value.values()) {
             switch (upcardValue) {
                 case Two:
@@ -133,7 +136,7 @@ public class BasicStrategySplitHandsTest extends BasicStrategyTestHelper {
                 case Jack:
                 case Queen:
                 case King:
-                    assertEquals(BlackjackPlay.Surrender, compute(c7(), c7(), c(upcardValue)));
+                    assertEquals(BlackjackPlay.Surrender, compute(tableRulesCanSurrender, c7(), c7(), c(upcardValue)));
                     assertEquals(BlackjackPlay.Hit, compute(tableRulesCannotSurrender, c7(), c7(), c(upcardValue)));
                     break;
                 case Ace:

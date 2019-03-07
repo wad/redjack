@@ -25,6 +25,9 @@ public class TableTest extends TestHelper {
         int handNumber = 0;
         table.assignPlayerToHand(handNumber, player);
         table.placeBet(handNumber, new MoneyPile(1000L));
+
+        // reset this back to default
+        tableRules.canSurrender = false;
     }
 
     @Test
@@ -57,6 +60,7 @@ public class TableTest extends TestHelper {
 
     @Test
     public void testSurrender() {
+        tableRules.canSurrender = true;
         shoe.addCardToBottom(cT(), cT(), c6(), cT(), cT());
         table.playRound();
         assertEquals("$95.00", player.getBankroll().toString());

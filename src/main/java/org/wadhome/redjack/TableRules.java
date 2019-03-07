@@ -1,5 +1,6 @@
 package org.wadhome.redjack;
 
+@SuppressWarnings("unused")
 public class TableRules {
     public static final int MAX_VALID_HAND_POINTS = 21;
     public static final int NUM_CARDS_PER_DECK = Value.values().length * Suite.values().length;
@@ -31,7 +32,7 @@ public class TableRules {
     int numBurnCards = 1;
     int numDecks = 6;
     int numCardsAfterCutCard = NUM_CARDS_AFTER_CUT_CARD_FOR_ONE_POINT_FIVE_DECKS;
-    boolean canSurrender = true;
+    boolean canSurrender = false;
     boolean sevenCardCharlie = true;
 
     private TableRules() {
@@ -40,6 +41,16 @@ public class TableRules {
 
     public static TableRules getDefaultRules() {
         return new TableRules();
+    }
+
+    public static TableRules getRulesForHomeCasino() {
+        return new TableRules();
+    }
+
+    public static TableRules getRulesForHomeCasinoWithSurrender() {
+        TableRules tableRules = new TableRules();
+        tableRules.canSurrender = true;
+        return tableRules;
     }
 
     @Override
