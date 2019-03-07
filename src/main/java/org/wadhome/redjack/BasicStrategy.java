@@ -7,7 +7,6 @@ class BasicStrategy {
     static BlackjackPlay choosePlay(
             PlayerHand hand,
             Card dealerUpcard,
-            int numSplitsSoFar,
             MoneyPile bankrollAvailable,
             TableRules tableRules) {
         validateHand(hand);
@@ -16,7 +15,6 @@ class BasicStrategy {
             return handlePair(
                     hand,
                     dealerUpcard,
-                    numSplitsSoFar,
                     bankrollAvailable,
                     tableRules);
         }
@@ -206,7 +204,6 @@ class BasicStrategy {
     private static BlackjackPlay handlePair(
             PlayerHand hand,
             Card dealerUpcard,
-            int numSplitsSoFar,
             MoneyPile bankrollAvailable,
             TableRules tableRules) {
 
@@ -216,13 +213,9 @@ class BasicStrategy {
 
         Value value = hand.getFirstCard().getValue();
         Value upcardValue = dealerUpcard.getValue();
-        boolean splitsAllUsedUp = numSplitsSoFar >= tableRules.getMaxNumSplits();
 
-        boolean canDoubleDown = true;
-        boolean hasFundsToCoverDoubleDown = bankrollAvailable.isGreaterThanOrEqualTo(hand.getBetAmount());
-        if (!hasFundsToCoverDoubleDown) {
-            canDoubleDown = false;
-        }
+        boolean canSplit = canHandBeSplit(hand, bankrollAvailable, tableRules);
+        boolean canDoubleDown = bankrollAvailable.isGreaterThanOrEqualTo(hand.getBetAmount());
 
         switch (value) {
             case Two:
@@ -230,7 +223,7 @@ class BasicStrategy {
                 if (upcardValue.ordinal() > Seven.ordinal()) {
                     return Hit;
                 }
-                if (splitsAllUsedUp) {
+                if (canSplit) {
                     return handleHardHand(
                             hand,
                             dealerUpcard,
@@ -244,7 +237,7 @@ class BasicStrategy {
                     return Hit;
                 }
                 if (upcardValue == Five || upcardValue == Six) {
-                    if (splitsAllUsedUp) {
+                    if (canSplit) {
                         return handleHardHand(
                                 hand,
                                 dealerUpcard,
@@ -259,7 +252,7 @@ class BasicStrategy {
                 if (upcardValue.isTen() || upcardValue == Ace) {
                     return Hit;
                 }
-                if (numSplitsSoFar > 0 && !tableRules.canDoubleDownAfterSplit()) {
+                if (hand.getNumSplitsSoFar() > 0 && !tableRules.canDoubleDownAfterSplit()) {
                     return Hit;
                 }
                 if (canDoubleDown) {
@@ -270,7 +263,7 @@ class BasicStrategy {
                 if (upcardValue.ordinal() > Six.ordinal()) {
                     return Hit;
                 }
-                if (splitsAllUsedUp) {
+                if (canSplit) {
                     return handleHardHand(
                             hand,
                             dealerUpcard,
@@ -288,7 +281,7 @@ class BasicStrategy {
                 if (upcardValue.ordinal() > Seven.ordinal()) {
                     return Hit;
                 }
-                if (splitsAllUsedUp) {
+                if (canSplit) {
                     return handleHardHand(
                             hand,
                             dealerUpcard,
@@ -298,7 +291,7 @@ class BasicStrategy {
                 }
                 return Split;
             case Eight:
-                if (splitsAllUsedUp) {
+                if (canSplit) {
                     return handleHardHand(
                             hand,
                             dealerUpcard,
@@ -311,7 +304,7 @@ class BasicStrategy {
                 if (upcardValue == Seven || upcardValue.isTen() || upcardValue == Ace) {
                     return Stand;
                 }
-                if (splitsAllUsedUp) {
+                if (canSplit) {
                     return handleHardHand(
                             hand,
                             dealerUpcard,
@@ -326,11 +319,11 @@ class BasicStrategy {
             case King:
                 return Stand;
             case Ace:
-                boolean acesHaveAlreadyBeenSplit = !tableRules.canHitSplitAces() && numSplitsSoFar > 0;
+                boolean acesHaveAlreadyBeenSplit = !tableRules.canHitSplitAces() && hand.getNumSplitsSoFar() > 0;
                 if (acesHaveAlreadyBeenSplit) {
                     return Hit;
                 }
-                if (splitsAllUsedUp) {
+                if (canSplit) {
                     return handleSoftHand(
                             hand,
                             dealerUpcard,
@@ -360,6 +353,35 @@ class BasicStrategy {
         }
 
         return hand.getNumCards() == 2;
+    }
+
+    private static boolean canHandBeSplit(
+            PlayerHand hand,
+            MoneyPile bankrollAvailable,
+            TableRules tableRules) {
+        int numSplitsSoFar = hand.getNumSplitsSoFar();
+
+        boolean canAffordToSplit = bankrollAvailable.isGreaterThanOrEqualTo(hand.getBetAmount());
+        if (!canAffordToSplit) {
+            return false;
+        }
+
+        boolean splitsAllUsedUp = numSplitsSoFar >= tableRules.getMaxNumSplits();
+        if (splitsAllUsedUp) {
+            return false;
+        }
+
+        if (hand.getFirstCard().getValue() == Ace) {
+            if (!tableRules.canHitSplitAces()) {
+                //noinspection RedundantIfStatement
+                if (numSplitsSoFar == 0) {
+                    // can't split aces if it's not the first split.
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     private static void validateHand(PlayerHand hand) {

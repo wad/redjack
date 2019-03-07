@@ -28,7 +28,6 @@ public class BasicStrategyTestHelper extends TestHelper {
         return BasicStrategy.choosePlay(
                 playerHand,
                 dealerUpcard,
-                0,
                 bankroll,
                 tableRules);
     }

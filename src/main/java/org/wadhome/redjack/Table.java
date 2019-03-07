@@ -303,14 +303,12 @@ public class Table {
                 if (hand.getBetAmount().hasMoney()) {
                     if (hand.hasAnyCards()) {
                         Player player = hand.getPlayer();
-                        int numSplits = 0;
                         boolean shallContinue = true;
                         while (shallContinue) {
                             String initialHand = hand.showCardsWithTotal();
                             BlackjackPlay playerAction = player.getPlay(
                                     hand,
                                     dealerUpcard,
-                                    numSplits,
                                     tableRules);
                             switch (playerAction) {
                                 case Stand:
@@ -441,9 +439,15 @@ public class Table {
     }
 
     private boolean handlePlayerSplit(PlayerHand playerHand) {
-        playerHand.splitTheHand(tableRules);
 
-        //todo
+        show(playerHand, "decides to split.");
+
+        // todo: handle aces differently
+
+        playerHand.splitTheHand();
+
+        //todo: check for blackjacks
+
         return false;
     }
 

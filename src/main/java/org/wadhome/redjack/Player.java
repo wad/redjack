@@ -57,14 +57,12 @@ public class Player {
     BlackjackPlay getPlay(
             PlayerHand hand,
             Card dealerUpcard,
-            int numSplitsSoFar,
             TableRules tableRules) {
         switch (playerSmarts) {
             case BasicStrategy:
                 return BasicStrategy.choosePlay(
                         hand,
                         dealerUpcard,
-                        numSplitsSoFar,
                         bankroll.copy(),
                         tableRules);
             case CardCounter:

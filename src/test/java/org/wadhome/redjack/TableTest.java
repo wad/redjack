@@ -7,13 +7,14 @@ import static org.junit.Assert.assertEquals;
 
 public class TableTest extends TestHelper {
 
-    private TableRules tableRules = TableRules.getDefaultRules();
+    private TableRules tableRules;
     private Table table;
     private Shoe shoe;
     private Player player;
 
     @Before
     public void setup() {
+        tableRules = TableRules.getDefaultRules();
         table = new Table(0, tableRules);
         shoe = table.getShoe();
         shoe.dumpAllCards();
@@ -25,9 +26,6 @@ public class TableTest extends TestHelper {
         int handNumber = 0;
         table.assignPlayerToHand(handNumber, player);
         table.placeBet(handNumber, new MoneyPile(1000L));
-
-        // reset this back to default
-        tableRules.canSurrender = false;
     }
 
     @Test
@@ -135,5 +133,79 @@ public class TableTest extends TestHelper {
         shoe.addCardToBottom(c2(), cT(), c2(), cT(), c2(), c2(), c2(), c2(), c2());
         table.playRound();
         assertEquals("$120.00", player.getBankroll().toString());
+    }
+
+    @Test
+    public void testSplitLoseBoth() {
+        shoe.addCardToBottom(c8(), cT(), c8(), cT(), c9(), c9());
+        table.playRound();
+        assertEquals("$80.00", player.getBankroll().toString());
+    }
+
+    @Test
+    public void testSplitWinBoth() {
+        shoe.addCardToBottom(c8(), cT(), c8(), c7(), cT(), cT());
+        table.playRound();
+        assertEquals("$120.00", player.getBankroll().toString());
+    }
+
+    @Test
+    public void testSplitWinLose() {
+        shoe.addCardToBottom(c8(), cT(), c8(), c7(), cT(), c4(), cT());
+        table.playRound();
+        assertEquals("$100.00", player.getBankroll().toString());
+    }
+
+    @Test
+    public void testSplitWinPush() {
+        shoe.addCardToBottom(c8(), cT(), c8(), c7(), cT(), c9());
+        table.playRound();
+        assertEquals("$110.00", player.getBankroll().toString());
+    }
+
+    @Test
+    public void testSplitLoseWin() {
+        shoe.addCardToBottom(c8(), cT(), c8(), c7(), c9(), cT());
+        table.playRound();
+        assertEquals("$90.00", player.getBankroll().toString());
+    }
+
+    @Test
+    public void testSplitWithTwoSplits() {
+        // dealer hand: T,T (20)
+        // split hand 0: 8,5 -> hit and get 8 (21 stand) -> win
+        // split hand 1: 8,T -> stand at 18 -> lose
+        // split hand 2: 8,9 -> stand at 17 -> lose
+        shoe.addCardToBottom(c8(), cT(), c8(), cT(), c8(), c9(), c7(), cT(), c8());
+        table.playRound();
+        assertEquals("$80.00", player.getBankroll().toString());
+    }
+
+    // todo: test split tens (not using pure basic strategy), and get a blackjack
+
+    @Test
+    public void testSplitAcesNoHittingAllowed() {
+        tableRules.canHitSplitAces = false;
+        shoe.addCardToBottom(cA(), cT(), cA(), cT(), cA(), c9());
+        table.playRound();
+        assertEquals("$80.00", player.getBankroll().toString());
+    }
+
+    @Test
+    public void testSplitAcesHittingAllowed() {
+        tableRules.canHitSplitAces = true;
+        //
+        shoe.addCardToBottom(cA(), cT(), cA(), cT(), cA(), c9(), c5(), cT());
+        table.playRound();
+        assertEquals("$80.00", player.getBankroll().toString());
+    }
+
+    @Test
+    public void testSplitAcesHittingAllowedTwoSplits() {
+        tableRules.canHitSplitAces = true;
+        //
+        shoe.addCardToBottom(cA(), cT(), cA(), cT(), cA(), c9(), c5(), cT());
+        table.playRound();
+        assertEquals("$80.00", player.getBankroll().toString());
     }
 }

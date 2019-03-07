@@ -191,6 +191,7 @@ public class BasicStrategySplitHandsTest extends BasicStrategyTestHelper {
 
     @Test
     public void testPairOfAces() {
+        // todo: test splits for various table rules cases
         for (Value upcardValue : Value.values()) {
             switch (upcardValue) {
                 case Two:
