@@ -11,9 +11,15 @@ public class TableRules {
     public static final int NUM_CARDS_IN_CHARLIE_HAND = 7;
 
     enum BlackjackPayOptions {
-        TwoToOne,
-        ThreeToTwo,
-        SixToFive
+        TwoToOne("2:1"),
+        ThreeToTwo("3:2"),
+        SixToFive("6:5");
+
+        String displayValue;
+
+        BlackjackPayOptions(String displayValue) {
+            this.displayValue = displayValue;
+        }
     }
 
     enum DoubleDownOptions {
@@ -55,13 +61,18 @@ public class TableRules {
 
     @Override
     public String toString() {
-        // todo: show all the rules
-        StringBuilder builder = new StringBuilder();
-        builder.append("===================\n");
-        builder.append("=================== Table rules\n");
-        builder.append("=================== Number of decks: ").append(getNumDecks()).append("\n");
-        builder.append("===================");
-        return builder.toString();
+        return "===\n" +
+                "=== Table rules\n" +
+                "=== Number of decks: " + getNumDecks() + "\n" +
+                "=== Minimum bet: " + getMinBet() + "\n" +
+                "=== Maximum bet: " + getMaxBet() + "\n" +
+                "=== Dealer hits soft 17: " + (mustHitSoftSeventeen() ? "yes" : "no") + "\n" +
+                "=== Blackjack pays: " + getBlackjackPayOptions().displayValue + "\n" +
+                "=== Can double down after split: " + (canDoubleDownAfterSplit() ? "yes" : "no") + "\n" +
+                "=== Can hit split aces: " + (canHitSplitAces() ? "yes" : "no") + "\n" +
+                "=== Maximum number of splits: " + getMaxNumSplits() + "\n" +
+                "=== Surrender allowed: " + (canSurrender() ? "yes" : "no") + "\n" +
+                "===";
     }
 
     public MoneyPile getMinBet() {
