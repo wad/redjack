@@ -177,8 +177,57 @@ public class Table {
 
     private void handleInsurance() {
         if (dealerHand.getFirstCard().getValue() == Value.Ace) {
-            show("Dealer decides not to ask for insurance.");
-            // todo
+            show("Dealer asks the players if they want insurance.");
+
+            Map<Integer, MoneyPile> insuranceBets = new HashMap<>();
+
+            for (int handNumber = 0; handNumber < MAX_HANDS_PER_TABLE; handNumber++) {
+                PlayerHand hand = hands.get(handNumber);
+                if (hand.isInUse()) {
+                    MoneyPile insuranceBet = hand.getPlayer().getInsuranceBet(hand.getBetAmount().computeHalf());
+                    if (insuranceBet.hasMoney()) {
+                        show(hand, "put down " + insuranceBet + " as insurance against the dealer having blackjack.");
+                        hand.getPlayer().getBankroll().subtract(insuranceBet);
+                        insuranceBets.put(handNumber, insuranceBet);
+                    }
+                }
+            }
+
+            if (insuranceBets.isEmpty()) {
+                show("Nobody wants insurance.");
+            } else {
+                if (dealerHand.secondCard.getValue().isTen()) {
+                    show("Dealer turns over the hole card, and it's " + dealerHand.secondCard + ". Blackjack!"
+                            + " All hands lose, insurance bets all pay double.");
+
+                    // for each player, pay insurance winnings, if any.
+                    for (int handNumber = 0; handNumber < MAX_HANDS_PER_TABLE; handNumber++) {
+                        PlayerHand hand = hands.get(handNumber);
+                        MoneyPile insuranceBet = insuranceBets.get(handNumber);
+                        if (insuranceBet != null && insuranceBet.hasMoney()) {
+                            Player player = hand.getPlayer();
+                            player.getBankroll().add(insuranceBet); // original bet amount is returned
+                            MoneyPile winnings = insuranceBet.computeDouble();
+                            player.getBankroll().add(winnings);
+                            show("Seat " + hand.getSeatNumber()
+                                    + " : " + player.getPlayerName()
+                                    + " wins " + winnings + " for blackjack insurance.");
+                        }
+                    }
+
+                    // for each player, take their cards and their bets.
+                    for (int handNumber = 0; handNumber < MAX_HANDS_PER_TABLE; handNumber++) {
+                        PlayerHand hand = hands.get(handNumber);
+                        if (hand.isInUse()) {
+                            show(hand, "loses " + hand.getBetAmount() + " to the dealer's blackjack.");
+                            discardTray.addCards(hand.removeCards(false));
+                        }
+                    }
+                } else {
+                    show("Dealer turns over the hole card, and it's " + dealerHand.secondCard + ". Not a blackjack."
+                            + " insurance bets all lose.");
+                }
+            }
         }
     }
 

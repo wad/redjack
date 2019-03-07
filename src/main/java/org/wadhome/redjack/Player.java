@@ -5,6 +5,7 @@ public class Player {
     private PlayerGender playerGender;
     private MoneyPile bankroll;
     private PlayerSmarts playerSmarts;
+    private boolean takesMaxInsurance = false;
 
     public Player(
             String playerName,
@@ -25,6 +26,9 @@ public class Player {
         return playerGender;
     }
 
+    public void setTakesMaxInsurance(boolean takesMaxInsurance) {
+        this.takesMaxInsurance = takesMaxInsurance;
+    }
 
     public String getHisHer(boolean shouldCapitalize) {
         switch(getPlayerGender()) {
@@ -70,6 +74,17 @@ public class Player {
             default:
                 throw new RuntimeException("Bug in code!");
         }
+    }
+
+    public MoneyPile getInsuranceBet(MoneyPile maximumInsuranceBet) {
+        if (takesMaxInsurance) {
+            if (bankroll.isGreaterThanOrEqualTo(maximumInsuranceBet)) {
+                return maximumInsuranceBet.copy();
+            } else {
+                return bankroll.copy();
+            }
+        }
+        return MoneyPile.zero();
     }
 
     @Override
