@@ -1,12 +1,12 @@
 package org.wadhome.redjack;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.wadhome.redjack.Value.OPTIONAL_EXTRA_ACE_POINTS;
 
 abstract class Hand {
-    protected Set<Card> cards = new HashSet<>();
+    protected List<Card> cards = new ArrayList<>();
     Card firstCard = null;
     Card secondCard = null;
 
@@ -20,8 +20,8 @@ abstract class Hand {
         cards.add(card);
     }
 
-    Set<Card> removeCards() {
-        Set<Card> cardsToRemove = new HashSet<>(cards);
+    List<Card> removeCards() {
+        List<Card> cardsToRemove = new ArrayList<>(cards);
         cards.clear();
         firstCard = null;
         secondCard = null;
@@ -95,8 +95,12 @@ abstract class Hand {
         return false;
     }
 
+    private boolean hasExactlyTwoCards() {
+        return cards.size() == 2;
+    }
+
     boolean isPair() {
-        return getNumCards() == 2
+        return hasExactlyTwoCards()
                 && firstCard.getValue().getPoints() == secondCard.getValue().getPoints();
     }
 
@@ -105,7 +109,7 @@ abstract class Hand {
     }
 
     boolean isBlackjack() {
-        return cards.size() == 2
+        return hasExactlyTwoCards()
                 && hasAtLeastOneAce()
                 && hasAtLeastOneTenPointCard();
     }
