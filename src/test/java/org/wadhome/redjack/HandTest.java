@@ -6,11 +6,9 @@ import static org.junit.Assert.*;
 
 public class HandTest extends TestHelper {
 
-    Table table = new Table(new Casino("test"), 1, TableRules.getDefaultRules());
-
     @Test
     public void testIsBustSimple() {
-        Hand hand = new PlayerHand(new Seat(table, SeatNumber.one));
+        Hand hand = new PlayerHand(new Seat(SeatNumber.one));
         assertFalse(hand.isBust());
         hand.addCard(c2());
         assertFalse(hand.isBust());
@@ -22,7 +20,7 @@ public class HandTest extends TestHelper {
 
     @Test
     public void testIsBustWithAce() {
-        Hand hand = new PlayerHand(new Seat(table, SeatNumber.one));
+        Hand hand = new PlayerHand(new Seat(SeatNumber.one));
         hand.addCard(cA());
         assertFalse(hand.isBust());
         hand.addCard(c5());
@@ -37,7 +35,7 @@ public class HandTest extends TestHelper {
 
     @Test
     public void testIsBlackjack() {
-        Hand hand = new PlayerHand(new Seat(table, SeatNumber.one));
+        Hand hand = new PlayerHand(new Seat(SeatNumber.one));
         hand.addCard(cA());
         assertFalse(hand.isBlackjack());
         hand.addCard(cT());
@@ -48,7 +46,7 @@ public class HandTest extends TestHelper {
 
     @Test
     public void testIsBlackjackNoAces() {
-        Hand hand = new PlayerHand(new Seat(table, SeatNumber.one));
+        Hand hand = new PlayerHand(new Seat(SeatNumber.one));
         hand.addCard(c2());
         assertFalse(hand.isBlackjack());
         hand.addCard(cT());
@@ -57,10 +55,10 @@ public class HandTest extends TestHelper {
 
     @Test
     public void testCompareSame() {
-        Hand hand1 = new PlayerHand(new Seat(table, SeatNumber.one));
+        Hand hand1 = new PlayerHand(new Seat(SeatNumber.one));
         hand1.addCard(c2());
         hand1.addCard(cT());
-        Hand hand2 = new PlayerHand(new Seat(table, SeatNumber.two));
+        Hand hand2 = new PlayerHand(new Seat(SeatNumber.two));
         hand2.addCard(c2());
         hand2.addCard(cT());
 
@@ -69,10 +67,10 @@ public class HandTest extends TestHelper {
 
     @Test
     public void testCompareNotSame() {
-        Hand hand1 = new PlayerHand(new Seat(table, SeatNumber.one));
+        Hand hand1 = new PlayerHand(new Seat(SeatNumber.one));
         hand1.addCard(c2());
         hand1.addCard(c9());
-        Hand hand2 = new PlayerHand(new Seat(table, SeatNumber.two));
+        Hand hand2 = new PlayerHand(new Seat(SeatNumber.two));
         hand2.addCard(c2());
         hand2.addCard(cT());
 

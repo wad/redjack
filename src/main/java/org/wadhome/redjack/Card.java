@@ -1,6 +1,6 @@
 package org.wadhome.redjack;
 
-public class Card {
+class Card {
     private int deckNumber;
     private Suite suite;
     private Value value;

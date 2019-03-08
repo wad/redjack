@@ -1,10 +1,10 @@
 package org.wadhome.redjack;
 
-public class Player {
+class Player {
     private String playerName;
     private Gender gender;
     private MoneyPile bankroll;
-    private PlayerSmarts playerSmarts;
+    private PlayerStrategy playerStrategy;
     private boolean takesMaxInsurance = true;
     private MoneyPile favoriteBet = null;
 
@@ -12,18 +12,18 @@ public class Player {
             String playerName,
             Gender gender,
             MoneyPile bankroll,
-            PlayerSmarts playerSmarts) {
+            PlayerStrategy playerStrategy) {
         this.playerName = playerName;
         this.gender = gender;
         this.bankroll = bankroll;
-        this.playerSmarts = playerSmarts;
+        this.playerStrategy = playerStrategy;
     }
 
     String getPlayerName() {
         return playerName;
     }
 
-    public void setFavoriteBet(MoneyPile favoriteBet) {
+    void setFavoriteBet(MoneyPile favoriteBet) {
         this.favoriteBet = favoriteBet;
     }
 
@@ -36,7 +36,7 @@ public class Player {
         return this.bankroll;
     }
 
-    public MoneyPile getBet(TableRules tableRules) {
+    MoneyPile getBet(TableRules tableRules) {
         MoneyPile minPossibleBet = tableRules.getMinBet();
         MoneyPile maxPossibleBet = MoneyPile.getLesserOf(tableRules.getMaxBet(), bankroll);
         if (minPossibleBet.isGreaterThan(bankroll)) {
@@ -56,7 +56,7 @@ public class Player {
             PlayerHand hand,
             Card dealerUpcard,
             TableRules tableRules) {
-        switch (playerSmarts) {
+        switch (playerStrategy) {
             case BasicStrategy:
                 return BasicStrategy.choosePlay(
                         hand,
@@ -86,7 +86,7 @@ public class Player {
         return playerName;
     }
 
-    public Gender getGender() {
+    Gender getGender() {
         return gender;
     }
 }

@@ -1,6 +1,6 @@
 package org.wadhome.redjack;
 
-class TestHelper {
+abstract class TestHelper {
 
     // The deck number cycles, so that the sets in hands don't collapse duplicate cards.
     private int deckNumber = 0;

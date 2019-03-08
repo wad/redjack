@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Table {
-    Casino casino;
+class Table {
+    private Casino casino;
     private int tableNumber;
     private TableRules tableRules;
     private Shoe shoe;
@@ -30,7 +30,7 @@ public class Table {
         this.seats = new HashMap<>(SeatNumber.values().length);
 
         for (SeatNumber seatNumber : SeatNumber.values()) {
-            seats.put(seatNumber, new Seat(this, seatNumber));
+            seats.put(seatNumber, new Seat(seatNumber));
         }
     }
 
@@ -43,7 +43,7 @@ public class Table {
         return shoe;
     }
 
-    void prepareForPlay() {
+    void shuffleAndStuff() {
         int numCardsInDiscardTray = discardTray.cards.size();
         while (discardTray.hasCards()) {
             shoe.addCardToBottom(discardTray.drawTopCard());
@@ -86,7 +86,7 @@ public class Table {
                 return seatNumber;
             }
         }
-        throw new RuntimeException("No free seats.");
+        throw new RuntimeException("No free seats. Should have checked for an available seat first.");
     }
 
     boolean isSeatOccupied(SeatNumber seatNumber) {
@@ -98,22 +98,24 @@ public class Table {
             Player player) {
         Seat seat = seats.get(seatNumber);
         if (seat.hasPlayer()) {
-            throw new RuntimeException("Seat was in use, cannot assign.");
+            throw new RuntimeException("Seat was in use, cannot assign. Should have checked first.");
         }
 
         seat.setPlayer(player);
+        show(seat, "sat down in seat " + seatNumber + ".");
     }
 
-    public void removePlayerFromSeat(SeatNumber seatNumber) {
+    void removePlayerFromSeat(SeatNumber seatNumber) {
         Seat seat = seats.get(seatNumber);
         if (!seat.hasPlayer()) {
             throw new RuntimeException("Nobody is at seat " + seatNumber);
         }
 
+        show(seat, "left seat " + seatNumber + ".");
         seat.removePlayer();
     }
 
-    void playerPayCasino(
+    private void playerPayCasino(
             Player player,
             MoneyPile amount) {
         moveMoney(
@@ -122,9 +124,12 @@ public class Table {
                 amount);
     }
 
-    void casinoPayPlayer(
+    private void casinoPayPlayer(
             Player player,
             MoneyPile amount) {
+        if (amount.isGreaterThan(casino.getBankroll())) {
+            throw new RuntimeException("Casino ran out of money!");
+        }
         moveMoney(
                 casino.getBankroll(),
                 player.getBankroll(),

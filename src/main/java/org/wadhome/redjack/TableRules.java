@@ -1,7 +1,7 @@
 package org.wadhome.redjack;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
-public class TableRules {
+class TableRules {
     static final int NUM_CARDS_PER_DECK = Value.values().length * Suite.values().length; // 52
     static final int MAX_VALID_HAND_POINTS = 21;
     static final int DEALER_STAND_TOTAL = 17;
@@ -46,15 +46,15 @@ public class TableRules {
         // use a creator method
     }
 
-    public static TableRules getDefaultRules() {
+    static TableRules getDefaultRules() {
         return new TableRules();
     }
 
-    public static TableRules getRulesForHomeCasino() {
+    static TableRules getRulesForHomeCasino() {
         return new TableRules();
     }
 
-    public static TableRules getRulesForHomeCasinoWithSurrender() {
+    static TableRules getRulesForHomeCasinoWithSurrender() {
         TableRules tableRules = new TableRules();
         tableRules.canSurrender = true;
         return tableRules;
@@ -76,55 +76,55 @@ public class TableRules {
                 "===";
     }
 
-    public MoneyPile getMinBet() {
+    MoneyPile getMinBet() {
         return minBet;
     }
 
-    public MoneyPile getMaxBet() {
+    MoneyPile getMaxBet() {
         return maxBet;
     }
 
-    public boolean mustHitSoftSeventeen() {
+    boolean mustHitSoftSeventeen() {
         return hitSoftSeventeen;
     }
 
-    public BlackjackPayOptions getBlackjackPayOptions() {
+    BlackjackPayOptions getBlackjackPayOptions() {
         return blackjackPayOptions;
     }
 
-    public boolean canDoubleDownAfterSplit() {
+    boolean canDoubleDownAfterSplit() {
         return canDoubleDownAfterSplit;
     }
 
-    public DoubleDownOptions getDoubleDownOptions() {
+    DoubleDownOptions getDoubleDownOptions() {
         return this.doubleDownOptions;
     }
 
-    public boolean canHitSplitAces() {
+    boolean canHitSplitAces() {
         return canHitSplitAces;
     }
 
-    public int getMaxNumSplits() {
+    int getMaxNumSplits() {
         return maxNumSplits;
     }
 
-    public int getNumBurnCards() {
+    int getNumBurnCards() {
         return numBurnCards;
     }
 
-    public int getNumDecks() {
+    int getNumDecks() {
         return numDecks;
     }
 
-    public int getNumCardsAfterCutCard() {
+    int getNumCardsAfterCutCard() {
         return numCardsAfterCutCard;
     }
 
-    public boolean canSurrender() {
+    boolean canSurrender() {
         return canSurrender;
     }
 
-    public boolean sevenCardCharlie() {
+    boolean sevenCardCharlie() {
         return sevenCardCharlie;
     }
 }

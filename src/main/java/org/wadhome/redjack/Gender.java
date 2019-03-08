@@ -1,6 +1,6 @@
 package org.wadhome.redjack;
 
-public enum Gender {
+enum Gender {
     male,
     female;
 

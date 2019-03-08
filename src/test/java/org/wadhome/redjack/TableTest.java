@@ -23,7 +23,7 @@ public class TableTest extends TestHelper {
                 "Abe",
                 Gender.male,
                 new MoneyPile(10000L),
-                PlayerSmarts.BasicStrategy);
+                PlayerStrategy.BasicStrategy);
         player.setFavoriteBet(new MoneyPile(1000L));
         SeatNumber seatNumber = SeatNumber.one;
         table.assignPlayerToSeat(seatNumber, player);

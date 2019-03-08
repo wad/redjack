@@ -21,14 +21,5 @@ public class ShoeTest extends TestHelper {
         assertEquals(c7().getValue(), shoe.drawTopCard().getValue());
         assertEquals(c8().getValue(), shoe.drawTopCard().getValue());
         assertEquals(0, shoe.cards.size());
-        shoe.addCardToTop(c5());
-        shoe.addCardToTop(c6(), c7());
-        shoe.addCardToTop(c8());
-        assertEquals(4, shoe.cards.size());
-        assertEquals(c8().getValue(), shoe.drawTopCard().getValue());
-        assertEquals(c7().getValue(), shoe.drawTopCard().getValue());
-        assertEquals(c6().getValue(), shoe.drawTopCard().getValue());
-        assertEquals(c5().getValue(), shoe.drawTopCard().getValue());
-        assertEquals(0, shoe.cards.size());
     }
 }

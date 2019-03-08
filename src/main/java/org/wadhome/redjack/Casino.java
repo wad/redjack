@@ -3,7 +3,7 @@ package org.wadhome.redjack;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Casino {
+class Casino {
     private Randomness randomness;
     private Map<Integer, Table> tables = new HashMap<>();
     private String casinoName;
@@ -17,20 +17,22 @@ public class Casino {
             String casinoName,
             Long seed) {
         this.casinoName = casinoName;
+
+        if (seed == null) {
+            seed = Randomness.generateRandomSeed();
+        }
         randomness = new Randomness(seed);
 
         showWelcomeInfo();
     }
 
-    public void showWelcomeInfo() {
-        Display.showMessage("Welcome to the " + getCasinoName() + " casino.");
+    private void showWelcomeInfo() {
+        Display.showMessage("Welcome to the " + casinoName + " casino.");
         Long seed = randomness.getSeed();
-        if (seed != null) {
-            Display.showMessage("Randomness seed: " + seed);
-        }
+        Display.showMessage("Randomness seed: " + seed);
     }
 
-    public MoneyPile getBankroll() {
+    MoneyPile getBankroll() {
         return houseBankroll;
     }
 
@@ -49,11 +51,7 @@ public class Casino {
         return tables.get(tableNumber);
     }
 
-    public String getCasinoName() {
-        return casinoName;
-    }
-
-    public Randomness getRandomness() {
+    Randomness getRandomness() {
         return randomness;
     }
 }

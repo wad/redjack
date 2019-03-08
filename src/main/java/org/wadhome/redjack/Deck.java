@@ -3,7 +3,7 @@ package org.wadhome.redjack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Deck extends CardStack {
+class Deck extends CardStack {
 
     static final int MAX_DECK_NUMBER = 9999;
 
@@ -23,9 +23,5 @@ public class Deck extends CardStack {
             }
         }
         return cards;
-    }
-
-    @Override
-    protected void extraHandlingOnCardDraw() {
     }
 }

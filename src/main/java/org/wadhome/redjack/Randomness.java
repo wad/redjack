@@ -4,20 +4,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class Randomness {
+class Randomness {
     private Random random;
     private Long seed;
 
-    public Randomness(Long seed) {
+    Randomness(Long seed) {
         this.seed = seed;
-        if (seed == null) {
-            random = new Random();
-        } else {
-            random = new Random(seed);
-        }
+        this.random = new Random(seed);
     }
 
-    public boolean getRandomBoolean() {
+    boolean getRandomBoolean() {
         return (random.nextLong() & 1) == 1;
     }
 
@@ -29,7 +25,12 @@ public class Randomness {
         }
     }
 
-    public Long getSeed() {
+    static long generateRandomSeed() {
+        Random rand = new Random();
+        return rand.nextLong();
+    }
+
+    Long getSeed() {
         return seed;
     }
 }

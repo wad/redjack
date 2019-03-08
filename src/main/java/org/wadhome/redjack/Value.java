@@ -1,6 +1,6 @@
 package org.wadhome.redjack;
 
-public enum Value {
+enum Value {
     Two("2", 2),
     Three("3", 3),
     Four("4", 4),
@@ -15,7 +15,7 @@ public enum Value {
     King("K", 10),
     Ace("A", 1); // Can also be 11 points.
 
-    public static final int OPTIONAL_EXTRA_ACE_POINTS = 10;
+    static final int OPTIONAL_EXTRA_ACE_POINTS = 10;
 
     private String symbol;
     private int points;
@@ -25,16 +25,11 @@ public enum Value {
         this.points = points;
     }
 
-    public int getPoints() {
+    int getPoints() {
         return points;
     }
 
-    @Override
-    public String toString() {
-        return symbol;
-    }
-
-    public boolean isTen() {
+    boolean isTen() {
         switch (this) {
             case Two:
             case Three:
@@ -55,5 +50,10 @@ public enum Value {
             default:
                 throw new RuntimeException("Bug!");
         }
+    }
+
+    @Override
+    public String toString() {
+        return symbol;
     }
 }

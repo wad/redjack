@@ -2,11 +2,9 @@ package org.wadhome.redjack;
 
 public class BasicStrategyTestHelper extends TestHelper {
 
-    MoneyPile bankroll = new MoneyPile(1000000);
-    TableRules tableRules = TableRules.getDefaultRules();
-    Casino casino = new Casino("Test");
-    Table table = new Table(casino, 1, tableRules);
-    Seat seat = new Seat(table, SeatNumber.one);
+    private MoneyPile bankroll = new MoneyPile(1000000);
+    private TableRules tableRules = TableRules.getDefaultRules();
+    private Seat seat = new Seat(SeatNumber.one);
 
     BlackjackPlay compute(Card... cards) {
         return compute(this.tableRules, cards);

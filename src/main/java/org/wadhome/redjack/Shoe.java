@@ -2,7 +2,7 @@ package org.wadhome.redjack;
 
 import java.util.ArrayList;
 
-public class Shoe extends CardStack {
+class Shoe extends CardStack {
     private int numDecks;
     private int numCardsAfterCutCard;
 

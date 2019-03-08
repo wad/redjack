@@ -4,19 +4,20 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class PlayTest {
+
     @Test
     public void testRunningIt() {
         int tableNumber = 1;
-        Casino casino = new Casino("TestMe");
+        Casino casino = new Casino("TestMe", null);
         casino.createTable(tableNumber, TableRules.getDefaultRules());
         Table table = casino.getTable(tableNumber);
-        table.prepareForPlay();
+        table.shuffleAndStuff();
 
         Player alex = new Player(
                 "Alex",
                 Gender.male,
                 new MoneyPile(50000L),
-                PlayerSmarts.BasicStrategy);
+                PlayerStrategy.BasicStrategy);
         table.assignPlayerToSeat(SeatNumber.one, alex);
         table.assignPlayerToSeat(SeatNumber.two, alex);
         alex.setFavoriteBet(new MoneyPile(2500));
@@ -25,7 +26,7 @@ public class PlayTest {
                 "Becky",
                 Gender.female,
                 new MoneyPile(50000L),
-                PlayerSmarts.BasicStrategy);
+                PlayerStrategy.BasicStrategy);
         table.assignPlayerToSeat(SeatNumber.three, becky);
         becky.setFavoriteBet(new MoneyPile(1000L));
 
@@ -33,7 +34,7 @@ public class PlayTest {
                 "Charles",
                 Gender.male,
                 new MoneyPile(10000L),
-                PlayerSmarts.BasicStrategy);
+                PlayerStrategy.BasicStrategy);
         charles.setFavoriteBet(new MoneyPile(10000L));
         table.assignPlayerToSeat(SeatNumber.five, charles);
 
@@ -44,9 +45,15 @@ public class PlayTest {
                 charles.getBankroll());
         MoneyPile initialMoney = new MoneyPile(initialCasinoBankroll, initialSumOfPlayerBankrolls);
 
-        table.playRound();
-        table.playRound();
-        table.playRound();
+        if (table.playRound()) {
+            table.shuffleAndStuff();
+        }
+        if (table.playRound()) {
+            table.shuffleAndStuff();
+        }
+        if (table.playRound()) {
+            table.shuffleAndStuff();
+        }
 
         MoneyPile finalCasinoBankroll = casino.getBankroll().copy();
         MoneyPile finalSumOfPlayerBankrolls = new MoneyPile(
@@ -62,5 +69,10 @@ public class PlayTest {
         System.out.println("Final player bankrolls: " + finalSumOfPlayerBankrolls);
 
         Assert.assertEquals(initialMoney, finalMoney);
+
+        table.removePlayerFromSeat(SeatNumber.one);
+        table.removePlayerFromSeat(SeatNumber.two);
+        table.removePlayerFromSeat(SeatNumber.three);
+        table.removePlayerFromSeat(SeatNumber.five);
     }
 }

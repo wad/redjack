@@ -2,7 +2,7 @@ package org.wadhome.redjack;
 
 import static org.wadhome.redjack.TableRules.DEALER_STAND_TOTAL;
 
-public class DealerHand extends Hand {
+class DealerHand extends Hand {
 
     private static final int SEVEN = Value.Ace.getPoints() + Value.Six.getPoints();
 

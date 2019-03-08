@@ -2,7 +2,7 @@ package org.wadhome.redjack;
 
 import java.util.Objects;
 
-public class MoneyPile {
+class MoneyPile {
     private long numCents;
 
     public MoneyPile(long numCents) {
@@ -25,10 +25,6 @@ public class MoneyPile {
     void subtractFromPile(MoneyPile moneyToSubtract) {
         this.numCents -= moneyToSubtract.numCents;
         validate();
-    }
-
-    boolean isLessThan(MoneyPile target) {
-        return this.numCents < target.numCents;
     }
 
     boolean isGreaterThan(MoneyPile target) {
@@ -67,15 +63,6 @@ public class MoneyPile {
 
     static MoneyPile zero() {
         return new MoneyPile(0L);
-    }
-
-    static MoneyPile getGreaterOf(
-            MoneyPile pile1,
-            MoneyPile pile2) {
-        if (pile1.numCents > pile2.numCents) {
-            return pile1;
-        }
-        return pile2;
     }
 
     static MoneyPile getLesserOf(

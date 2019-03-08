@@ -5,7 +5,7 @@ import java.util.Set;
 
 import static org.wadhome.redjack.Value.OPTIONAL_EXTRA_ACE_POINTS;
 
-public abstract class Hand {
+abstract class Hand {
     protected Set<Card> cards = new HashSet<>();
     Card firstCard = null;
     Card secondCard = null;
