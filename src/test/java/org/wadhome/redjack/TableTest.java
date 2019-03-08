@@ -7,7 +7,6 @@ import static org.junit.Assert.assertEquals;
 
 public class TableTest extends TestHelper {
 
-    private Casino casino;
     private TableRules tableRules;
     private Table table;
     private Shoe shoe;
@@ -15,14 +14,14 @@ public class TableTest extends TestHelper {
 
     @Before
     public void setup() {
-        casino = new Casino("Test");
+        Casino casino = new Casino("Test");
         tableRules = TableRules.getDefaultRules();
         table = new Table(casino, 0, tableRules);
         shoe = table.getShoe();
         shoe.dumpAllCards();
         player = new Player(
                 "Abe",
-                PlayerGender.male,
+                Gender.male,
                 new MoneyPile(10000L),
                 PlayerSmarts.BasicStrategy);
         player.setFavoriteBet(new MoneyPile(1000L));
@@ -75,6 +74,7 @@ public class TableTest extends TestHelper {
 
     @Test
     public void testDealerBlackjackAceFirst() {
+        player.setTakesMaxInsurance(false);
         shoe.addCardToBottom(cT(), cA(), cT(), cT());
         table.playRound();
         assertEquals("$90.00", player.getBankroll().toString());
@@ -191,6 +191,30 @@ public class TableTest extends TestHelper {
         shoe.addCardToBottom(cA(), cT(), cA(), cT(), cA(), c9());
         table.playRound();
         assertEquals("$80.00", player.getBankroll().toString());
+    }
+
+    @Test
+    public void testSplitAcesFirstLosesSecondIsBlackjack() {
+        tableRules.canHitSplitAces = false;
+        shoe.addCardToBottom(cA(), cT(), cA(), cT(), c8(), cT());
+        table.playRound();
+        assertEquals("$100.00", player.getBankroll().toString());
+    }
+
+    @Test
+    public void testSplitAcesFirstIsBlackjackSecondLoses() {
+        tableRules.canHitSplitAces = false;
+        shoe.addCardToBottom(cA(), cT(), cA(), cT(), cT(), c8());
+        table.playRound();
+        assertEquals("$100.00", player.getBankroll().toString());
+    }
+
+    @Test
+    public void testSplitAcesNoHittingAllowedTwoBlackjacks() {
+        tableRules.canHitSplitAces = false;
+        shoe.addCardToBottom(cA(), cT(), cA(), cT(), cT(), cT());
+        table.playRound();
+        assertEquals("$120.00", player.getBankroll().toString());
     }
 
     @Test

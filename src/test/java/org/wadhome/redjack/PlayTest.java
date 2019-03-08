@@ -12,10 +12,9 @@ public class PlayTest {
         Table table = casino.getTable(tableNumber);
         table.prepareForPlay();
 
-
         Player alex = new Player(
                 "Alex",
-                PlayerGender.male,
+                Gender.male,
                 new MoneyPile(50000L),
                 PlayerSmarts.BasicStrategy);
         table.assignPlayerToSeat(SeatNumber.one, alex);
@@ -24,7 +23,7 @@ public class PlayTest {
 
         Player becky = new Player(
                 "Becky",
-                PlayerGender.female,
+                Gender.female,
                 new MoneyPile(50000L),
                 PlayerSmarts.BasicStrategy);
         table.assignPlayerToSeat(SeatNumber.three, becky);
@@ -32,7 +31,7 @@ public class PlayTest {
 
         Player charles = new Player(
                 "Charles",
-                PlayerGender.male,
+                Gender.male,
                 new MoneyPile(10000L),
                 PlayerSmarts.BasicStrategy);
         charles.setFavoriteBet(new MoneyPile(10000L));

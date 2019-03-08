@@ -12,6 +12,7 @@ public class Table {
     private DiscardTray discardTray;
     private Map<SeatNumber, Seat> seats;
     private DealerHand dealerHand;
+    private Gender dealerGender;
 
     Table(
             Casino casino,
@@ -19,6 +20,7 @@ public class Table {
             TableRules tableRules) {
 
         this.casino = casino;
+        dealerGender = Gender.getRandomGender(casino.getRandomness());
         this.tableNumber = tableNumber;
         this.tableRules = tableRules;
         int numDecks = tableRules.getNumDecks();
@@ -51,7 +53,7 @@ public class Table {
             show("The dealer removed all " + numCardsInDiscardTray + " cards from the discard tray.");
         }
 
-        shoe.shuffle();
+        shoe.shuffle(casino.getRandomness());
         show("The dealer shuffled all " + tableRules.getNumDecks() + " decks, and loaded them into the shoe.");
 
         shoe.placeCutCard(tableRules.getNumCardsAfterCutCard());
@@ -168,7 +170,7 @@ public class Table {
                 Player player = seat.getPlayer();
                 MoneyPile betAmount = player.getBet(tableRules);
                 playerPayCasino(player, betAmount);
-                PlayerHand hand = seat.addHand(betAmount);
+                PlayerHand hand = seat.addNewHand(betAmount);
                 show(hand, "placed a bet of " + betAmount + ".");
             }
         }
@@ -209,7 +211,8 @@ public class Table {
         Card holeCard = shoe.drawTopCard();
         show("Dealer got a face-down hole card.");
         dealerHand.addCard(holeCard);
-        show("Dealer reveals her first card, which was " + dealerHand.getFirstCard() + ".");
+        show("Dealer reveals " + dealerGender.getHisHer(false)
+                + " first card, which was " + dealerHand.getFirstCard() + ".");
     }
 
     private void handleInsurance() {
@@ -307,17 +310,21 @@ public class Table {
             for (PlayerHand hand : seat.getHands()) {
                 if (hand.getBetAmount().hasMoney()) {
                     if (hand.isBlackjack()) {
-                        Player player = hand.getSeat().getPlayer();
-                        MoneyPile betAmount = hand.removeBet();
-                        casinoPayPlayer(player, betAmount); // original bet returned
-                        MoneyPile winnings = betAmount.computeOneAndHalf();
-                        casinoPayPlayer(player, winnings);
-                        show(hand, "got a blackjack, and won " + winnings + ".");
-                        discardTray.addCards(hand.removeCards());
+                        handlePlayerBlackjack(hand);
                     }
                 }
             }
         }
+    }
+
+    private void handlePlayerBlackjack(PlayerHand hand) {
+        Player player = hand.getSeat().getPlayer();
+        MoneyPile betAmount = hand.removeBet();
+        casinoPayPlayer(player, betAmount); // original bet returned
+        MoneyPile winnings = betAmount.computeOneAndHalf();
+        casinoPayPlayer(player, winnings);
+        show(hand, "got a blackjack, and won " + winnings + ".");
+        discardTray.addCards(hand.removeCards());
     }
 
     private void playersPlay() {
@@ -327,35 +334,38 @@ public class Table {
             List<PlayerHand> hands = seat.getHands();
 
             // Note: the number of hands can increase while inside the loop, due to splits, so we can't for-each over it.
+            //noinspection ForLoopReplaceableByForEach
             for (int handIndex = 0; handIndex < hands.size(); handIndex++) {
                 PlayerHand hand = hands.get(handIndex);
-                if (hand.getBetAmount().hasMoney()) {
-                    Player player = seat.getPlayer();
-                    boolean shallContinue = true;
-                    while (shallContinue) {
-                        String initialHand = hand.showCardsWithTotal();
-                        BlackjackPlay playerAction = player.getPlay(hand, dealerUpcard, tableRules);
-                        switch (playerAction) {
-                            case Stand:
-                                show(hand, "decides to stand.");
-                                shallContinue = false;
-                                break;
-                            case Hit:
-                                shallContinue = handlePlayerHit(initialHand, hand);
-                                break;
-                            case DoubleDown:
-                                handlePlayerDoubleDown(initialHand, hand);
-                                shallContinue = false;
-                                break;
-                            case Split:
-                                shallContinue = handlePlayerSplit(hand);
-                                break;
-                            case Surrender:
-                                handlePlayerSurrender(hand);
-                                shallContinue = false;
-                                break;
-                            default:
-                                throw new RuntimeException("Bug in code!");
+                if (!hand.isSplitHandAndIsFinished()) {
+                    if (hand.getBetAmount().hasMoney()) {
+                        Player player = seat.getPlayer();
+                        boolean shallContinue = true;
+                        while (shallContinue) {
+                            String initialHand = hand.showCardsWithTotal();
+                            BlackjackPlay playerAction = player.getPlay(hand, dealerUpcard, tableRules);
+                            switch (playerAction) {
+                                case Stand:
+                                    show(hand, "decides to stand.");
+                                    shallContinue = false;
+                                    break;
+                                case Hit:
+                                    shallContinue = handlePlayerHit(initialHand, hand);
+                                    break;
+                                case DoubleDown:
+                                    handlePlayerDoubleDown(initialHand, hand);
+                                    shallContinue = false;
+                                    break;
+                                case Split:
+                                    shallContinue = handlePlayerSplit(hand);
+                                    break;
+                                case Surrender:
+                                    handlePlayerSurrender(hand);
+                                    shallContinue = false;
+                                    break;
+                                default:
+                                    throw new RuntimeException("Bug in code!");
+                            }
                         }
                     }
                 }
@@ -375,7 +385,7 @@ public class Table {
             MoneyPile betAmount = hand.removeBet();
             show("Seat " + seat.getSeatNumeral()
                     + " : " + player.getPlayerName()
-                    + " decides to hit with " + player.getHisHer(false)
+                    + " decides to hit with " + player.getGender().getHisHer(false)
                     + " hand of " + initialHand
                     + ", and got a " + hitCard
                     + ". Hand is now " + hand.showCardsWithTotal()
@@ -391,18 +401,18 @@ public class Table {
         if (hand.isTwentyOne()) {
             show("Seat " + seat.getSeatNumeral()
                     + " : " + player.getPlayerName()
-                    + " decides to hit with " + player.getHisHer(false)
+                    + " decides to hit with " + player.getGender().getHisHer(false)
                     + " hand of " + initialHand
                     + ", and got a " + hitCard
                     + ". Hand is now " + hand.showCardsWithTotal()
-                    + ". " + player.getHisHer(true) + " must now stand.");
+                    + ". " + player.getGender().getHisHer(true) + " must now stand.");
             return false;
         }
 
         // The hit didn't bust them, they can have another play if they want.
         show("Seat " + seat.getSeatNumeral()
                 + " : " + player.getPlayerName()
-                + " decides to hit with " + player.getHisHer(false)
+                + " decides to hit with " + player.getGender().getHisHer(false)
                 + " hand of " + initialHand
                 + ", and got a " + hitCard
                 + ". Hand is now " + hand.showCardsWithTotal());
@@ -426,7 +436,7 @@ public class Table {
             MoneyPile doubledBet = hand.removeBet();
             show("Seat " + seat.getSeatNumeral()
                     + " : " + player.getPlayerName()
-                    + " decides to double down with " + player.getHisHer(false)
+                    + " decides to double down with " + player.getGender().getHisHer(false)
                     + " hand of " + initialHand
                     + ", and got a " + doubleDownCard
                     + ". Hand is now " + hand.showCardsWithTotal()
@@ -436,7 +446,7 @@ public class Table {
 
         show("Seat " + seat.getSeatNumeral()
                 + " : " + player.getPlayerName()
-                + " decides to double down with " + player.getHisHer(false)
+                + " decides to double down with " + player.getGender().getHisHer(false)
                 + " hand of " + initialHand
                 + ", and got a " + doubleDownCard
                 + ". Hand is now " + hand.showCardsWithTotal()
@@ -455,34 +465,68 @@ public class Table {
         casinoPayPlayer(player, winnings);
         show("Seat " + seat.getSeatNumeral()
                 + " : " + player.getPlayerName()
-                + " decides to hit with " + player.getHisHer(false)
+                + " decides to hit with " + player.getGender().getHisHer(false)
                 + " hand of " + initialHand
                 + ", and got a " + hitCard
                 + ". Hand is now " + hand.showCardsWithTotal()
                 + ". That's a seven-card charlie! Win was double, "
-                + player.getHeShe(false) + " got " + winnings + ".");
+                + player.getGender().getHeShe(false) + " got " + winnings + ".");
         discardTray.addCards(hand.removeCards());
     }
 
     private boolean handlePlayerSplit(PlayerHand hand) {
+        boolean areSplitAces = hand.firstCard.getValue() == Value.Ace;
+
         Seat seat = hand.getSeat();
         int numSplitsSoFar = seat.getNumSplitsSoFar();
+        MoneyPile betAmount = hand.getBetAmount();
         if (numSplitsSoFar == 0) {
-            show(hand, "decides to split.");
+            show(hand, "decides to split, and adds another bet of " + betAmount + ".");
         } else {
-            show(hand, "decides to split again.");
+            show(hand, "decides to split again, and adds another bet of " + betAmount + ".");
+        }
+        playerPayCasino(seat.getPlayer(), betAmount);
+
+
+        PlayerHand rightSplitHand = hand.separateOutRightSplit(betAmount);
+        PlayerHand leftSplitHand = hand;
+
+        hand.getSeat().addHand(rightSplitHand);
+
+        // Make sure we don't use this variable anymore.
+        //noinspection UnusedAssignment
+        hand = null;
+
+        Card cardForLeftSplit = shoe.drawTopCard();
+        leftSplitHand.addCard(cardForLeftSplit);
+        show(seat, "got a second card on the left split of " + cardForLeftSplit + ", and now has " + leftSplitHand + ".");
+
+        Card cardForRightSplit = shoe.drawTopCard();
+        rightSplitHand.addCard(cardForRightSplit);
+        show(seat, "got a second card on the right split of " + cardForRightSplit + ", and now has " + rightSplitHand + ".");
+
+        if (areSplitAces && !tableRules.canHitSplitAces()) {
+            // blackjacks pay just like 21, and you can't hit anymore.
+            leftSplitHand.setSplitHandAndIsFinished();
+            rightSplitHand.setSplitHandAndIsFinished();
+            return false;
         }
 
-        // todo: split
+        if (rightSplitHand.isBlackjack()) {
+            handlePlayerBlackjack(rightSplitHand);
+            rightSplitHand.setSplitHandAndIsFinished();
+        }
 
-        // todo: handle aces differently
+        if (leftSplitHand.isBlackjack()) {
+            handlePlayerBlackjack(leftSplitHand);
 
-        //todo: check for blackjacks
+            // we won't continue on this left hand, and the continue setting on the right hand has been set,
+            // in case of blackjack on it
+            return false;
+        }
 
-        show(hand, "accidentally surrenders instead of splitting.");
-        handlePlayerSurrender(hand);
-
-        return false;
+        // player can play on the left hand still.
+        return true;
     }
 
     private void handlePlayerSurrender(PlayerHand hand) {
@@ -490,7 +534,7 @@ public class Table {
         MoneyPile halfBetAmount = hand.removeBet().computeHalf();
         casinoPayPlayer(player, halfBetAmount);
         show(hand, "surrendered, and loses half of "
-                + player.getHisHer(false) + " bet (" + halfBetAmount + ").");
+                + player.getGender().getHisHer(false) + " bet (" + halfBetAmount + ").");
     }
 
     private void dealerPlays() {

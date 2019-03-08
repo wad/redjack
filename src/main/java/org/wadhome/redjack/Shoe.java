@@ -1,7 +1,6 @@
 package org.wadhome.redjack;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Shoe extends CardStack {
     private int numDecks;
@@ -23,7 +22,7 @@ public class Shoe extends CardStack {
     }
 
     void dumpAllCards() {
-        while(hasCards()) {
+        while (hasCards()) {
             drawTopCard();
         }
     }
@@ -47,7 +46,7 @@ public class Shoe extends CardStack {
         }
     }
 
-    void shuffle() {
-        Collections.shuffle(cards);
+    void shuffle(Randomness randomness) {
+        randomness.shuffle(cards);
     }
 }

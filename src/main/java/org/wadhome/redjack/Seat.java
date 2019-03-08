@@ -46,11 +46,15 @@ public class Seat {
         return hands;
     }
 
-    public PlayerHand addHand(MoneyPile betAmount) {
+    public PlayerHand addNewHand(MoneyPile betAmount) {
         PlayerHand hand = new PlayerHand(this);
         hand.setBetAmount(betAmount);
-        hands.add(hand);
+        addHand(hand);
         return hand;
+    }
+
+    public void addHand(PlayerHand hand) {
+        hands.add(hand);
     }
 
     public void destroyHands() {

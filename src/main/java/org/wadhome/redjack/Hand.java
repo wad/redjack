@@ -20,10 +20,6 @@ public abstract class Hand {
         cards.add(card);
     }
 
-    boolean hasAnyCards() {
-        return !cards.isEmpty();
-    }
-
     Set<Card> removeCards() {
         Set<Card> cardsToRemove = new HashSet<>(cards);
         cards.clear();

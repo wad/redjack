@@ -2,7 +2,7 @@ package org.wadhome.redjack;
 
 public class Player {
     private String playerName;
-    private PlayerGender playerGender;
+    private Gender gender;
     private MoneyPile bankroll;
     private PlayerSmarts playerSmarts;
     private boolean takesMaxInsurance = true;
@@ -10,11 +10,11 @@ public class Player {
 
     Player(
             String playerName,
-            PlayerGender playerGender,
+            Gender gender,
             MoneyPile bankroll,
             PlayerSmarts playerSmarts) {
         this.playerName = playerName;
-        this.playerGender = playerGender;
+        this.gender = gender;
         this.bankroll = bankroll;
         this.playerSmarts = playerSmarts;
     }
@@ -30,29 +30,6 @@ public class Player {
     void setTakesMaxInsurance(
             @SuppressWarnings("SameParameterValue") boolean takesMaxInsurance) {
         this.takesMaxInsurance = takesMaxInsurance;
-    }
-
-    String getHisHer(boolean shouldCapitalize) {
-        switch (playerGender) {
-            case male:
-                return shouldCapitalize ? "His" : "his";
-            case female:
-                return shouldCapitalize ? "Her" : "her";
-            default:
-                throw new RuntimeException("Bug");
-        }
-    }
-
-    String getHeShe(
-            @SuppressWarnings("SameParameterValue") boolean shouldCapitalize) {
-        switch (playerGender) {
-            case male:
-                return shouldCapitalize ? "He" : "he";
-            case female:
-                return shouldCapitalize ? "She" : "she";
-            default:
-                throw new RuntimeException("Bug");
-        }
     }
 
     MoneyPile getBankroll() {
@@ -107,5 +84,9 @@ public class Player {
     @Override
     public String toString() {
         return playerName;
+    }
+
+    public Gender getGender() {
+        return gender;
     }
 }

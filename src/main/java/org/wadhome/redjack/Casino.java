@@ -4,13 +4,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Casino {
+    private Randomness randomness;
     private Map<Integer, Table> tables = new HashMap<>();
     private String casinoName;
     private MoneyPile houseBankroll = new MoneyPile(100000000);
 
     Casino(String casinoName) {
+        this(casinoName, null);
+    }
+
+    Casino(
+            String casinoName,
+            Long seed) {
         this.casinoName = casinoName;
-        Display.showMessage("Welcome to the " + casinoName + " casino.");
+        randomness = new Randomness(seed);
+
+        showWelcomeInfo();
+    }
+
+    public void showWelcomeInfo() {
+        Display.showMessage("Welcome to the " + getCasinoName() + " casino.");
+        Long seed = randomness.getSeed();
+        if (seed != null) {
+            Display.showMessage("Randomness seed: " + seed);
+        }
     }
 
     public MoneyPile getBankroll() {
@@ -34,5 +51,9 @@ public class Casino {
 
     public String getCasinoName() {
         return casinoName;
+    }
+
+    public Randomness getRandomness() {
+        return randomness;
     }
 }
