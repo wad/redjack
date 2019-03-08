@@ -5,7 +5,8 @@ public class Player {
     private PlayerGender playerGender;
     private MoneyPile bankroll;
     private PlayerSmarts playerSmarts;
-    private boolean takesMaxInsurance = false;
+    private boolean takesMaxInsurance = true;
+    private MoneyPile favoriteBet = null;
 
     Player(
             String playerName,
@@ -20,6 +21,10 @@ public class Player {
 
     String getPlayerName() {
         return playerName;
+    }
+
+    public void setFavoriteBet(MoneyPile favoriteBet) {
+        this.favoriteBet = favoriteBet;
     }
 
     void setTakesMaxInsurance(
@@ -52,6 +57,22 @@ public class Player {
 
     MoneyPile getBankroll() {
         return this.bankroll;
+    }
+
+    public MoneyPile getBet(TableRules tableRules) {
+        MoneyPile minPossibleBet = tableRules.getMinBet();
+        MoneyPile maxPossibleBet = MoneyPile.getLesserOf(tableRules.getMaxBet(), bankroll);
+        if (minPossibleBet.isGreaterThan(bankroll)) {
+            return MoneyPile.zero();
+        }
+
+        if (favoriteBet.isGreaterThan(maxPossibleBet)) {
+            // it will be more than the table minimum bet
+            return maxPossibleBet;
+        }
+
+        // it will be less than or equal to the max possible bet
+        return favoriteBet.copy();
     }
 
     BlackjackPlay getPlay(

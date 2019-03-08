@@ -53,6 +53,10 @@ public class Seat {
         return hand;
     }
 
+    public void destroyHands() {
+        hands.clear();
+    }
+
     public MoneyPile computeBetSum() {
         MoneyPile sum = MoneyPile.zero();
         for (PlayerHand hand : hands) {

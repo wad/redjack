@@ -25,9 +25,9 @@ public class TableTest extends TestHelper {
                 PlayerGender.male,
                 new MoneyPile(10000L),
                 PlayerSmarts.BasicStrategy);
+        player.setFavoriteBet(new MoneyPile(1000L));
         SeatNumber seatNumber = SeatNumber.one;
         table.assignPlayerToSeat(seatNumber, player);
-        table.createHandAndPlaceBet(seatNumber, new MoneyPile(1000L));
     }
 
     @Test

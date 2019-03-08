@@ -13,9 +13,15 @@ public class TestMoneyPile {
 
     @Test
     public void testAdd() {
-        MoneyPile pile1 = new MoneyPile(1234);
-        MoneyPile pile2 = new MoneyPile(5678);
+        MoneyPile pile1 = new MoneyPile(1234L);
+        MoneyPile pile2 = new MoneyPile(5678L);
         pile1.addToPile(pile2);
         assertEquals("$69.12", pile1.toString());
+    }
+
+    @Test
+    public void testComputeHalf() {
+        assertEquals("$40.00", (new MoneyPile(8000L)).computeHalf().toString());
+        assertEquals("$0.00", (new MoneyPile(0L)).computeHalf().toString());
     }
 }

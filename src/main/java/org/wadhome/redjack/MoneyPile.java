@@ -1,5 +1,7 @@
 package org.wadhome.redjack;
 
+import java.util.Objects;
+
 public class MoneyPile {
     private long numCents;
 
@@ -54,7 +56,7 @@ public class MoneyPile {
     }
 
     MoneyPile computeDouble() {
-        return new MoneyPile(this.numCents + this.numCents);
+        return new MoneyPile(this.numCents << 1);
     }
 
     private void validate() {
@@ -65,6 +67,37 @@ public class MoneyPile {
 
     static MoneyPile zero() {
         return new MoneyPile(0L);
+    }
+
+    static MoneyPile getGreaterOf(
+            MoneyPile pile1,
+            MoneyPile pile2) {
+        if (pile1.numCents > pile2.numCents) {
+            return pile1;
+        }
+        return pile2;
+    }
+
+    static MoneyPile getLesserOf(
+            MoneyPile pile1,
+            MoneyPile pile2) {
+        if (pile1.numCents < pile2.numCents) {
+            return pile1;
+        }
+        return pile2;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MoneyPile moneyPile = (MoneyPile) o;
+        return numCents == moneyPile.numCents;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(numCents);
     }
 
     @Override

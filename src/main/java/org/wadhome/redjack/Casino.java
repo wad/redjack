@@ -13,7 +13,7 @@ public class Casino {
         Display.showMessage("Welcome to the " + casinoName + " casino.");
     }
 
-    public MoneyPile getHouseBankroll() {
+    public MoneyPile getBankroll() {
         return houseBankroll;
     }
 

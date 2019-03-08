@@ -111,33 +111,12 @@ public class Table {
         seat.removePlayer();
     }
 
-    void createHandAndPlaceBet(
-            SeatNumber seatNumber,
-            MoneyPile betAmount) {
-        if (betAmount.isLessThan(tableRules.getMinBet())) {
-            throw new RuntimeException("Bet is too small.");
-        }
-        if (betAmount.isGreaterThan(tableRules.getMaxBet())) {
-            throw new RuntimeException("Bet is too large.");
-        }
-
-        Seat seat = seats.get(seatNumber);
-        Player player = seat.getPlayer();
-        if (betAmount.isGreaterThan(player.getBankroll())) {
-            throw new RuntimeException("Bet exceeds bankroll");
-        }
-
-        playerPayCasino(player, betAmount);
-        PlayerHand hand = seat.addHand(betAmount);
-        show(hand, "placed a bet of " + betAmount + ".");
-    }
-
     void playerPayCasino(
             Player player,
             MoneyPile amount) {
         moveMoney(
                 player.getBankroll(),
-                casino.getHouseBankroll(),
+                casino.getBankroll(),
                 amount);
     }
 
@@ -145,7 +124,7 @@ public class Table {
             Player player,
             MoneyPile amount) {
         moveMoney(
-                casino.getHouseBankroll(),
+                casino.getBankroll(),
                 player.getBankroll(),
                 amount);
     }
@@ -159,6 +138,8 @@ public class Table {
     }
 
     boolean playRound() {
+        takeBetsFromPlayers();
+
         if (!anySeatsHaveBets()) {
             show("No seats have hands with bets.");
             return false;
@@ -178,6 +159,19 @@ public class Table {
         }
         cleanupTable();
         return shoe.hasCutCardBeenDrawn();
+    }
+
+    private void takeBetsFromPlayers() {
+        for (SeatNumber seatNumber : SeatNumber.values()) {
+            Seat seat = seats.get(seatNumber);
+            if (seat.hasPlayer()) {
+                Player player = seat.getPlayer();
+                MoneyPile betAmount = player.getBet(tableRules);
+                playerPayCasino(player, betAmount);
+                PlayerHand hand = seat.addHand(betAmount);
+                show(hand, "placed a bet of " + betAmount + ".");
+            }
+        }
     }
 
     private boolean anySeatsHaveBets() {
@@ -226,11 +220,16 @@ public class Table {
 
             for (SeatNumber seatNumber : SeatNumber.values()) {
                 Seat seat = seats.get(seatNumber);
-                MoneyPile insuranceBet = seat.computeBetSum().computeHalf();
-                if (insuranceBet.hasMoney()) {
-                    show(seat, "put down " + insuranceBet + " as insurance against the dealer having blackjack.");
-                    playerPayCasino(seat.getPlayer(), insuranceBet);
-                    insuranceBets.put(seatNumber, insuranceBet);
+                MoneyPile maxInsuranceBet = seat.computeBetSum().computeHalf();
+                if (maxInsuranceBet.hasMoney()) {
+                    MoneyPile desiredInsuranceBet = seat.getPlayer().getInsuranceBet(maxInsuranceBet);
+                    if (desiredInsuranceBet.hasMoney()) {
+                        playerPayCasino(seat.getPlayer(), desiredInsuranceBet);
+                        show(seat, "put down " + desiredInsuranceBet + " as insurance against the dealer having blackjack.");
+                        insuranceBets.put(seatNumber, desiredInsuranceBet);
+                    } else {
+                        show(seat, "declines the insurance bet.");
+                    }
                 }
             }
 
@@ -251,14 +250,12 @@ public class Table {
                             casinoPayPlayer(player, insuranceBet);
                             MoneyPile winnings = insuranceBet.computeDouble();
                             casinoPayPlayer(player, winnings);
-
                             show("Seat " + seatNumber
                                     + " : " + player.getPlayerName()
                                     + " wins " + winnings + " for blackjack insurance.");
                         }
                     }
 
-                    // for each player, take their cards and their bets.
                     for (SeatNumber seatNumber : SeatNumber.values()) {
                         Seat seat = seats.get(seatNumber);
                         if (seat.hasPlayer()) {
@@ -291,8 +288,8 @@ public class Table {
                 if (betAmount.hasMoney()) {
                     Player player = seat.getPlayer();
                     if (hand.isBlackjack()) {
-                        show(hand, "also had a blackjack, so it's a push.");
                         casinoPayPlayer(player, betAmount); // they get their original bet back.
+                        show(hand, "also had a blackjack, so it's a push.");
                     } else {
                         show(hand, "loses " + betAmount + " to the dealers blackjack.");
                     }
@@ -309,21 +306,17 @@ public class Table {
             Seat seat = seats.get(seatNumber);
             for (PlayerHand hand : seat.getHands()) {
                 if (hand.getBetAmount().hasMoney()) {
-                    handlePlayerBlackjack(hand);
+                    if (hand.isBlackjack()) {
+                        Player player = hand.getSeat().getPlayer();
+                        MoneyPile betAmount = hand.removeBet();
+                        casinoPayPlayer(player, betAmount); // original bet returned
+                        MoneyPile winnings = betAmount.computeOneAndHalf();
+                        casinoPayPlayer(player, winnings);
+                        show(hand, "got a blackjack, and won " + winnings + ".");
+                        discardTray.addCards(hand.removeCards());
+                    }
                 }
             }
-        }
-    }
-
-    private void handlePlayerBlackjack(PlayerHand hand) {
-        if (hand.isBlackjack()) {
-            MoneyPile betAmount = hand.removeBet();
-            Player player = hand.getSeat().getPlayer();
-            casinoPayPlayer(player, betAmount); // original bet returned
-            MoneyPile winnings = betAmount.computeOneAndHalf();
-            casinoPayPlayer(player, winnings);
-            show(hand, "got a blackjack, and won " + winnings + ".");
-            discardTray.addCards(hand.removeCards());
         }
     }
 
@@ -379,15 +372,14 @@ public class Table {
         Player player = seat.getPlayer();
 
         if (hand.isBust()) {
+            MoneyPile betAmount = hand.removeBet();
             show("Seat " + seat.getSeatNumeral()
                     + " : " + player.getPlayerName()
                     + " decides to hit with " + player.getHisHer(false)
                     + " hand of " + initialHand
                     + ", and got a " + hitCard
                     + ". Hand is now " + hand.showCardsWithTotal()
-                    + ". That's a bust. Lost bet of " + hand.getBetAmount() + ".");
-            hand.removeCards();
-            hand.setBetAmount(MoneyPile.zero());
+                    + ". That's a bust. Lost bet of " + betAmount + ".");
             return false;
         }
 
@@ -420,24 +412,25 @@ public class Table {
     private void handlePlayerDoubleDown(
             String initialHand,
             PlayerHand hand) {
-
         Seat seat = hand.getSeat();
         Player player = seat.getPlayer();
-        player.getBankroll().subtractFromPile(hand.getBetAmount());
-        hand.setBetAmount(hand.getBetAmount().computeDouble());
+
+        MoneyPile originalBetAmount = hand.getBetAmount();
+        playerPayCasino(player, originalBetAmount);
+        hand.setBetAmount(originalBetAmount.computeDouble());
+
         Card doubleDownCard = shoe.drawTopCard();
         hand.addCard(doubleDownCard);
 
         if (hand.isBust()) {
+            MoneyPile doubledBet = hand.removeBet();
             show("Seat " + seat.getSeatNumeral()
                     + " : " + player.getPlayerName()
                     + " decides to double down with " + player.getHisHer(false)
                     + " hand of " + initialHand
                     + ", and got a " + doubleDownCard
                     + ". Hand is now " + hand.showCardsWithTotal()
-                    + ". That's a bust. Lost bet of " + hand.getBetAmount() + ".");
-            hand.removeCards();
-            hand.setBetAmount(MoneyPile.zero());
+                    + ". That's a bust. Lost doubled bet of " + doubledBet + ".");
             return;
         }
 
@@ -447,7 +440,7 @@ public class Table {
                 + " hand of " + initialHand
                 + ", and got a " + doubleDownCard
                 + ". Hand is now " + hand.showCardsWithTotal()
-                + ". Must now stand. Bet is now " + hand.getBetAmount().computeDouble() + ".");
+                + ". Must now stand. Bet is now " + originalBetAmount.computeDouble() + ".");
     }
 
     private void handlePlayerCharlie(
@@ -486,16 +479,18 @@ public class Table {
 
         //todo: check for blackjacks
 
+        show(hand, "accidentally surrenders instead of splitting.");
+        handlePlayerSurrender(hand);
+
         return false;
     }
 
     private void handlePlayerSurrender(PlayerHand hand) {
         Player player = hand.getSeat().getPlayer();
         MoneyPile halfBetAmount = hand.removeBet().computeHalf();
+        casinoPayPlayer(player, halfBetAmount);
         show(hand, "surrendered, and loses half of "
                 + player.getHisHer(false) + " bet (" + halfBetAmount + ").");
-        casinoPayPlayer(player, halfBetAmount);
-        discardTray.addCards(hand.removeCards());
     }
 
     private void dealerPlays() {
@@ -534,14 +529,13 @@ public class Table {
                             show(hand, "pushes.");
                             break;
                         case ThisWins:
-                            show(hand, "wins " + betAmount + ".");
                             casinoPayPlayer(player, betAmount); // they get their original bet back.
                             casinoPayPlayer(player, betAmount); // winnings
+                            show(hand, "wins " + betAmount + ".");
                             break;
                         default:
                             throw new RuntimeException("Bug!");
                     }
-                    discardTray.addCards(hand.removeCards());
                 }
             }
         }
@@ -551,16 +545,16 @@ public class Table {
         discardTray.addCards(dealerHand.removeCards());
         for (SeatNumber seatNumber : SeatNumber.values()) {
             Seat seat = seats.get(seatNumber);
-            for (PlayerHand hand : seat.getHands()) {
-                if (hand.getBetAmount().hasMoney()) {
-                    throw new RuntimeException("There is still a bet at seat number " + seat.getSeatNumber());
-                }
-                if (hand.getNumCards() != 0) {
-                    throw new RuntimeException("There are still cards at seat number " + seat.getSeatNumber());
-                }
-
+            if (seat.hasPlayer()) {
                 Player player = seat.getPlayer();
-                show(hand, "has a bankroll of " + player.getBankroll() + ".");
+                for (PlayerHand hand : seat.getHands()) {
+                    if (hand.getBetAmount().hasMoney()) {
+                        throw new RuntimeException("There is still a bet at seat number " + seat.getSeatNumber());
+                    }
+                    discardTray.addCards(hand.removeCards());
+                }
+                seat.destroyHands();
+                show(seat, "has a bankroll of " + player.getBankroll() + ".");
             }
         }
     }
