@@ -17,25 +17,25 @@ public class PlayTest {
                 "Alex",
                 Gender.male,
                 new MoneyPile(50000L),
-                PlayerStrategy.BasicStrategy);
+                PlayerStrategy.BasicStrategy,
+                new MoneyPile(2500L));
         table.assignPlayerToSeat(SeatNumber.one, alex);
         table.assignPlayerToSeat(SeatNumber.two, alex);
-        alex.setFavoriteBet(new MoneyPile(2500));
 
         Player becky = new Player(
                 "Becky",
                 Gender.female,
                 new MoneyPile(50000L),
-                PlayerStrategy.BasicStrategy);
+                PlayerStrategy.BasicStrategy,
+                new MoneyPile(1000L));
         table.assignPlayerToSeat(SeatNumber.three, becky);
-        becky.setFavoriteBet(new MoneyPile(1000L));
 
         Player charles = new Player(
                 "Charles",
                 Gender.male,
                 new MoneyPile(10000L),
-                PlayerStrategy.BasicStrategy);
-        charles.setFavoriteBet(new MoneyPile(10000L));
+                PlayerStrategy.BasicStrategy,
+                new MoneyPile(10000L));
         table.assignPlayerToSeat(SeatNumber.five, charles);
 
         MoneyPile initialCasinoBankroll = casino.getBankroll().copy();

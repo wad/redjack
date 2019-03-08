@@ -6,25 +6,23 @@ class Player {
     private MoneyPile bankroll;
     private PlayerStrategy playerStrategy;
     private boolean takesMaxInsurance = true;
-    private MoneyPile favoriteBet = null;
+    private MoneyPile favoriteBet;
 
     Player(
             String playerName,
             Gender gender,
             MoneyPile bankroll,
-            PlayerStrategy playerStrategy) {
+            PlayerStrategy playerStrategy,
+            MoneyPile favoriteBet) {
         this.playerName = playerName;
         this.gender = gender;
         this.bankroll = bankroll;
         this.playerStrategy = playerStrategy;
+        this.favoriteBet = favoriteBet;
     }
 
     String getPlayerName() {
         return playerName;
-    }
-
-    void setFavoriteBet(MoneyPile favoriteBet) {
-        this.favoriteBet = favoriteBet;
     }
 
     void setTakesMaxInsurance(

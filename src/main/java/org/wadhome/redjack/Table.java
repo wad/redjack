@@ -81,7 +81,7 @@ class Table {
         return false;
     }
 
-    SeatNumber getAnAvailableHandNumber() {
+    SeatNumber getAnAvailableSeatNumber() {
         for (SeatNumber seatNumber : SeatNumber.values()) {
             if (!seats.get(seatNumber).hasPlayer()) {
                 return seatNumber;
