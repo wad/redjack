@@ -89,6 +89,14 @@ public class TableTest extends TestHelper {
     }
 
     @Test
+    public void testDealerBlackjackAceFirstWithNoInsurance() {
+        player.setTakesMaxInsurance(false);
+        shoe.addCardToBottom(cT(), cA(), cT(), cT());
+        table.playRound();
+        assertEquals("$90.00", player.getBankroll().toString());
+    }
+
+    @Test
     public void testDealerBlackjackTenFirst() {
         shoe.addCardToBottom(cT(), cT(), cT(), cA());
         table.playRound();

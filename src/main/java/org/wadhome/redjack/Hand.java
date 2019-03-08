@@ -37,7 +37,7 @@ abstract class Hand {
     }
 
     Card getSecondCard() {
-        return firstCard;
+        return secondCard;
     }
 
     boolean hasAtLeastOneAce() {
