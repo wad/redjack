@@ -21,31 +21,14 @@ public abstract class Hand {
     }
 
     boolean hasAnyCards() {
-        return hasAnyCards(true);
+        return !cards.isEmpty();
     }
-
-    boolean hasAnyCards(boolean shouldRecurse) {
-        return !cards.isEmpty() || (shouldRecurse && hasAnyCardsHelper());
-    }
-
-    protected abstract boolean hasAnyCardsHelper();
-
-    protected abstract Set<Card> removeCardsHelper();
 
     Set<Card> removeCards() {
-        return removeCards(true);
-    }
-
-    Set<Card> removeCards(boolean shouldRecurse) {
         Set<Card> cardsToRemove = new HashSet<>(cards);
         cards.clear();
         firstCard = null;
         secondCard = null;
-
-        if (shouldRecurse) {
-            cardsToRemove.addAll(removeCardsHelper());
-        }
-
         return cardsToRemove;
     }
 
@@ -114,6 +97,11 @@ public abstract class Hand {
             return true;
         }
         return false;
+    }
+
+    boolean isPair() {
+        return getNumCards() == 2
+                && firstCard.getValue().getPoints() == secondCard.getValue().getPoints();
     }
 
     boolean isBust() {

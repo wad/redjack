@@ -252,7 +252,7 @@ class BasicStrategy {
                 if (upcardValue.isTen() || upcardValue == Ace) {
                     return Hit;
                 }
-                if (hand.getNumSplitsSoFar() > 0 && !tableRules.canDoubleDownAfterSplit()) {
+                if (hand.getSeat().getNumSplitsSoFar() > 0 && !tableRules.canDoubleDownAfterSplit()) {
                     return Hit;
                 }
                 if (canDoubleDown) {
@@ -319,7 +319,7 @@ class BasicStrategy {
             case King:
                 return Stand;
             case Ace:
-                boolean acesHaveAlreadyBeenSplit = !tableRules.canHitSplitAces() && hand.getNumSplitsSoFar() > 0;
+                boolean acesHaveAlreadyBeenSplit = !tableRules.canHitSplitAces() && hand.getSeat().getNumSplitsSoFar() > 0;
                 if (acesHaveAlreadyBeenSplit) {
                     return Hit;
                 }
@@ -359,7 +359,7 @@ class BasicStrategy {
             PlayerHand hand,
             MoneyPile bankrollAvailable,
             TableRules tableRules) {
-        int numSplitsSoFar = hand.getNumSplitsSoFar();
+        int numSplitsSoFar = hand.getSeat().getNumSplitsSoFar();
 
         boolean canAffordToSplit = bankrollAvailable.isGreaterThanOrEqualTo(hand.getBetAmount());
         if (!canAffordToSplit) {

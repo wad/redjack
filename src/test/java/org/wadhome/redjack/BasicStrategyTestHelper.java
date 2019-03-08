@@ -3,10 +3,13 @@ package org.wadhome.redjack;
 public class BasicStrategyTestHelper extends TestHelper {
 
     MoneyPile bankroll = new MoneyPile(1000000);
-    TableRules rules = TableRules.getDefaultRules();
+    TableRules tableRules = TableRules.getDefaultRules();
+    Casino casino = new Casino("Test");
+    Table table = new Table(casino, 1, tableRules);
+    Seat seat = new Seat(table, SeatNumber.one);
 
     BlackjackPlay compute(Card... cards) {
-        return compute(this.rules, cards);
+        return compute(this.tableRules, cards);
     }
 
     BlackjackPlay compute(
@@ -19,7 +22,7 @@ public class BasicStrategyTestHelper extends TestHelper {
         }
         Card dealerUpcard = cards[numCards - 1];
 
-        PlayerHand playerHand = new PlayerHand(0);
+        PlayerHand playerHand = new PlayerHand(seat);
         for (int i = 0; i < numCards - 1; i++)
         {
             playerHand.addCard(cards[i]);

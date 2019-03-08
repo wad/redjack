@@ -16,27 +16,27 @@ public class PlayTest {
                 PlayerGender.male,
                 new MoneyPile(50000L),
                 PlayerSmarts.BasicStrategy);
-        table.assignPlayerToHand(1, alex);
-        table.assignPlayerToHand(2, alex);
+        table.assignPlayerToSeat(SeatNumber.one, alex);
+        table.assignPlayerToSeat(SeatNumber.two, alex);
 
         Player becky = new Player(
                 "Becky",
                 PlayerGender.female,
                 new MoneyPile(50000L),
                 PlayerSmarts.BasicStrategy);
-        table.assignPlayerToHand(3, becky);
+        table.assignPlayerToSeat(SeatNumber.three, becky);
 
         Player charles = new Player(
                 "Charles",
                 PlayerGender.male,
                 new MoneyPile(10000L),
                 PlayerSmarts.BasicStrategy);
-        table.assignPlayerToHand(5, charles);
+        table.assignPlayerToSeat(SeatNumber.five, charles);
 
-        table.placeBet(1, new MoneyPile(1000L));
-        table.placeBet(2, new MoneyPile(2500L));
-        table.placeBet(3, new MoneyPile(1000L));
-        table.placeBet(5, new MoneyPile(10000L));
+        table.createHandAndPlaceBet(SeatNumber.one, new MoneyPile(1000L));
+        table.createHandAndPlaceBet(SeatNumber.two, new MoneyPile(2500L));
+        table.createHandAndPlaceBet(SeatNumber.three, new MoneyPile(1000L));
+        table.createHandAndPlaceBet(SeatNumber.five, new MoneyPile(10000L));
 
         table.playRound();
     }

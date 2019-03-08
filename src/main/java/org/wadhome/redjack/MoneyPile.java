@@ -8,12 +8,19 @@ public class MoneyPile {
         validate();
     }
 
-    void add(MoneyPile moneyToAdd) {
+    public MoneyPile(MoneyPile... moneyPiles) {
+        this(0L);
+        for (MoneyPile moneyPile : moneyPiles) {
+            this.numCents += moneyPile.numCents;
+        }
+    }
+
+    void addToPile(MoneyPile moneyToAdd) {
         this.numCents += moneyToAdd.numCents;
         validate();
     }
 
-    void subtract(MoneyPile moneyToSubtract) {
+    void subtractFromPile(MoneyPile moneyToSubtract) {
         this.numCents -= moneyToSubtract.numCents;
         validate();
     }

@@ -7,6 +7,7 @@ import static org.junit.Assert.assertEquals;
 
 public class TableTest extends TestHelper {
 
+    private Casino casino;
     private TableRules tableRules;
     private Table table;
     private Shoe shoe;
@@ -14,8 +15,9 @@ public class TableTest extends TestHelper {
 
     @Before
     public void setup() {
+        casino = new Casino("Test");
         tableRules = TableRules.getDefaultRules();
-        table = new Table(0, tableRules);
+        table = new Table(casino, 0, tableRules);
         shoe = table.getShoe();
         shoe.dumpAllCards();
         player = new Player(
@@ -23,9 +25,9 @@ public class TableTest extends TestHelper {
                 PlayerGender.male,
                 new MoneyPile(10000L),
                 PlayerSmarts.BasicStrategy);
-        int handNumber = 0;
-        table.assignPlayerToHand(handNumber, player);
-        table.placeBet(handNumber, new MoneyPile(1000L));
+        SeatNumber seatNumber = SeatNumber.one;
+        table.assignPlayerToSeat(seatNumber, player);
+        table.createHandAndPlaceBet(seatNumber, new MoneyPile(1000L));
     }
 
     @Test
