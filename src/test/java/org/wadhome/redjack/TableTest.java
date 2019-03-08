@@ -167,9 +167,9 @@ public class TableTest extends TestHelper {
 
     @Test
     public void testSplitLoseWin() {
-        shoe.addCardToBottom(c8(), cT(), c8(), c7(), c9(), cT());
+        shoe.addCardToBottom(c8(), cT(), c8(), c7(), c4(), cT(), cT());
         table.playRound();
-        assertEquals("$90.00", player.getBankroll().toString());
+        assertEquals("$100.00", player.getBankroll().toString());
     }
 
     @Test

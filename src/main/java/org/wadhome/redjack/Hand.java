@@ -7,8 +7,8 @@ import static org.wadhome.redjack.Value.OPTIONAL_EXTRA_ACE_POINTS;
 
 abstract class Hand {
     protected List<Card> cards = new ArrayList<>();
-    Card firstCard = null;
-    Card secondCard = null;
+    private Card firstCard = null;
+    private Card secondCard = null;
 
     void addCard(Card card) {
         if (cards.size() == 0) {
@@ -73,7 +73,7 @@ abstract class Hand {
         }
 
         if (hasAtLeastOneAce()) {
-            if (maxSum + OPTIONAL_EXTRA_ACE_POINTS < TableRules.MAX_VALID_HAND_POINTS) {
+            if (maxSum + OPTIONAL_EXTRA_ACE_POINTS <= TableRules.MAX_VALID_HAND_POINTS) {
                 maxSum += OPTIONAL_EXTRA_ACE_POINTS;
             }
         }

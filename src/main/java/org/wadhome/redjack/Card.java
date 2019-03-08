@@ -23,6 +23,17 @@ class Card {
         return value.toString() + suite.toString();
     }
 
+    public String toString(
+            boolean includeIndefiniteArticle,
+            boolean shouldCapitalize) {
+        String indefiniteArticle = "";
+        if (includeIndefiniteArticle) {
+            indefiniteArticle += value.getIndefiniteArticle(shouldCapitalize);
+            indefiniteArticle += " ";
+        }
+        return indefiniteArticle + value.toString() + suite.toString();
+    }
+
     @Override
     public int hashCode() {
         if (deckNumber > Deck.MAX_DECK_NUMBER) {

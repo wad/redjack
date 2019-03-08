@@ -56,4 +56,28 @@ enum Value {
     public String toString() {
         return symbol;
     }
+
+    public String getIndefiniteArticle(boolean shouldCapitalize) {
+        switch (this) {
+            case Two:
+            case Three:
+            case Four:
+            case Five:
+            case Six:
+            case Seven:
+                return shouldCapitalize ? "A" : "a";
+            case Eight:
+                return shouldCapitalize ? "An" : "an";
+            case Nine:
+            case Ten:
+            case Jack:
+            case Queen:
+            case King:
+                return shouldCapitalize ? "A" : "a";
+            case Ace:
+                return shouldCapitalize ? "An" : "an";
+            default:
+                throw new RuntimeException("Bug!");
+        }
+    }
 }

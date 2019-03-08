@@ -28,8 +28,8 @@ class PlayerHand extends Hand {
     }
 
     PlayerHand separateOutRightSplit(MoneyPile betAmount) {
-        Card leftSplitCard = this.firstCard;
-        Card rightSplitCard = this.secondCard;
+        Card leftSplitCard = this.getFirstCard();
+        Card rightSplitCard = this.getSecondCard();
         removeCards();
         addCard(leftSplitCard);
 

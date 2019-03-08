@@ -66,7 +66,8 @@ class Table {
         int numBurnCards = tableRules.getNumBurnCards();
         for (int i = 0; i < numBurnCards; i++) {
             Card burnCard = shoe.drawTopCard();
-            show("The dealer burned a card from the shoe: " + burnCard + ".");
+            show("The dealer burned " + burnCard.toString(true, false)
+                    + " from the shoe.");
             discardTray.addCardToBottom(burnCard);
         }
     }
@@ -128,7 +129,8 @@ class Table {
             Player player,
             MoneyPile amount) {
         if (amount.isGreaterThan(casino.getBankroll())) {
-            throw new RuntimeException("Casino ran out of money!");
+            // todo: prevent this
+            throw new RuntimeException("Casino ran out of money! This should not happen.");
         }
         moveMoney(
                 casino.getBankroll(),
@@ -199,7 +201,7 @@ class Table {
             for (PlayerHand hand : seat.getHands()) {
                 if (hand.getBetAmount().hasMoney()) {
                     Card card = shoe.drawTopCard();
-                    show(hand, "got a " + card + ".");
+                    show(hand, "got " + card.toString(true, false) + ".");
                     hand.addCard(card);
                 }
             }
@@ -217,7 +219,8 @@ class Table {
         show("Dealer got a face-down hole card.");
         dealerHand.addCard(holeCard);
         show("Dealer reveals " + dealerGender.getHisHer(false)
-                + " first card, which was " + dealerHand.getFirstCard() + ".");
+                + " first card, which was "
+                + dealerHand.getFirstCard().toString(true, false) + ".");
     }
 
     private void handleInsurance() {
@@ -233,7 +236,8 @@ class Table {
                     MoneyPile desiredInsuranceBet = seat.getPlayer().getInsuranceBet(maxInsuranceBet);
                     if (desiredInsuranceBet.hasMoney()) {
                         playerPayCasino(seat.getPlayer(), desiredInsuranceBet);
-                        show(seat, "put down " + desiredInsuranceBet + " as insurance against the dealer having blackjack.");
+                        show(seat, "put down " + desiredInsuranceBet
+                                + " as insurance against the dealer having blackjack.");
                         insuranceBets.put(seatNumber, desiredInsuranceBet);
                     } else {
                         show(seat, "declines the insurance bet.");
@@ -244,8 +248,9 @@ class Table {
             if (insuranceBets.isEmpty()) {
                 show("Nobody made an insurance bet.");
             } else {
-                if (dealerHand.secondCard.getValue().isTen()) {
-                    show("Dealer turns over the hole card, and it's " + dealerHand.secondCard + ". Blackjack!"
+                if (dealerHand.getSecondCard().getValue().isTen()) {
+                    show("Dealer turns over the hole card, and it's "
+                            + dealerHand.getSecondCard().toString(true, false) + ". Blackjack!"
                             + " All hands lose, insurance bets all pay double.");
 
                     // for each player, pay insurance winnings, if any.
@@ -274,8 +279,9 @@ class Table {
                         }
                     }
                 } else {
-                    show("Dealer turns over the hole card, and it's " + dealerHand.secondCard + ". Not a blackjack."
-                            + " insurance bets all lose.");
+                    show("Dealer turns over the hole card, and it's "
+                            + dealerHand.getSecondCard().toString(false, true)
+                            + ". Not a blackjack. insurance bets all lose.");
                 }
             }
         }
@@ -287,7 +293,9 @@ class Table {
             return false;
         }
 
-        show("Dealer checks the hole card... and got a blackjack: " + dealerHand.showCardsWithTotal());
+        show("Dealer checks the hole card, and it was "
+                + dealerHand.getSecondCard().toString(false, true)
+                + ". Dealer got a blackjack with " + dealerHand.showCardsWithTotal());
         for (int i = SeatNumber.values().length - 1; i >= 0; --i) {
             SeatNumber seatNumber = SeatNumber.values()[i];
             Seat seat = seats.get(seatNumber);
@@ -392,7 +400,7 @@ class Table {
                     + " : " + player.getPlayerName()
                     + " decides to hit with " + player.getGender().getHisHer(false)
                     + " hand of " + initialHand
-                    + ", and got a " + hitCard
+                    + ", and got " + hitCard.toString(true, false)
                     + ". Hand is now " + hand.showCardsWithTotal()
                     + ". That's a bust. Lost bet of " + betAmount + ".");
             return false;
@@ -408,7 +416,7 @@ class Table {
                     + " : " + player.getPlayerName()
                     + " decides to hit with " + player.getGender().getHisHer(false)
                     + " hand of " + initialHand
-                    + ", and got a " + hitCard
+                    + ", and got " + hitCard.toString(false, true)
                     + ". Hand is now " + hand.showCardsWithTotal()
                     + ". " + player.getGender().getHisHer(true) + " must now stand.");
             return false;
@@ -419,7 +427,7 @@ class Table {
                 + " : " + player.getPlayerName()
                 + " decides to hit with " + player.getGender().getHisHer(false)
                 + " hand of " + initialHand
-                + ", and got a " + hitCard
+                + ", and got " + hitCard.toString(true, false)
                 + ". Hand is now " + hand.showCardsWithTotal());
         return true;
     }
@@ -443,7 +451,7 @@ class Table {
                     + " : " + player.getPlayerName()
                     + " decides to double down with " + player.getGender().getHisHer(false)
                     + " hand of " + initialHand
-                    + ", and got a " + doubleDownCard
+                    + ", and got " + doubleDownCard.toString(true, false)
                     + ". Hand is now " + hand.showCardsWithTotal()
                     + ". That's a bust. Lost doubled bet of " + doubledBet + ".");
             return;
@@ -453,7 +461,7 @@ class Table {
                 + " : " + player.getPlayerName()
                 + " decides to double down with " + player.getGender().getHisHer(false)
                 + " hand of " + initialHand
-                + ", and got a " + doubleDownCard
+                + ", and got " + doubleDownCard.toString(true, false)
                 + ". Hand is now " + hand.showCardsWithTotal()
                 + ". Must now stand. Bet is now " + originalBetAmount.computeDouble() + ".");
     }
@@ -472,7 +480,7 @@ class Table {
                 + " : " + player.getPlayerName()
                 + " decides to hit with " + player.getGender().getHisHer(false)
                 + " hand of " + initialHand
-                + ", and got a " + hitCard
+                + ", and got " + hitCard.toString(true, false)
                 + ". Hand is now " + hand.showCardsWithTotal()
                 + ". That's a seven-card charlie! Win was double, "
                 + player.getGender().getHeShe(false) + " got " + winnings + ".");
@@ -480,7 +488,7 @@ class Table {
     }
 
     private boolean handlePlayerSplit(PlayerHand hand) {
-        boolean areSplitAces = hand.firstCard.getValue() == Value.Ace;
+        boolean areSplitAces = hand.getFirstCard().getValue() == Value.Ace;
 
         Seat seat = hand.getSeat();
         int numSplitsSoFar = seat.getNumSplitsSoFar();
@@ -504,11 +512,13 @@ class Table {
 
         Card cardForLeftSplit = shoe.drawTopCard();
         leftSplitHand.addCard(cardForLeftSplit);
-        show(seat, "got a second card on the left split of " + cardForLeftSplit + ", and now has " + leftSplitHand + ".");
+        show(seat, "got " + cardForLeftSplit.toString(true, false)
+                + " on the left split, and now has " + leftSplitHand + ".");
 
         Card cardForRightSplit = shoe.drawTopCard();
         rightSplitHand.addCard(cardForRightSplit);
-        show(seat, "got a second card on the right split of " + cardForRightSplit + ", and now has " + rightSplitHand + ".");
+        show(seat, "got " + cardForRightSplit.toString(true, false)
+                + " on the right split, and now has " + rightSplitHand + ".");
 
         if (areSplitAces && !tableRules.canHitSplitAces()) {
             // blackjacks pay just like 21, and you can't hit anymore.
@@ -543,17 +553,18 @@ class Table {
     }
 
     private void dealerPlays() {
-        show("Dealer turns over the hole card, and it's a " + dealerHand.getSecondCard()
-                + ". Dealer is now showing " + dealerHand.showCardsWithTotal() + ".");
+        show("Dealer turns over the hole card, and it's "
+                + dealerHand.getSecondCard().toString(true, false)
+                + ". Dealer's hand is " + dealerHand.showCardsWithTotal() + ".");
         while (dealerHand.shouldHit(tableRules)) {
             Card dealerHitCard = shoe.drawTopCard();
             dealerHand.addCard(dealerHitCard);
             if (dealerHand.isBust()) {
-                show("Dealer hits, and gets a " + dealerHitCard
+                show("Dealer hits, and gets a " + dealerHitCard.toString(true, false)
                         + ". Now showing " + dealerHand.showCardsWithTotal()
                         + ". That's a bust, remaining players all win.");
             } else {
-                show("Dealer hits, and gets a " + dealerHitCard
+                show("Dealer hits, and gets a " + dealerHitCard.toString(true, false)
                         + ". Now showing " + dealerHand.showCardsWithTotal()
                         + ". Dealer stands.");
             }
@@ -615,7 +626,7 @@ class Table {
     private void show(
             Seat seat,
             String message) {
-        show("Seat " + seat.getSeatNumber() + " : " + seat.getPlayer().getPlayerName() + " " + message);
+        show("Seat " + seat.getSeatNumeral() + " : " + seat.getPlayer().getPlayerName() + " " + message);
     }
 
     private void show(
