@@ -11,7 +11,8 @@ public class Redjack {
     }
 
     private void runBasicStrategyAtTwentyFiveDollarMinimums() {
-        Casino casino = new Casino("Redjack");
+        Display display = new Display();
+        Casino casino = new Casino("Redjack", display);
         int tableNumber = 0;
         TableRules tableRules = TableRules.getDefaultRules();
         tableRules.minBet = new MoneyPile(2500L);
@@ -64,7 +65,7 @@ public class Redjack {
                 new MoneyPile(2500L)));
 
         MoneyPile initialPlayerBankrolls = getSumOfPlayerBankrolls(players, false);
-        MoneyPile initialCasinoBankroll = casino.getBankroll();
+        MoneyPile initialCasinoBankroll = casino.getBankroll().copy();
 
         for (Player player : players) {
             if (table.areAnySeatsAvailable()) {
@@ -75,6 +76,7 @@ public class Redjack {
         }
 
         int numRoundsToPlay = 10000;
+        display.setMute(true);
         for (int roundNumber = 0; roundNumber < numRoundsToPlay; roundNumber++) {
             System.out.println("===========> Round " + roundNumber + " <===========");
             if (table.playRound()) {
@@ -83,13 +85,17 @@ public class Redjack {
         }
 
         MoneyPile finalPlayerBankrolls = getSumOfPlayerBankrolls(players, true);
-        MoneyPile finalCasinoBankroll = casino.getBankroll();
+        MoneyPile finalCasinoBankroll = casino.getBankroll().copy();
 
         System.out.println();
         System.out.println("Initial player bankrolls: " + initialPlayerBankrolls);
-        System.out.println("Initial casino bankroll: " + initialCasinoBankroll);
         System.out.println("Final player bankrolls: " + finalPlayerBankrolls);
-        System.out.println("Final casino bankroll: " + finalCasinoBankroll);
+        String casinoEarnings = MoneyPile.computeDifference(initialCasinoBankroll, finalCasinoBankroll);
+        System.out.println("Casino started with " + initialCasinoBankroll
+                + " and ended with " + finalCasinoBankroll
+                + ", earning " + casinoEarnings + ".");
+        System.out.println("Casino earned " + casinoEarnings);
+        System.out.println("Players earned " + MoneyPile.computeDifference(initialPlayerBankrolls, finalPlayerBankrolls));
     }
 
     private MoneyPile getSumOfPlayerBankrolls(

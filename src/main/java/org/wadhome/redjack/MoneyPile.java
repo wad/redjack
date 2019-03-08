@@ -55,6 +55,20 @@ class MoneyPile {
         return new MoneyPile(this.numCents << 1);
     }
 
+    static String computeDifference(
+            MoneyPile original,
+            MoneyPile amountToSubtract) {
+        long delta = original.numCents - amountToSubtract.numCents;
+        long absoluteValue = delta;
+        boolean isNegative = delta < 0;
+        if (isNegative) {
+            absoluteValue = delta * -1;
+        }
+
+        MoneyPile moneyPile = new MoneyPile(absoluteValue);
+        return isNegative ? "negative " + moneyPile.toString() : moneyPile.toString();
+    }
+
     private void validate() {
         if (numCents < 0L) {
             throw new RuntimeException("Cannot have a negative money pile.");

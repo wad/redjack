@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class TestMoneyPile {
+public class MoneyPileTest {
     @Test
     public void testConvertToString() {
         assertEquals("$123.45", new MoneyPile(12345L).toString());
@@ -23,5 +23,13 @@ public class TestMoneyPile {
     public void testComputeHalf() {
         assertEquals("$40.00", (new MoneyPile(8000L)).computeHalf().toString());
         assertEquals("$0.00", (new MoneyPile(0L)).computeHalf().toString());
+    }
+
+    @Test
+    public void testComputeDifference() {
+        MoneyPile pile1 = new MoneyPile(4000L);
+        MoneyPile pile2 = new MoneyPile(1000L);
+        assertEquals("$30.00", MoneyPile.computeDifference(pile1, pile2));
+        assertEquals("negative $30.00", MoneyPile.computeDifference(pile2, pile1));
     }
 }

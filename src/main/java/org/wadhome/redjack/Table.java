@@ -24,7 +24,7 @@ class Table {
         this.tableNumber = tableNumber;
         this.tableRules = tableRules;
         int numDecks = tableRules.getNumDecks();
-        this.shoe = new Shoe(tableNumber, numDecks);
+        this.shoe = new Shoe(casino, tableNumber, numDecks);
         this.discardTray = new DiscardTray(numDecks);
         this.dealerHand = new DealerHand();
         this.seats = new HashMap<>(SeatNumber.values().length);
@@ -88,10 +88,6 @@ class Table {
             }
         }
         throw new RuntimeException("No free seats. Should have checked for an available seat first.");
-    }
-
-    boolean isSeatOccupied(SeatNumber seatNumber) {
-        return seats.get(seatNumber).hasPlayer();
     }
 
     void assignPlayerToSeat(
@@ -620,7 +616,7 @@ class Table {
     }
 
     private void show(String message) {
-        Display.showMessage(message);
+        casino.getDisplay().showMessage(message);
     }
 
     private void show(
@@ -652,6 +648,6 @@ class Table {
                     + " "
                     + message;
         }
-        Display.showMessage(msg);
+        casino.getDisplay().showMessage(msg);
     }
 }

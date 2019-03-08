@@ -1,7 +1,16 @@
 package org.wadhome.redjack;
 
 class Display {
-    static void showMessage(String message) {
-        System.out.println(message);
+
+    private boolean isMute = false;
+
+    void showMessage(String message) {
+        if (!isMute) {
+            System.out.println(message);
+        }
+    }
+
+    void setMute(boolean mute) {
+        isMute = mute;
     }
 }

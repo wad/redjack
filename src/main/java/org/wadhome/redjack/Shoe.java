@@ -3,12 +3,14 @@ package org.wadhome.redjack;
 import java.util.ArrayList;
 
 class Shoe extends CardStack {
+    private Casino casino;
     private int numDecks;
     private int numCardsAfterCutCard;
 
-    Shoe(
+    Shoe(Casino casino,
             int shoeNumber,
             int numDecks) {
+        this.casino = casino;
         setStackNumber(shoeNumber);
         this.numDecks = numDecks;
 
@@ -42,7 +44,7 @@ class Shoe extends CardStack {
     @Override
     protected void extraHandlingOnCardDraw() {
         if (hasCutCardBeenDrawn()) {
-            Display.showMessage("Cut card was drawn. Will shuffle after this hand.");
+            casino.getDisplay().showMessage("Cut card was drawn. Will shuffle after this hand.");
         }
     }
 
