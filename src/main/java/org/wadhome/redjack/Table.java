@@ -418,7 +418,7 @@ class Table {
                     + " hand of " + initialHand
                     + ", and got " + hitCard.toString(false, true)
                     + ". Hand is now " + hand.showCardsWithTotal()
-                    + ". " + player.getGender().getHisHer(true) + " must now stand.");
+                    + ". " + player.getGender().getHeShe(true) + " must now stand.");
             return false;
         }
 

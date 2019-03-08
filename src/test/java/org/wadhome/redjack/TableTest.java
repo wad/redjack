@@ -182,13 +182,9 @@ public class TableTest extends TestHelper {
 
     @Test
     public void testSplitWithTwoSplits() {
-        // dealer hand: T,T (20)
-        // split hand 0: 8,5 -> hit and get 8 (21 stand) -> win
-        // split hand 1: 8,T -> stand at 18 -> lose
-        // split hand 2: 8,9 -> stand at 17 -> lose
-        shoe.addCardToBottom(c8(), cT(), c8(), cT(), c8(), c9(), c7(), cT(), c8());
+        shoe.addCardToBottom(c8(), cT(), c8(), cT(), c8(), c9(), cT(), c9());
         table.playRound();
-        assertEquals("$80.00", player.getBankroll().toString());
+        assertEquals("$70.00", player.getBankroll().toString());
     }
 
     // todo: test split tens (not using pure basic strategy), and get a blackjack
@@ -196,7 +192,7 @@ public class TableTest extends TestHelper {
     @Test
     public void testSplitAcesNoHittingAllowed() {
         tableRules.canHitSplitAces = false;
-        shoe.addCardToBottom(cA(), cT(), cA(), cT(), cA(), c9());
+        shoe.addCardToBottom(cA(), cT(), cA(), cT(), cA(), c8());
         table.playRound();
         assertEquals("$80.00", player.getBankroll().toString());
     }
@@ -228,18 +224,17 @@ public class TableTest extends TestHelper {
     @Test
     public void testSplitAcesHittingAllowed() {
         tableRules.canHitSplitAces = true;
-        //
-        shoe.addCardToBottom(cA(), cT(), cA(), cT(), cA(), c9(), c5(), cT());
+        shoe.addCardToBottom(cA(), cT(), cA(), cT(), c2(), c9(), c3(), c2(), cT());
         table.playRound();
-        assertEquals("$80.00", player.getBankroll().toString());
+        assertEquals("$90.00", player.getBankroll().toString());
     }
 
     @Test
     public void testSplitAcesHittingAllowedTwoSplits() {
+        // todo: hands processed in the wrong order. A,9 hand is processed last, should be next-to-last.
         tableRules.canHitSplitAces = true;
-        //
-        shoe.addCardToBottom(cA(), cT(), cA(), cT(), cA(), c9(), c5(), cT());
+        shoe.addCardToBottom(cA(), cT(), cA(), cT(), cA(), c6(), c2(), c9(), c8(), cT());
         table.playRound();
-        assertEquals("$80.00", player.getBankroll().toString());
+        assertEquals("$100.00", player.getBankroll().toString());
     }
 }
