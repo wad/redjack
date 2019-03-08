@@ -223,7 +223,7 @@ class BasicStrategy {
                 if (upcardValue.ordinal() > Seven.ordinal()) {
                     return Hit;
                 }
-                if (canSplit) {
+                if (!canSplit) {
                     return handleHardHand(
                             hand,
                             dealerUpcard,
@@ -237,7 +237,7 @@ class BasicStrategy {
                     return Hit;
                 }
                 if (upcardValue == Five || upcardValue == Six) {
-                    if (canSplit) {
+                    if (!canSplit) {
                         return handleHardHand(
                                 hand,
                                 dealerUpcard,
@@ -263,7 +263,7 @@ class BasicStrategy {
                 if (upcardValue.ordinal() > Six.ordinal()) {
                     return Hit;
                 }
-                if (canSplit) {
+                if (!canSplit) {
                     return handleHardHand(
                             hand,
                             dealerUpcard,
@@ -281,7 +281,7 @@ class BasicStrategy {
                 if (upcardValue.ordinal() > Seven.ordinal()) {
                     return Hit;
                 }
-                if (canSplit) {
+                if (!canSplit) {
                     return handleHardHand(
                             hand,
                             dealerUpcard,
@@ -291,7 +291,7 @@ class BasicStrategy {
                 }
                 return Split;
             case Eight:
-                if (canSplit) {
+                if (!canSplit) {
                     return handleHardHand(
                             hand,
                             dealerUpcard,
@@ -304,7 +304,7 @@ class BasicStrategy {
                 if (upcardValue == Seven || upcardValue.isTen() || upcardValue == Ace) {
                     return Stand;
                 }
-                if (canSplit) {
+                if (!canSplit) {
                     return handleHardHand(
                             hand,
                             dealerUpcard,
@@ -323,7 +323,7 @@ class BasicStrategy {
                 if (acesHaveAlreadyBeenSplit) {
                     return Hit;
                 }
-                if (canSplit) {
+                if (!canSplit) {
                     return handleSoftHand(
                             hand,
                             dealerUpcard,
@@ -371,11 +371,12 @@ class BasicStrategy {
             return false;
         }
 
-        if (hand.getFirstCard().getValue() == Ace) {
+        boolean isPairOfAces = hand.getFirstCard().getValue() == Ace;
+        if (isPairOfAces) {
             if (!tableRules.canHitSplitAces()) {
                 //noinspection RedundantIfStatement
-                if (numSplitsSoFar == 0) {
-                    // can't split aces if it's not the first split.
+                if (numSplitsSoFar > 0) {
+                    // can't split aces if it's not the first split, and the table rules say you can't hit split aces.
                     return false;
                 }
             }
