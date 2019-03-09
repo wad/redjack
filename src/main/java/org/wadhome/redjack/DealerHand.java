@@ -1,10 +1,16 @@
 package org.wadhome.redjack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.wadhome.redjack.TableRules.DEALER_STAND_TOTAL;
 
 class DealerHand extends Hand {
 
     private static final int SEVEN = Value.Ace.getPoints() + Value.Six.getPoints();
+    private static final int INDEX_OF_HOLE_CARD = 1;
+
+    private boolean isHoleCardRevealed = false;
 
     boolean shouldHit(TableRules tableRules) {
         boolean isSoftSeventeen = hasAtLeastOneAce() && computeMinSum() == SEVEN;
@@ -13,5 +19,23 @@ class DealerHand extends Hand {
         }
 
         return computeMaxSum() < DEALER_STAND_TOTAL;
+    }
+
+    void revealHoleCard() {
+        this.isHoleCardRevealed = true;
+    }
+
+    @Override
+    List<Card> removeCards() {
+        this.isHoleCardRevealed = false;
+        return super.removeCards();
+    }
+
+    public List<Card> getVisibleCards() {
+        List<Card> cardsSeen = new ArrayList<>(cards);
+        if (getSecondCard() != null && !isHoleCardRevealed) {
+            cards.remove(INDEX_OF_HOLE_CARD);
+        }
+        return cardsSeen;
     }
 }

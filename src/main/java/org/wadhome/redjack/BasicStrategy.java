@@ -3,13 +3,43 @@ package org.wadhome.redjack;
 import static org.wadhome.redjack.BlackjackPlay.*;
 import static org.wadhome.redjack.Value.*;
 
-class BasicStrategy {
-    static BlackjackPlay choosePlay(
+class BasicStrategy extends Strategy {
+
+    @Override
+    MoneyPile getInsuranceBet(
+            MoneyPile maximumInsuranceBet,
             PlayerHand hand,
             Card dealerUpcard,
             MoneyPile bankrollAvailable,
-            TableRules tableRules) {
+            Table table) {
+
+        // When you don't know the true count, don't get insurance.
+        return MoneyPile.zero();
+    }
+
+    @Override
+    MoneyPile getBet(
+            MoneyPile favoriteBet,
+            MoneyPile minPossibleBet,
+            MoneyPile maxPossibleBet,
+            Table table) {
+        if (favoriteBet.isGreaterThan(maxPossibleBet)) {
+            // it will be more than the table minimum bet
+            return maxPossibleBet;
+        }
+
+        // it will be less than or equal to the max possible bet
+        return favoriteBet.copy();
+    }
+
+    BlackjackPlay choosePlay(
+            PlayerHand hand,
+            Card dealerUpcard,
+            MoneyPile bankrollAvailable,
+            Table table) {
+
         validateHand(hand);
+        TableRules tableRules = table.getTableRules();
 
         if (hand.isPair()) {
             return handlePair(
@@ -36,7 +66,7 @@ class BasicStrategy {
                 tableRules);
     }
 
-    private static BlackjackPlay handleHardHand(
+    private BlackjackPlay handleHardHand(
             PlayerHand hand,
             Card dealerUpcard,
             boolean isAfterSplit,
@@ -118,7 +148,7 @@ class BasicStrategy {
         return Stand;
     }
 
-    private static BlackjackPlay handleSoftHand(
+    private BlackjackPlay handleSoftHand(
             PlayerHand hand,
             Card dealerUpcard,
             boolean isAfterSplit,
@@ -201,7 +231,7 @@ class BasicStrategy {
         return Hit;
     }
 
-    private static BlackjackPlay handlePair(
+    private BlackjackPlay handlePair(
             PlayerHand hand,
             Card dealerUpcard,
             MoneyPile bankrollAvailable,
@@ -334,66 +364,6 @@ class BasicStrategy {
                 return Split;
             default:
                 throw new RuntimeException("Bug!");
-        }
-    }
-
-    private static boolean canDoubleDown(
-            PlayerHand hand,
-            boolean isAfterSplit,
-            MoneyPile bankrollAvailable,
-            TableRules tableRules) {
-
-        if (isAfterSplit && !tableRules.canDoubleDownAfterSplit()) {
-            return false;
-        }
-
-        boolean hasFundsToCoverDoubleDown = bankrollAvailable.isGreaterThanOrEqualTo(hand.getBetAmount());
-        if (!hasFundsToCoverDoubleDown) {
-            return false;
-        }
-
-        return hand.getNumCards() == 2;
-    }
-
-    private static boolean canHandBeSplit(
-            PlayerHand hand,
-            MoneyPile bankrollAvailable,
-            TableRules tableRules) {
-        int numSplitsSoFar = hand.getSeat().getNumSplitsSoFar();
-
-        boolean canAffordToSplit = bankrollAvailable.isGreaterThanOrEqualTo(hand.getBetAmount());
-        if (!canAffordToSplit) {
-            return false;
-        }
-
-        boolean splitsAllUsedUp = numSplitsSoFar >= tableRules.getMaxNumSplits();
-        if (splitsAllUsedUp) {
-            return false;
-        }
-
-        boolean isPairOfAces = hand.getFirstCard().getValue() == Ace;
-        if (isPairOfAces) {
-            if (!tableRules.canHitSplitAces()) {
-                //noinspection RedundantIfStatement
-                if (numSplitsSoFar > 0) {
-                    // can't split aces if it's not the first split, and the table rules say you can't hit split aces.
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    private static void validateHand(PlayerHand hand) {
-        if (hand.getNumCards() < 2) {
-            throw new RuntimeException("Less than 2 cards.");
-        }
-        if (hand.isBust()) {
-            throw new RuntimeException("Already busted.");
-        }
-        if (hand.isBlackjack()) {
-            throw new RuntimeException("Already blackjack.");
         }
     }
 }

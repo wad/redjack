@@ -4,21 +4,21 @@ class Player {
     private String playerName;
     private Gender gender;
     private MoneyPile bankroll;
-    private PlayerStrategy playerStrategy;
     private boolean takesMaxInsurance = true;
     private MoneyPile favoriteBet;
+    private Strategy strategy;
 
     Player(
             String playerName,
             Gender gender,
             MoneyPile bankroll,
-            PlayerStrategy playerStrategy,
+            Strategy strategy,
             MoneyPile favoriteBet) {
         this.playerName = playerName;
         this.gender = gender;
         this.bankroll = bankroll;
-        this.playerStrategy = playerStrategy;
         this.favoriteBet = favoriteBet;
+        this.strategy = strategy;
     }
 
     String getPlayerName() {
@@ -34,41 +34,41 @@ class Player {
         return this.bankroll;
     }
 
-    MoneyPile getBet(TableRules tableRules) {
+    MoneyPile getBet(Table table) {
+
+        TableRules tableRules = table.getTableRules();
         MoneyPile minPossibleBet = tableRules.getMinBet();
         MoneyPile maxPossibleBet = MoneyPile.getLesserOf(tableRules.getMaxBet(), bankroll);
         if (minPossibleBet.isGreaterThan(bankroll)) {
             return MoneyPile.zero();
         }
 
-        if (favoriteBet.isGreaterThan(maxPossibleBet)) {
-            // it will be more than the table minimum bet
-            return maxPossibleBet;
-        }
-
-        // it will be less than or equal to the max possible bet
-        return favoriteBet.copy();
+        return strategy.getBet(
+                favoriteBet,
+                minPossibleBet,
+                maxPossibleBet,
+                table);
     }
 
     BlackjackPlay getPlay(
             PlayerHand hand,
             Card dealerUpcard,
-            TableRules tableRules) {
-        switch (playerStrategy) {
-            case BasicStrategy:
-                return BasicStrategy.choosePlay(
-                        hand,
-                        dealerUpcard,
-                        bankroll.copy(),
-                        tableRules);
-            case CardCounter:
-                throw new UnsupportedOperationException("We don't handle card counting yet.");
-            default:
-                throw new RuntimeException("Bug in code!");
-        }
+            Table table) {
+
+        return strategy.choosePlay(
+                hand,
+                dealerUpcard,
+                bankroll.copy(),
+                table);
     }
 
-    MoneyPile getInsuranceBet(MoneyPile maximumInsuranceBet) {
+    MoneyPile getInsuranceBet(
+            MoneyPile maximumInsuranceBet,
+            PlayerHand hand,
+            Card dealerUpcard,
+            Table table) {
+
+        // this overrides strategy
         if (takesMaxInsurance) {
             if (bankroll.isGreaterThanOrEqualTo(maximumInsuranceBet)) {
                 return maximumInsuranceBet.copy();
@@ -76,7 +76,13 @@ class Player {
                 return bankroll.copy();
             }
         }
-        return MoneyPile.zero();
+
+        return strategy.getInsuranceBet(
+                maximumInsuranceBet,
+                hand,
+                dealerUpcard,
+                bankroll.copy(),
+                table);
     }
 
     @Override

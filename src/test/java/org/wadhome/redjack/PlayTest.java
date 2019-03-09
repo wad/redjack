@@ -17,7 +17,7 @@ public class PlayTest {
                 "Alex",
                 Gender.male,
                 new MoneyPile(50000L),
-                PlayerStrategy.BasicStrategy,
+                new BasicStrategy(),
                 new MoneyPile(2500L));
         table.assignPlayerToSeat(SeatNumber.one, alex);
         table.assignPlayerToSeat(SeatNumber.two, alex);
@@ -26,7 +26,7 @@ public class PlayTest {
                 "Becky",
                 Gender.female,
                 new MoneyPile(50000L),
-                PlayerStrategy.BasicStrategy,
+                new BasicStrategy(),
                 new MoneyPile(1000L));
         table.assignPlayerToSeat(SeatNumber.three, becky);
 
@@ -34,7 +34,7 @@ public class PlayTest {
                 "Charles",
                 Gender.male,
                 new MoneyPile(10000L),
-                PlayerStrategy.BasicStrategy,
+                new BasicStrategy(),
                 new MoneyPile(10000L));
         table.assignPlayerToSeat(SeatNumber.five, charles);
 

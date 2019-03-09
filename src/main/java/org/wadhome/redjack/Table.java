@@ -1,5 +1,6 @@
 package org.wadhome.redjack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +61,23 @@ class Table {
         show("The dealer placed placed the cut card with " + tableRules.getNumCardsAfterCutCard() + " cards behind it.");
 
         burn();
+    }
+
+    public TableRules getTableRules() {
+        return tableRules;
+    }
+
+    List<Card> getAllCardsSeen() {
+        List<Card> cardsSeen = new ArrayList<>();
+        cardsSeen.addAll(dealerHand.getVisibleCards());
+        cardsSeen.addAll(discardTray.cards);
+        for (SeatNumber seatNumber : SeatNumber.values()) {
+            Seat seat = seats.get(seatNumber);
+            for (PlayerHand hand : seat.getHands()) {
+                cardsSeen.addAll(hand.cards);
+            }
+        }
+        return cardsSeen;
     }
 
     private void burn() {
@@ -171,7 +189,7 @@ class Table {
             Seat seat = seats.get(seatNumber);
             if (seat.hasPlayer()) {
                 Player player = seat.getPlayer();
-                MoneyPile betAmount = player.getBet(tableRules);
+                MoneyPile betAmount = player.getBet(this);
                 playerPayCasino(player, betAmount);
                 PlayerHand hand = seat.addNewHand(betAmount);
                 show(hand, "placed a bet of " + betAmount + ".");
@@ -229,7 +247,11 @@ class Table {
                 Seat seat = seats.get(seatNumber);
                 MoneyPile maxInsuranceBet = seat.computeBetSum().computeHalf();
                 if (maxInsuranceBet.hasMoney()) {
-                    MoneyPile desiredInsuranceBet = seat.getPlayer().getInsuranceBet(maxInsuranceBet);
+                    MoneyPile desiredInsuranceBet = seat.getPlayer().getInsuranceBet(
+                            maxInsuranceBet,
+                            seat.getHands().get(0), // at this point, each occupied seat will have exactly one hand.
+                            dealerHand.getFirstCard(),
+                            this);
                     if (desiredInsuranceBet.hasMoney()) {
                         playerPayCasino(seat.getPlayer(), desiredInsuranceBet);
                         show(seat, "put down " + desiredInsuranceBet
@@ -243,42 +265,45 @@ class Table {
 
             if (insuranceBets.isEmpty()) {
                 show("Nobody made an insurance bet.");
-            } else {
-                if (dealerHand.getSecondCard().getValue().isTen()) {
-                    show("Dealer turns over the hole card, and it's "
-                            + dealerHand.getSecondCard().toString(true, false) + ". Blackjack!"
-                            + " All hands lose, insurance bets all pay double.");
+                return;
+            }
 
-                    // for each player, pay insurance winnings, if any.
-                    for (SeatNumber seatNumber : SeatNumber.values()) {
-                        MoneyPile insuranceBet = insuranceBets.get(seatNumber);
-                        if (insuranceBet != null && insuranceBet.hasMoney()) {
-                            Seat seat = seats.get(seatNumber);
-                            Player player = seat.getPlayer();
+            if (dealerHand.getSecondCard().getValue().isTen()) {
+                show("Dealer turns over the hole card, and it's "
+                        + dealerHand.getSecondCard().toString(true, false) + ". Blackjack!"
+                        + " All hands lose, insurance bets all pay double.");
+                dealerHand.revealHoleCard();
 
-                            casinoPayPlayer(player, insuranceBet);
-                            MoneyPile winnings = insuranceBet.computeDouble();
-                            casinoPayPlayer(player, winnings);
-                            show("Seat " + seatNumber
-                                    + " : " + player.getPlayerName()
-                                    + " wins " + winnings + " for blackjack insurance.");
-                        }
-                    }
-
-                    for (SeatNumber seatNumber : SeatNumber.values()) {
+                // for each player, pay insurance winnings, if any.
+                for (SeatNumber seatNumber : SeatNumber.values()) {
+                    MoneyPile insuranceBet = insuranceBets.get(seatNumber);
+                    if (insuranceBet != null && insuranceBet.hasMoney()) {
                         Seat seat = seats.get(seatNumber);
-                        if (seat.hasPlayer()) {
-                            for (PlayerHand hand : seat.getHands()) {
-                                show(hand, "loses " + hand.getBetAmount() + " to the dealer's blackjack.");
-                                discardTray.addCards(hand.removeCards());
-                            }
+                        Player player = seat.getPlayer();
+
+                        casinoPayPlayer(player, insuranceBet);
+                        MoneyPile winnings = insuranceBet.computeDouble();
+                        casinoPayPlayer(player, winnings);
+                        show("Seat " + seatNumber
+                                + " : " + player.getPlayerName()
+                                + " wins " + winnings + " for blackjack insurance.");
+                    }
+                }
+
+                for (SeatNumber seatNumber : SeatNumber.values()) {
+                    Seat seat = seats.get(seatNumber);
+                    if (seat.hasPlayer()) {
+                        for (PlayerHand hand : seat.getHands()) {
+                            show(hand, "loses " + hand.getBetAmount() + " to the dealer's blackjack.");
+                            discardTray.addCards(hand.removeCards());
                         }
                     }
-                } else {
-                    show("Dealer turns over the hole card, and it's "
-                            + dealerHand.getSecondCard().toString(false, true)
-                            + ". Not a blackjack. insurance bets all lose.");
                 }
+            } else {
+                show("Dealer turns over the hole card, and it's "
+                        + dealerHand.getSecondCard().toString(false, true)
+                        + ". Not a blackjack. insurance bets all lose.");
+                dealerHand.revealHoleCard();
             }
         }
     }
@@ -292,6 +317,8 @@ class Table {
         show("Dealer checks the hole card, and it was "
                 + dealerHand.getSecondCard().toString(false, true)
                 + ". Dealer got a blackjack with " + dealerHand.showCardsWithTotal());
+        dealerHand.revealHoleCard();
+
         for (int i = SeatNumber.values().length - 1; i >= 0; --i) {
             SeatNumber seatNumber = SeatNumber.values()[i];
             Seat seat = seats.get(seatNumber);
@@ -352,7 +379,7 @@ class Table {
                         boolean shallContinue = true;
                         while (shallContinue) {
                             String initialHand = hand.showCardsWithTotal();
-                            BlackjackPlay playerAction = player.getPlay(hand, dealerUpcard, tableRules);
+                            BlackjackPlay playerAction = player.getPlay(hand, dealerUpcard, this);
                             switch (playerAction) {
                                 case Stand:
                                     show(hand, "decides to stand.");

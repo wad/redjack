@@ -29,7 +29,7 @@ public class MoneyPileTest {
     public void testComputeDifference() {
         MoneyPile pile1 = new MoneyPile(4000L);
         MoneyPile pile2 = new MoneyPile(1000L);
-        assertEquals("$30.00", MoneyPile.computeDifference(pile1, pile2));
-        assertEquals("negative $30.00", MoneyPile.computeDifference(pile2, pile1));
+        assertEquals("won $30.00", MoneyPile.computeDifference(pile1, pile2));
+        assertEquals("lost $30.00", MoneyPile.computeDifference(pile2, pile1));
     }
 }
