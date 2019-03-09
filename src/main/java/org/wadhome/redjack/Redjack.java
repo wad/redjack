@@ -11,18 +11,18 @@ public class Redjack {
     }
 
     private void runBasicStrategyAtTwentyFiveDollarMinimums() {
-        int numRoundsToPlay = 100000;
+        int numRoundsToPlay = 10000;
         long playerFavoriteBetInCents = 2500L;
         long initialPlayerBankrollsInCents = 10000000L;
 
         Display display = new Display();
         Casino casino = new Casino("Redjack", display);
-        display.setMute(true);
         int tableNumber = 0;
         TableRules tableRules = TableRules.getDefaultRules();
         tableRules.minBet = new MoneyPile(2500L);
         tableRules.maxBet = new MoneyPile(100000L);
         casino.createTable(tableNumber, tableRules);
+        display.setMute(true);
         Table table = casino.getTable(tableNumber);
         table.shuffleAndStuff();
 
