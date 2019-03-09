@@ -11,11 +11,17 @@ public class Redjack {
     }
 
     private void runBasicStrategyAtTwentyFiveDollarMinimums() {
+        int numRoundsToPlay = 100000;
+        long playerFavoriteBetInCents = 2500L;
+        long initialPlayerBankrollsInCents = 10000000L;
+
         Display display = new Display();
         Casino casino = new Casino("Redjack", display);
+        display.setMute(true);
         int tableNumber = 0;
         TableRules tableRules = TableRules.getDefaultRules();
         tableRules.minBet = new MoneyPile(2500L);
+        tableRules.maxBet = new MoneyPile(100000L);
         casino.createTable(tableNumber, tableRules);
         Table table = casino.getTable(tableNumber);
         table.shuffleAndStuff();
@@ -24,48 +30,47 @@ public class Redjack {
         players.add(new Player(
                 "Anne",
                 Gender.female,
-                new MoneyPile(1000000L),
+                new MoneyPile(initialPlayerBankrollsInCents),
                 PlayerStrategy.BasicStrategy,
-                new MoneyPile(2500L)));
+                new MoneyPile(playerFavoriteBetInCents)));
         players.add(new Player(
                 "Bart",
                 Gender.male,
-                new MoneyPile(1000000L),
+                new MoneyPile(initialPlayerBankrollsInCents),
                 PlayerStrategy.BasicStrategy,
-                new MoneyPile(2500L)));
+                new MoneyPile(playerFavoriteBetInCents)));
         players.add(new Player(
                 "Chris",
                 Gender.getRandomGender(casino.getRandomness()),
-                new MoneyPile(1000000L),
+                new MoneyPile(initialPlayerBankrollsInCents),
                 PlayerStrategy.BasicStrategy,
-                new MoneyPile(2500L)));
+                new MoneyPile(playerFavoriteBetInCents)));
         players.add(new Player(
                 "Dora",
                 Gender.female,
-                new MoneyPile(1000000L),
+                new MoneyPile(initialPlayerBankrollsInCents),
                 PlayerStrategy.BasicStrategy,
-                new MoneyPile(2500L)));
+                new MoneyPile(playerFavoriteBetInCents)));
         players.add(new Player(
                 "Eddie",
                 Gender.male,
-                new MoneyPile(1000000L),
+                new MoneyPile(initialPlayerBankrollsInCents),
                 PlayerStrategy.BasicStrategy,
-                new MoneyPile(2500L)));
+                new MoneyPile(playerFavoriteBetInCents)));
         players.add(new Player(
                 "Fran",
                 Gender.female,
-                new MoneyPile(1000000L),
+                new MoneyPile(initialPlayerBankrollsInCents),
                 PlayerStrategy.BasicStrategy,
-                new MoneyPile(2500L)));
+                new MoneyPile(playerFavoriteBetInCents)));
         players.add(new Player(
                 "Gonzo",
                 Gender.male,
-                new MoneyPile(1000000L),
+                new MoneyPile(initialPlayerBankrollsInCents),
                 PlayerStrategy.BasicStrategy,
-                new MoneyPile(2500L)));
+                new MoneyPile(playerFavoriteBetInCents)));
 
         MoneyPile initialPlayerBankrolls = getSumOfPlayerBankrolls(players, false);
-        MoneyPile initialCasinoBankroll = casino.getBankroll().copy();
 
         for (Player player : players) {
             if (table.areAnySeatsAvailable()) {
@@ -75,27 +80,23 @@ public class Redjack {
             }
         }
 
-        int numRoundsToPlay = 10000;
-        display.setMute(true);
+        System.out.print("Running " + numRoundsToPlay + " rounds of play");
         for (int roundNumber = 0; roundNumber < numRoundsToPlay; roundNumber++) {
-            System.out.println("===========> Round " + roundNumber + " <===========");
+            if (roundNumber % 1000 == 0) {
+                System.out.print(".");
+            }
             if (table.playRound()) {
                 table.shuffleAndStuff();
             }
         }
+        System.out.println();
 
-        MoneyPile finalPlayerBankrolls = getSumOfPlayerBankrolls(players, true);
-        MoneyPile finalCasinoBankroll = casino.getBankroll().copy();
+        MoneyPile finalPlayerBankrolls = getSumOfPlayerBankrolls(players, false);
 
         System.out.println();
         System.out.println("Initial player bankrolls: " + initialPlayerBankrolls);
         System.out.println("Final player bankrolls: " + finalPlayerBankrolls);
-        String casinoEarnings = MoneyPile.computeDifference(initialCasinoBankroll, finalCasinoBankroll);
-        System.out.println("Casino started with " + initialCasinoBankroll
-                + " and ended with " + finalCasinoBankroll
-                + ", earning " + casinoEarnings + ".");
-        System.out.println("Casino earned " + casinoEarnings);
-        System.out.println("Players earned " + MoneyPile.computeDifference(initialPlayerBankrolls, finalPlayerBankrolls));
+        System.out.println("Players " + MoneyPile.computeDifference(finalPlayerBankrolls, initialPlayerBankrolls));
     }
 
     private MoneyPile getSumOfPlayerBankrolls(

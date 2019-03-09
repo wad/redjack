@@ -66,7 +66,8 @@ class MoneyPile {
         }
 
         MoneyPile moneyPile = new MoneyPile(absoluteValue);
-        return isNegative ? "negative " + moneyPile.toString() : moneyPile.toString();
+        String winOrLoseWord = isNegative ? "lost " : "won ";
+        return winOrLoseWord + moneyPile.toString();
     }
 
     private void validate() {
