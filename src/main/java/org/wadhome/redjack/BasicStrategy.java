@@ -75,7 +75,7 @@ class BasicStrategy extends Strategy {
         Value upcardValue = dealerUpcard.getValue();
         int sum = hand.computeMaxSum();
 
-        if (sum == TableRules.MAX_VALID_HAND_POINTS) {
+        if (sum == Blackjack.MAX_VALID_HAND_POINTS) {
             return Stand;
         }
 
@@ -159,7 +159,7 @@ class BasicStrategy extends Strategy {
             sumWithLowAces += card.getValue().getPoints();
         }
 
-        int eleven = TableRules.MAX_VALID_HAND_POINTS - OPTIONAL_EXTRA_ACE_POINTS;
+        int eleven = Blackjack.MAX_VALID_HAND_POINTS - OPTIONAL_EXTRA_ACE_POINTS;
         boolean notReallySoftHand = sumWithLowAces >= eleven;
         if (notReallySoftHand) {
             return handleHardHand(

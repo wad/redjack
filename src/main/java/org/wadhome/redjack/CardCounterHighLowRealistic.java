@@ -1,6 +1,6 @@
 package org.wadhome.redjack;
 
-class CardCounterHighLow extends Strategy {
+class CardCounterHighLowRealistic extends Strategy {
 
     private BasicStrategy basicStrategy = new BasicStrategy();
 
@@ -11,10 +11,8 @@ class CardCounterHighLow extends Strategy {
             MoneyPile bankrollAvailable,
             Table table) {
 
-        CardCount cardCount = new CardCount(table);
-
-
         // todo: use the card count
+
         return this.basicStrategy.choosePlay(
                 hand,
                 dealerUpcard,

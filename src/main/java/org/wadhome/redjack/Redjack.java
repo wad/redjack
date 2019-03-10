@@ -3,6 +3,8 @@ package org.wadhome.redjack;
 import java.util.ArrayList;
 import java.util.List;
 
+// todo: add multithreading
+
 public class Redjack {
 
     public static void main(String... args) {

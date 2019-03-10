@@ -93,4 +93,8 @@ class Player {
     Gender getGender() {
         return gender;
     }
+
+    public void observeCard(Card card) {
+        // todo
+    }
 }

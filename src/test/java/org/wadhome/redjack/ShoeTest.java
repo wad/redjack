@@ -8,7 +8,7 @@ public class ShoeTest extends TestHelper {
     @Test
     public void testAddAndDraw() {
         Shoe shoe = new Shoe(new Casino("test"), 0, 2);
-        assertEquals(TableRules.NUM_CARDS_PER_DECK * 2, shoe.cards.size());
+        assertEquals(Blackjack.NUM_CARDS_PER_DECK * 2, shoe.cards.size());
         shoe.dumpAllCards();
 
         assertEquals(0, shoe.cards.size());

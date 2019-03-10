@@ -16,7 +16,7 @@ class Deck extends CardStack {
     }
 
     private static List<Card> createCards(int deckNumber) {
-        List<Card> cards = new ArrayList<>(TableRules.NUM_CARDS_PER_DECK);
+        List<Card> cards = new ArrayList<>(Blackjack.NUM_CARDS_PER_DECK);
         for (Suite suite : Suite.values()) {
             for (Value value : Value.values()) {
                 cards.add(new Card(deckNumber, suite, value));

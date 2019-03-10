@@ -1,6 +1,5 @@
 package org.wadhome.redjack;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,19 +66,6 @@ class Table {
         return tableRules;
     }
 
-    List<Card> getAllCardsSeen() {
-        List<Card> cardsSeen = new ArrayList<>();
-        cardsSeen.addAll(dealerHand.getVisibleCards());
-        cardsSeen.addAll(discardTray.cards);
-        for (SeatNumber seatNumber : SeatNumber.values()) {
-            Seat seat = seats.get(seatNumber);
-            for (PlayerHand hand : seat.getHands()) {
-                cardsSeen.addAll(hand.cards);
-            }
-        }
-        return cardsSeen;
-    }
-
     private void burn() {
         int numBurnCards = tableRules.getNumBurnCards();
         for (int i = 0; i < numBurnCards; i++) {
@@ -87,6 +73,15 @@ class Table {
             show("The dealer burned " + burnCard.toString(true, false)
                     + " from the shoe.");
             discardTray.addCardToBottom(burnCard);
+        }
+    }
+
+    public void showCard(Card card) {
+        for (SeatNumber seatNumber : SeatNumber.values()) {
+            Seat seat = seats.get(seatNumber);
+            if (seat.hasPlayer()) {
+                seat.getPlayer().observeCard(card);
+            }
         }
     }
 
@@ -143,8 +138,8 @@ class Table {
             Player player,
             MoneyPile amount) {
         if (amount.isGreaterThan(casino.getBankroll())) {
-            // todo: prevent this
-            throw new RuntimeException("Casino ran out of money! This should not happen.");
+            System.out.println("Casino ran out of money! Adding another billion dollars to the bank account, like the Federal Reserve does.");
+            casino.getBankroll().addToPile(new MoneyPile(100000000000L));
         }
         moveMoney(
                 casino.getBankroll(),
@@ -272,7 +267,7 @@ class Table {
                 show("Dealer turns over the hole card, and it's "
                         + dealerHand.getSecondCard().toString(true, false) + ". Blackjack!"
                         + " All hands lose, insurance bets all pay double.");
-                dealerHand.revealHoleCard();
+                dealerHand.revealHoleCard(this);
 
                 // for each player, pay insurance winnings, if any.
                 for (SeatNumber seatNumber : SeatNumber.values()) {
@@ -303,7 +298,7 @@ class Table {
                 show("Dealer turns over the hole card, and it's "
                         + dealerHand.getSecondCard().toString(false, true)
                         + ". Not a blackjack. insurance bets all lose.");
-                dealerHand.revealHoleCard();
+                dealerHand.revealHoleCard(this);
             }
         }
     }
@@ -317,7 +312,7 @@ class Table {
         show("Dealer checks the hole card, and it was "
                 + dealerHand.getSecondCard().toString(false, true)
                 + ". Dealer got a blackjack with " + dealerHand.showCardsWithTotal());
-        dealerHand.revealHoleCard();
+        dealerHand.revealHoleCard(this);
 
         for (int i = SeatNumber.values().length - 1; i >= 0; --i) {
             SeatNumber seatNumber = SeatNumber.values()[i];

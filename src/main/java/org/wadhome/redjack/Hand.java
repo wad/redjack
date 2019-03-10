@@ -73,7 +73,7 @@ abstract class Hand {
         }
 
         if (hasAtLeastOneAce()) {
-            if (maxSum + OPTIONAL_EXTRA_ACE_POINTS <= TableRules.MAX_VALID_HAND_POINTS) {
+            if (maxSum + OPTIONAL_EXTRA_ACE_POINTS <= Blackjack.MAX_VALID_HAND_POINTS) {
                 maxSum += OPTIONAL_EXTRA_ACE_POINTS;
             }
         }
@@ -82,14 +82,14 @@ abstract class Hand {
 
     boolean isTwentyOne() {
         int minSum = computeMinSum();
-        if (minSum == TableRules.MAX_VALID_HAND_POINTS) {
+        if (minSum == Blackjack.MAX_VALID_HAND_POINTS) {
             return true;
         }
-        if (minSum > TableRules.MAX_VALID_HAND_POINTS) {
+        if (minSum > Blackjack.MAX_VALID_HAND_POINTS) {
             return false;
         }
         //noinspection RedundantIfStatement
-        if (computeMaxSum() == TableRules.MAX_VALID_HAND_POINTS) {
+        if (computeMaxSum() == Blackjack.MAX_VALID_HAND_POINTS) {
             return true;
         }
         return false;
@@ -105,7 +105,7 @@ abstract class Hand {
     }
 
     boolean isBust() {
-        return computeMinSum() > TableRules.MAX_VALID_HAND_POINTS;
+        return computeMinSum() > Blackjack.MAX_VALID_HAND_POINTS;
     }
 
     boolean isBlackjack() {
@@ -115,7 +115,7 @@ abstract class Hand {
     }
 
     boolean isCharlie() {
-        return cards.size() == TableRules.NUM_CARDS_IN_CHARLIE_HAND
+        return cards.size() == Blackjack.NUM_CARDS_IN_CHARLIE_HAND
                 && !isBust();
     }
 
@@ -123,7 +123,7 @@ abstract class Hand {
         int thisSum = computeMaxSum();
         int thatSum = hand.computeMaxSum();
         if (thisSum == thatSum) {
-            if (thisSum > TableRules.MAX_VALID_HAND_POINTS) {
+            if (thisSum > Blackjack.MAX_VALID_HAND_POINTS) {
                 throw new RuntimeException("What? Comparing two busted hands?");
             }
 

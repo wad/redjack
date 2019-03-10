@@ -3,7 +3,7 @@ package org.wadhome.redjack;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.wadhome.redjack.TableRules.DEALER_STAND_TOTAL;
+import static org.wadhome.redjack.Blackjack.DEALER_STAND_TOTAL;
 
 class DealerHand extends Hand {
 
@@ -21,8 +21,9 @@ class DealerHand extends Hand {
         return computeMaxSum() < DEALER_STAND_TOTAL;
     }
 
-    void revealHoleCard() {
+    void revealHoleCard(Table table) {
         this.isHoleCardRevealed = true;
+        table.showCard(getSecondCard());
     }
 
     @Override

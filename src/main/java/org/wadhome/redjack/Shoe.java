@@ -14,7 +14,7 @@ class Shoe extends CardStack {
         setStackNumber(shoeNumber);
         this.numDecks = numDecks;
 
-        cards = new ArrayList<>(TableRules.NUM_CARDS_PER_DECK * numDecks);
+        cards = new ArrayList<>(Blackjack.NUM_CARDS_PER_DECK * numDecks);
         for (int deckNumber = 0; deckNumber < numDecks; deckNumber++) {
             Deck deck = new Deck(deckNumber);
             while (deck.hasCards()) {
@@ -30,7 +30,7 @@ class Shoe extends CardStack {
     }
 
     void placeCutCard(int numCardsAfterCutCardInShoe) {
-        if (numCardsAfterCutCardInShoe > TableRules.NUM_CARDS_PER_DECK * numDecks) {
+        if (numCardsAfterCutCardInShoe > Blackjack.NUM_CARDS_PER_DECK * numDecks) {
             throw new RuntimeException("Invalid cut card position: " + numCardsAfterCutCardInShoe);
         }
 

@@ -1,59 +1,17 @@
 package org.wadhome.redjack;
 
-import java.util.List;
+abstract class CardCount {
+    protected int numDecks;
 
-class CardCount {
-    int runningCount;
-    int aceCount;
-    double trueCount;
-
-    CardCount(Table table) {
-        runningCount = 0;
-        aceCount = 0;
-        updateNumbers(table.getAllCardsSeen());
-        double numDecksRemaining = ((double) (table.getShoe().cards.size())) / ((double) TableRules.NUM_CARDS_PER_DECK);
-        trueCount = ((double) runningCount) / numDecksRemaining;
+    CardCount(int numDecks) {
+        this.numDecks = numDecks;
     }
 
-    int getRunningCount() {
-        return runningCount;
-    }
+    abstract void observeCard(Card newCardsSeen);
 
-    int getAceCount() {
-        return aceCount;
-    }
+    abstract void newShoe();
 
-    double getTrueCount() {
-        return trueCount;
-    }
-
-    private void updateNumbers(List<Card> newCardsSeen) {
-        for (Card card : newCardsSeen) {
-            switch (card.getValue()) {
-                case Two:
-                case Three:
-                case Four:
-                case Five:
-                case Six:
-                    runningCount++;
-                    break;
-                case Seven:
-                case Eight:
-                case Nine:
-                    break;
-                case Ten:
-                case Jack:
-                case Queen:
-                case King:
-                    runningCount--;
-                    break;
-                case Ace:
-                    runningCount--;
-                    aceCount++;
-                    break;
-                default:
-                    throw new RuntimeException("bug");
-            }
-        }
+    protected int roundToInt(double value) {
+        return (int) (value + 0.5D);
     }
 }
