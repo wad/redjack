@@ -11,7 +11,13 @@ abstract class CardCount {
 
     abstract void newShoe();
 
-    protected int roundToInt(double value) {
+    protected static int roundToInt(double value) {
         return (int) (value + 0.5D);
+    }
+
+    protected static double roundToHalf(double value) {
+        double twiceValue = value * 2.0D;
+        int rounded = roundToInt(twiceValue);
+        return ((double)rounded) / 2.0D;
     }
 }

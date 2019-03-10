@@ -43,7 +43,7 @@ class CardCountHighLowRealistic extends CardCount {
 
     int getTrueCount(DiscardTray discardTray) {
         double numDecksInDiscardTray = estimateNumDecksInDiscardTray(discardTray);
-        double numDecksRemaining = estimateNumDecksRemaining(numDecksInDiscardTray);
+        double numDecksRemaining = estimateNumDecksRemainingInShoe(numDecks, numDecksInDiscardTray);
         double exactTrueCount = ((double) runningCount) / numDecksRemaining;
         return roundToInt(exactTrueCount);
     }
@@ -52,14 +52,13 @@ class CardCountHighLowRealistic extends CardCount {
     static double estimateNumDecksInDiscardTray(DiscardTray discardTray) {
         double numCards = (double) discardTray.cards.size();
         double numCardsPerDeck = Blackjack.NUM_CARDS_PER_DECK;
-
-        // todo
-        return 0D;
+        return roundToHalf(numCards / numCardsPerDeck);
     }
 
     // Accuracy is to half a deck
-    static double estimateNumDecksRemaining(double numDecksInDiscardTray) {
-        // todo
-        return 0D;
+    static double estimateNumDecksRemainingInShoe(
+            int numDecks,
+            double numDecksInDiscardTray) {
+        return ((double)numDecks) - numDecksInDiscardTray;
     }
 }
