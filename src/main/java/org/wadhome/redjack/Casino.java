@@ -7,7 +7,7 @@ class Casino {
     private Randomness randomness;
     private Map<Integer, Table> tables = new HashMap<>();
     private String casinoName;
-    private MoneyPile houseBankroll = new MoneyPile(100000000);
+    private MoneyPile houseBankroll = new MoneyPile(100000000000000L);
     private Display display;
 
     Casino(String casinoName) {
@@ -16,22 +16,14 @@ class Casino {
 
     Casino(
             String casinoName,
-            Display display) {
-        this(casinoName, null, display);
-    }
-
-    Casino(
-            String casinoName,
-            Long seed,
+            Long seed, // you can supply Randomness.generateRandomSeed() here
             Display display) {
         this.casinoName = casinoName;
-        this.display = display == null ? new Display() : display;
-
         if (seed == null) {
             seed = Randomness.generateRandomSeed();
         }
+        this.display = display == null ? new Display(true) : display;
         randomness = new Randomness(seed);
-
         showWelcomeInfo();
     }
 
@@ -49,7 +41,7 @@ class Casino {
         return display;
     }
 
-    void createTable(
+    Table createTable(
             int tableNumber,
             TableRules tableRules) {
         Table table = new Table(
@@ -58,6 +50,7 @@ class Casino {
                 tableRules);
         tables.put(tableNumber, table);
         table.showPreparationMessages();
+        return table;
     }
 
     Table getTable(int tableNumber) {

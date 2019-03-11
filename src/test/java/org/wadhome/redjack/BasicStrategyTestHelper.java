@@ -3,18 +3,17 @@ package org.wadhome.redjack;
 public class BasicStrategyTestHelper extends TestHelper {
 
     private MoneyPile bankroll = new MoneyPile(1000000);
-    private TableRules tableRules = TableRules.getDefaultRules();
     private Seat seat = new Seat(SeatNumber.one);
-    private PlayStrategyBasic basicStrategy = new PlayStrategyBasic(tableRules);
 
     BlackjackPlay compute(Card... cards) {
-        return compute(this.tableRules, cards);
+        return compute(TableRules.getDefaultRules(), cards);
     }
 
     BlackjackPlay compute(
             TableRules tableRules,
             Card... cards) {
-        Table table = new Table(new Casino("test"), 0, tableRules);
+        Casino casino = new Casino("test");
+        Table table = casino.createTable(0, tableRules);
         int numCards = cards.length;
         if (numCards < 3)
         {
@@ -28,6 +27,7 @@ public class BasicStrategyTestHelper extends TestHelper {
             playerHand.addCard(cards[i]);
         }
 
+        PlayStrategyBasic basicStrategy = new PlayStrategyBasic(tableRules);
         return basicStrategy.choosePlay(
                 playerHand,
                 dealerUpcard,

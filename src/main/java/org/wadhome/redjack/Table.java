@@ -174,12 +174,36 @@ class Table {
         toPile.addToPile(amountToMove);
     }
 
-    boolean playRound() {
-        takeBetsFromPlayers();
+    void playRounds(int numRoundsToPlay) {
+        show("Running " + numRoundsToPlay + " rounds of play", true);
+        boolean continueRounds = true;
+        for (int roundNumber = 0; continueRounds && (roundNumber < numRoundsToPlay); roundNumber++) {
+            if (roundNumber % 1000 == 0) {
+                System.out.print(".");
+            }
 
+            RoundResult roundResult = playRound();
+            if (roundResult.isCutCardDrawn()) {
+                shuffleAndStuff();
+            }
+
+            if (roundResult.areAllPlayersBankrupt()) {
+                show("\nAll players are bankrupt on round number " + roundNumber + ".", true);
+                continueRounds = false;
+            }
+        }
+        System.out.println();
+    }
+
+    RoundResult playRound() {
+        if (areAllPlayersBankrupt()) {
+            return RoundResult.allPlayersBankrupt();
+        }
+
+        takeBetsFromPlayers();
         if (!anySeatsHaveBets()) {
             show("No seats have hands with bets.");
-            return false;
+            return RoundResult.normal();
         }
 
         dealCardsToPlayers();
@@ -195,7 +219,25 @@ class Table {
             resolveBets();
         }
         cleanupTable();
-        return shoe.hasCutCardBeenDrawn();
+        if (shoe.hasCutCardBeenDrawn()) {
+            return RoundResult.cutCardDrawn();
+        }
+        return RoundResult.normal();
+    }
+
+    private boolean areAllPlayersBankrupt() {
+        MoneyPile minBet = tableRules.getMinBet();
+        int numPlayersNotBankrupt = 0;
+        for (SeatNumber seatNumber : SeatNumber.values()) {
+            Seat seat = seats.get(seatNumber);
+            if (seat.hasPlayer()) {
+                Player player = seat.getPlayer();
+                if (player.getBankroll().isGreaterThanOrEqualTo(minBet)) {
+                    numPlayersNotBankrupt ++;
+                }
+            }
+        }
+        return numPlayersNotBankrupt == 0;
     }
 
     private void takeBetsFromPlayers() {
@@ -658,6 +700,10 @@ class Table {
 
     private void show(String message) {
         casino.getDisplay().showMessage(message);
+    }
+
+    private void show(String message, boolean overrideMute) {
+        casino.getDisplay().showMessage(message, overrideMute);
     }
 
     private void show(

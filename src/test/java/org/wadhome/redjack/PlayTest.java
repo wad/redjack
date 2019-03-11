@@ -8,7 +8,7 @@ public class PlayTest {
     @Test
     public void testRunningIt() {
         int tableNumber = 1;
-        Casino casino = new Casino("TestMe", null);
+        Casino casino = new Casino("TestMe", null, new Display(false));
         TableRules tableRules = TableRules.getDefaultRules();
         casino.createTable(tableNumber, tableRules);
         Table table = casino.getTable(tableNumber);
@@ -46,15 +46,7 @@ public class PlayTest {
                 charles.getBankroll());
         MoneyPile initialMoney = new MoneyPile(initialCasinoBankroll, initialSumOfPlayerBankrolls);
 
-        if (table.playRound()) {
-            table.shuffleAndStuff();
-        }
-        if (table.playRound()) {
-            table.shuffleAndStuff();
-        }
-        if (table.playRound()) {
-            table.shuffleAndStuff();
-        }
+        table.playRounds(3);
 
         MoneyPile finalCasinoBankroll = casino.getBankroll().copy();
         MoneyPile finalSumOfPlayerBankrolls = new MoneyPile(

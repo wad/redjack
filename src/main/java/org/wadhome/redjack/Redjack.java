@@ -1,30 +1,57 @@
 package org.wadhome.redjack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import static java.util.stream.Collectors.joining;
 
 // todo: add multithreading
 
-public class Redjack {
+class Redjack {
 
     public static void main(String... args) {
+        if (args.length != 1) {
+            String listOfCommands = Arrays
+                    .stream(Command.values())
+                    .map(Enum::toString)
+                    .collect(joining(", "));
+            System.out.println("Supply a command. One of " + listOfCommands);
+            return;
+        }
+
         Redjack redjack = new Redjack();
-        redjack.runBasicStrategyAtTwentyFiveDollarMinimums();
+
+        String commandName = args[0];
+        Command command = Command.determine(commandName);
+        switch (command) {
+            case playBasic_100k:
+                redjack.runBasicStrategyAtTwentyFiveDollarMinimums();
+                break;
+            case unknown:
+                System.out.println("Unknown command: " + commandName);
+                break;
+            default:
+                throw new RuntimeException("Bug.");
+        }
     }
 
-    private void runBasicStrategyAtTwentyFiveDollarMinimums() {
+    void runBasicStrategyAtTwentyFiveDollarMinimums() {
         int numRoundsToPlay = 100000;
-        long playerFavoriteBetInCents = 2500L;
-        long initialPlayerBankrollsInCents = 10000000L;
+        long playerFavoriteBetInCents = 500L;
+        long initialPlayerBankrollsInCents = 200000L;
+        System.out.println("Seven players, each with "
+                + new MoneyPile(initialPlayerBankrollsInCents)
+                + ", betting " + new MoneyPile(playerFavoriteBetInCents)
+                + ", playing " + numRoundsToPlay + " rounds.");
 
-        Display display = new Display();
-        Casino casino = new Casino("Redjack", display);
+        Display display = new Display(true);
+        Casino casino = new Casino("Redjack", Randomness.generateRandomSeed(), display);
         int tableNumber = 0;
         TableRules tableRules = TableRules.getDefaultRules();
         tableRules.minBet = new MoneyPile(2500L);
         tableRules.maxBet = new MoneyPile(100000L);
         casino.createTable(tableNumber, tableRules);
-        display.setMute(true);
         Table table = casino.getTable(tableNumber);
         table.shuffleAndStuff();
 
@@ -82,16 +109,7 @@ public class Redjack {
             }
         }
 
-        System.out.print("Running " + numRoundsToPlay + " rounds of play");
-        for (int roundNumber = 0; roundNumber < numRoundsToPlay; roundNumber++) {
-            if (roundNumber % 1000 == 0) {
-                System.out.print(".");
-            }
-            if (table.playRound()) {
-                table.shuffleAndStuff();
-            }
-        }
-        System.out.println();
+        table.playRounds(numRoundsToPlay);
 
         MoneyPile finalPlayerBankrolls = getSumOfPlayerBankrolls(players, false);
 

@@ -1,6 +1,5 @@
 package org.wadhome.redjack;
 
-@SuppressWarnings({"unused", "WeakerAccess"})
 class TableRules {
 
     enum BlackjackPayOptions {
