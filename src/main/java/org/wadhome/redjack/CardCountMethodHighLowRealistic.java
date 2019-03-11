@@ -4,10 +4,12 @@ package org.wadhome.redjack;
 // It also doesn't make plays that would make it obvious that card-counting is happening.
 class CardCountMethodHighLowRealistic extends CardCountMethod {
 
-    int runningCount;
+    private int runningCount;
 
-    CardCountMethodHighLowRealistic(TableRules tableRules) {
-        super(tableRules);
+    CardCountMethodHighLowRealistic(
+            Table table,
+            BettingStrategy bettingStrategy) {
+        super(table, bettingStrategy);
         runningCount = 0;
     }
 
@@ -40,6 +42,20 @@ class CardCountMethodHighLowRealistic extends CardCountMethod {
     @Override
     void observeShuffle() {
         runningCount = 0;
+    }
+
+    @Override
+    MoneyPile getBet(
+            MoneyPile favoriteBet,
+            MoneyPile minPossibleBet,
+            MoneyPile maxPossibleBet,
+            Player player) {
+        return bettingStrategy.getBet(
+                favoriteBet,
+                minPossibleBet,
+                maxPossibleBet,
+                getTrueCount(table.getDiscardTray()),
+                player);
     }
 
     int getRunningCount() {

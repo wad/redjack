@@ -5,10 +5,14 @@ import static org.wadhome.redjack.Value.*;
 
 class PlayStrategyBasic extends PlayStrategy {
 
-    PlayStrategyBasic(Table table) {
+    PlayStrategyBasic(
+            Table table,
+            BettingStrategy bettingStrategy) {
         super(
                 table,
-                new CardCountMethodNone(table.getTableRules()));
+                new CardCountMethodNone(
+                        table,
+                        bettingStrategy));
     }
 
     @Override
@@ -20,20 +24,6 @@ class PlayStrategyBasic extends PlayStrategy {
 
         // When you don't know the true count, don't get insurance.
         return MoneyPile.zero();
-    }
-
-    @Override
-    MoneyPile getBet(
-            MoneyPile favoriteBet,
-            MoneyPile minPossibleBet,
-            MoneyPile maxPossibleBet) {
-        if (favoriteBet.isGreaterThan(maxPossibleBet)) {
-            // it will be more than the table minimum bet
-            return maxPossibleBet;
-        }
-
-        // it will be less than or equal to the max possible bet
-        return favoriteBet.copy();
     }
 
     BlackjackPlay choosePlay(

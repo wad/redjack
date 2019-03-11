@@ -2,13 +2,15 @@ package org.wadhome.redjack;
 
 abstract class CardCountMethod {
 
-    protected TableRules tableRules;
-    protected BettingStrategy bettingStrategy;
+    Table table;
+    TableRules tableRules;
+    BettingStrategy bettingStrategy;
 
     CardCountMethod(
-            TableRules tableRules,
+            Table table,
             BettingStrategy bettingStrategy) {
-        this.tableRules = tableRules;
+        this.table = table;
+        this.tableRules = table.getTableRules();
         this.bettingStrategy = bettingStrategy;
     }
 
@@ -16,11 +18,17 @@ abstract class CardCountMethod {
 
     abstract void observeShuffle();
 
-    protected static int roundToInt(double value) {
+    abstract MoneyPile getBet(
+            MoneyPile favoriteBet,
+            MoneyPile minPossibleBet,
+            MoneyPile maxPossibleBet,
+            Player player);
+
+    static int roundToInt(double value) {
         return (int) (value + 0.5D);
     }
 
-    protected static double roundToHalf(double value) {
+    static double roundToHalf(double value) {
         double twiceValue = value * 2.0D;
         int rounded = roundToInt(twiceValue);
         return ((double)rounded) / 2.0D;

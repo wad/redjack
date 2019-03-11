@@ -51,7 +51,8 @@ class Player {
         return playStrategy.getBet(
                 favoriteBet,
                 minPossibleBet,
-                maxPossibleBet);
+                maxPossibleBet,
+                this);
     }
 
     BlackjackPlay getPlay(
@@ -94,11 +95,11 @@ class Player {
         return gender;
     }
 
-    public void observeCard(Card card) {
+    void observeCard(Card card) {
         this.playStrategy.getCardCountMethod().observeCard(card);
     }
 
-    public void observeShuffle() {
+    void observeShuffle() {
         this.playStrategy.getCardCountMethod().observeShuffle();
     }
 }

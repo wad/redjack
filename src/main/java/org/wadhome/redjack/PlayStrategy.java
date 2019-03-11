@@ -16,21 +16,28 @@ abstract class PlayStrategy {
         this.cardCountMethod = cardCountMethod;
     }
 
-    abstract BlackjackPlay choosePlay(
-            PlayerHand hand,
-            Card dealerUpcard,
-            MoneyPile bankrollAvailable);
-
     abstract MoneyPile getInsuranceBet(
             MoneyPile maximumInsuranceBet,
             PlayerHand hand,
             Card dealerUpcard,
             MoneyPile bankrollAvailable);
 
-    abstract MoneyPile getBet(
+    MoneyPile getBet(
             MoneyPile favoriteBet,
             MoneyPile minPossibleBet,
-            MoneyPile maxPossibleBet);
+            MoneyPile maxPossibleBet,
+            Player player) { // some betting strategies want to know the initial bankroll amount
+        return getCardCountMethod().getBet(
+                favoriteBet,
+                minPossibleBet,
+                maxPossibleBet,
+                player);
+    }
+
+    abstract BlackjackPlay choosePlay(
+            PlayerHand hand,
+            Card dealerUpcard,
+            MoneyPile bankrollAvailable);
 
     protected boolean canHandBeSplit(
             PlayerHand hand,

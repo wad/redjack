@@ -40,7 +40,7 @@ class Redjack {
         }
     }
 
-    void runBasicStrategyAtTwentyFiveDollarMinimums() {
+    private void runBasicStrategyAtTwentyFiveDollarMinimums() {
         int numRoundsToPlay = 100000;
         long playerFavoriteBetInCents = 2500L;
         long initialPlayerBankrollsInCents = 1000000L;
@@ -71,7 +71,7 @@ class Redjack {
                 name,
                 Gender.female,
                 new MoneyPile(initialPlayerBankrollsInCents),
-                new PlayStrategyBasic(table),
+                new PlayStrategyBasic(table, new BettingStrategyAlwaysFavorite()),
                 new MoneyPile(playerFavoriteBetInCents))).
                 collect(toList());
 
@@ -114,13 +114,13 @@ class Redjack {
                 "AndyAdvanced",
                 Gender.male,
                 new MoneyPile(initialPlayerBankrollsInCents),
-                new PlayStrategyHighLowPerfect(table),
+                new PlayStrategyHighLowPerfect(table, new BettingStrategyMaxOnGoodCount()),
                 new MoneyPile(playerFavoriteBetInCents)));
         players.add(new Player(
                 "BobbyBasic",
                 Gender.male,
                 new MoneyPile(initialPlayerBankrollsInCents),
-                new PlayStrategyBasic(table),
+                new PlayStrategyBasic(table, new BettingStrategyAlwaysFavorite()),
                 new MoneyPile(playerFavoriteBetInCents)));
 
         assignPlayersToTable(players, table);

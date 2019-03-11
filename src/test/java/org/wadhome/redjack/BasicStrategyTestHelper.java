@@ -15,19 +15,17 @@ public class BasicStrategyTestHelper extends TestHelper {
         Casino casino = new Casino("test");
         Table table = casino.createTable(0, tableRules);
         int numCards = cards.length;
-        if (numCards < 3)
-        {
+        if (numCards < 3) {
             throw new RuntimeException("Bug in test code!");
         }
         Card dealerUpcard = cards[numCards - 1];
 
         PlayerHand playerHand = new PlayerHand(seat);
-        for (int i = 0; i < numCards - 1; i++)
-        {
+        for (int i = 0; i < numCards - 1; i++) {
             playerHand.addCard(cards[i]);
         }
 
-        PlayStrategyBasic basicStrategy = new PlayStrategyBasic(table);
+        PlayStrategyBasic basicStrategy = new PlayStrategyBasic(table, new BettingStrategyAlwaysFavorite());
         return basicStrategy.choosePlay(
                 playerHand,
                 dealerUpcard,

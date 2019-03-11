@@ -4,14 +4,27 @@ class PlayStrategyHighLowRealistic extends PlayStrategy {
 
     private PlayStrategyBasic basicStrategy;
 
-    PlayStrategyHighLowRealistic(Table table) {
-        super(table, new CardCountMethodHighLowRealistic(table.getTableRules()));
-        this.basicStrategy = new PlayStrategyBasic(table);
+    PlayStrategyHighLowRealistic(
+            Table table,
+            BettingStrategy bettingStrategy) {
+        super(
+                table,
+                new CardCountMethodHighLowRealistic(
+                        table,
+                        bettingStrategy));
+        this.basicStrategy = new PlayStrategyBasic(table, bettingStrategy);
     }
 
-    int getTrueCount(Table table) {
-        CardCountMethodHighLowRealistic cardCountMethod = (CardCountMethodHighLowRealistic) getCardCountMethod();
-        return cardCountMethod.getTrueCount(table.getDiscardTray());
+    @Override
+    MoneyPile getInsuranceBet(
+            MoneyPile maximumInsuranceBet,
+            PlayerHand hand,
+            Card dealerUpcard,
+            MoneyPile bankrollAvailable) {
+        if (getTrueCount(table) > 3) {
+            return maximumInsuranceBet;
+        }
+        return MoneyPile.zero();
     }
 
     @Override
@@ -28,27 +41,13 @@ class PlayStrategyHighLowRealistic extends PlayStrategy {
                 bankrollAvailable);
     }
 
-    @Override
-    MoneyPile getInsuranceBet(
-            MoneyPile maximumInsuranceBet,
-            PlayerHand hand,
-            Card dealerUpcard,
-            MoneyPile bankrollAvailable) {
-        if (getTrueCount(table) > 3) {
-            return maximumInsuranceBet;
-        }
-        return MoneyPile.zero();
+    private int getTrueCount(Table table) {
+        CardCountMethodHighLowRealistic cardCountMethod = (CardCountMethodHighLowRealistic) getCardCountMethod();
+        return cardCountMethod.getTrueCount(table.getDiscardTray());
     }
 
-    @Override
-    MoneyPile getBet(
-            MoneyPile favoriteBet,
-            MoneyPile minPossibleBet,
-            MoneyPile maxPossibleBet) {
-        // todo: apply betting strategy here
-        return basicStrategy.getBet(
-                favoriteBet,
-                minPossibleBet,
-                maxPossibleBet);
+    private int getRunningCount() {
+        CardCountMethodHighLowPerfect cardCountMethod = (CardCountMethodHighLowPerfect) getCardCountMethod();
+        return cardCountMethod.getRunningCount();
     }
 }
