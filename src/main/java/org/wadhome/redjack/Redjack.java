@@ -89,9 +89,9 @@ class Redjack {
     }
 
     private void runStrategyComparisonBasicVsHighLow() {
-        int numRoundsToPlay = 1;
+        int numRoundsToPlay = 100000;
         long playerFavoriteBetInCents = 2500L;
-        long initialPlayerBankrollsInCents = 1000000L;
+        long initialPlayerBankrollsInCents = 10000000L;
         System.out.println("Two players, each with "
                 + new MoneyPile(initialPlayerBankrollsInCents)
                 + ", betting " + new MoneyPile(playerFavoriteBetInCents)
@@ -99,12 +99,14 @@ class Redjack {
 
         TableRules tableRules = TableRules.getDefaultRules();
         tableRules.minBet = new MoneyPile(2500L);
-        tableRules.maxBet = new MoneyPile(100000L);
+        tableRules.maxBet = new MoneyPile(30000L);
 
+        long seed = Randomness.generateRandomSeed();
         Casino casino = new Casino(
                 "Redjack Strategy Comparison",
-                Randomness.generateRandomSeed(),
+                seed,
                 new Display(true));
+        System.out.println("Seed: " + seed);
         Table table = casino.createTable(0, tableRules);
 
         List<Player> players = new ArrayList<>();
@@ -112,16 +114,17 @@ class Redjack {
                 "AndyAdvanced",
                 Gender.male,
                 new MoneyPile(initialPlayerBankrollsInCents),
-                new PlayStrategyBasic(table),
+                new PlayStrategyHighLowPerfect(table),
                 new MoneyPile(playerFavoriteBetInCents)));
         players.add(new Player(
                 "BobbyBasic",
                 Gender.male,
                 new MoneyPile(initialPlayerBankrollsInCents),
-                new PlayStrategyHighLowPerfect(table),
+                new PlayStrategyBasic(table),
                 new MoneyPile(playerFavoriteBetInCents)));
 
         assignPlayersToTable(players, table);
+//        table.playRoundsUntilEndOfShoe();
         table.playRounds(numRoundsToPlay);
         showPlayerResults(initialPlayerBankrollsInCents, players);
     }

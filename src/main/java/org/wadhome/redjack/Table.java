@@ -178,8 +178,29 @@ class Table {
         toPile.addToPile(amountToMove);
     }
 
+    void playRoundsUntilEndOfShoe() {
+        show("Running hands until the end of this shoe is reached.", true);
+        int roundNumber = 0;
+        boolean continueRounds = true;
+        while (continueRounds) {
+            roundNumber++;
+
+            RoundResult roundResult = playRound();
+            if (roundResult.isCutCardDrawn()) {
+                shuffleAndStuff();
+                continueRounds = false;
+            }
+
+            if (roundResult.areAllPlayersBankrupt()) {
+                show("\nAll players are bankrupt on round number " + roundNumber + ".", true);
+                continueRounds = false;
+            }
+        }
+        System.out.println();
+    }
+
     void playRounds(int numRoundsToPlay) {
-        show("Running " + numRoundsToPlay + " rounds of play", true);
+        show("Running " + numRoundsToPlay + " rounds of play.", true);
         boolean continueRounds = true;
         for (int roundNumber = 0; continueRounds && (roundNumber < numRoundsToPlay); roundNumber++) {
             if (roundNumber % 1000 == 0) {
@@ -237,7 +258,7 @@ class Table {
             if (seat.hasPlayer()) {
                 Player player = seat.getPlayer();
                 if (player.getBankroll().isGreaterThanOrEqualTo(minBet)) {
-                    numPlayersNotBankrupt ++;
+                    numPlayersNotBankrupt++;
                 }
             }
         }

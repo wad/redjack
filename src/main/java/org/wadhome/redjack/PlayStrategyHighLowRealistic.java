@@ -34,7 +34,9 @@ class PlayStrategyHighLowRealistic extends PlayStrategy {
             PlayerHand hand,
             Card dealerUpcard,
             MoneyPile bankrollAvailable) {
-        // todo - apply the strategy rules here
+        if (getTrueCount(table) > 3) {
+            return maximumInsuranceBet;
+        }
         return MoneyPile.zero();
     }
 
