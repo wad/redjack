@@ -2,6 +2,7 @@ package org.wadhome.redjack;
 
 enum Command {
     playBasic_100k,
+    strategyCompare_basic_vs_highLow,
     unknown;
 
     static Command determine(String commandName) {

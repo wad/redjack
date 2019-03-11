@@ -50,6 +50,7 @@ class Casino {
                 tableRules);
         tables.put(tableNumber, table);
         table.showPreparationMessages();
+        table.shuffleAndStuff();
         return table;
     }
 

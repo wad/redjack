@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
 // todo: add multithreading
 
@@ -28,6 +29,9 @@ class Redjack {
             case playBasic_100k:
                 redjack.runBasicStrategyAtTwentyFiveDollarMinimums();
                 break;
+            case strategyCompare_basic_vs_highLow:
+                redjack.runStrategyComparisonBasicVsHighLow();
+                break;
             case unknown:
                 System.out.println("Unknown command: " + commandName);
                 break;
@@ -38,77 +42,41 @@ class Redjack {
 
     void runBasicStrategyAtTwentyFiveDollarMinimums() {
         int numRoundsToPlay = 100000;
-        long playerFavoriteBetInCents = 500L;
-        long initialPlayerBankrollsInCents = 200000L;
+        long playerFavoriteBetInCents = 2500L;
+        long initialPlayerBankrollsInCents = 1000000L;
         System.out.println("Seven players, each with "
                 + new MoneyPile(initialPlayerBankrollsInCents)
                 + ", betting " + new MoneyPile(playerFavoriteBetInCents)
                 + ", playing " + numRoundsToPlay + " rounds.");
 
-        Display display = new Display(true);
-        Casino casino = new Casino("Redjack", Randomness.generateRandomSeed(), display);
-        int tableNumber = 0;
         TableRules tableRules = TableRules.getDefaultRules();
         tableRules.minBet = new MoneyPile(2500L);
         tableRules.maxBet = new MoneyPile(100000L);
-        casino.createTable(tableNumber, tableRules);
-        Table table = casino.getTable(tableNumber);
-        table.shuffleAndStuff();
 
-        List<Player> players = new ArrayList<>();
-        players.add(new Player(
-                "Anne",
+        List<Player> players = new ArrayList<String>() {{
+            add("Anne");
+            add("Beth");
+            add("Callie");
+            add("Dora");
+            add("Edna");
+            add("Fran");
+            add("Grace");
+        }}.stream().map(name -> new Player(
+                name,
                 Gender.female,
                 new MoneyPile(initialPlayerBankrollsInCents),
                 new PlayStrategyBasic(tableRules),
-                new MoneyPile(playerFavoriteBetInCents)));
-        players.add(new Player(
-                "Bart",
-                Gender.male,
-                new MoneyPile(initialPlayerBankrollsInCents),
-                new PlayStrategyBasic(tableRules),
-                new MoneyPile(playerFavoriteBetInCents)));
-        players.add(new Player(
-                "Chris",
-                Gender.getRandomGender(casino.getRandomness()),
-                new MoneyPile(initialPlayerBankrollsInCents),
-                new PlayStrategyBasic(tableRules),
-                new MoneyPile(playerFavoriteBetInCents)));
-        players.add(new Player(
-                "Dora",
-                Gender.female,
-                new MoneyPile(initialPlayerBankrollsInCents),
-                new PlayStrategyBasic(tableRules),
-                new MoneyPile(playerFavoriteBetInCents)));
-        players.add(new Player(
-                "Eddie",
-                Gender.male,
-                new MoneyPile(initialPlayerBankrollsInCents),
-                new PlayStrategyBasic(tableRules),
-                new MoneyPile(playerFavoriteBetInCents)));
-        players.add(new Player(
-                "Fran",
-                Gender.female,
-                new MoneyPile(initialPlayerBankrollsInCents),
-                new PlayStrategyBasic(tableRules),
-                new MoneyPile(playerFavoriteBetInCents)));
-        players.add(new Player(
-                "Gonzo",
-                Gender.male,
-                new MoneyPile(initialPlayerBankrollsInCents),
-                new PlayStrategyBasic(tableRules),
-                new MoneyPile(playerFavoriteBetInCents)));
+                new MoneyPile(playerFavoriteBetInCents))).
+                collect(toList());
 
         MoneyPile initialPlayerBankrolls = getSumOfPlayerBankrolls(players, false);
 
-        for (Player player : players) {
-            if (table.areAnySeatsAvailable()) {
-                table.assignPlayerToSeat(
-                        table.getAnAvailableSeatNumber(),
-                        player);
-            }
-        }
-
+        Casino casino = new Casino(
+                "Redjack",
+                Randomness.generateRandomSeed(),
+                new Display(true));
+        Table table = casino.createTable(0, tableRules);
+        assignPlayersToTable(players, table);
         table.playRounds(numRoundsToPlay);
 
         MoneyPile finalPlayerBankrolls = getSumOfPlayerBankrolls(players, false);
@@ -117,6 +85,68 @@ class Redjack {
         System.out.println("Initial player bankrolls: " + initialPlayerBankrolls);
         System.out.println("Final player bankrolls: " + finalPlayerBankrolls);
         System.out.println("Players " + MoneyPile.computeDifference(finalPlayerBankrolls, initialPlayerBankrolls));
+    }
+
+    private void runStrategyComparisonBasicVsHighLow() {
+        int numRoundsToPlay = 1;
+        long playerFavoriteBetInCents = 2500L;
+        long initialPlayerBankrollsInCents = 1000000L;
+        System.out.println("Two players, each with "
+                + new MoneyPile(initialPlayerBankrollsInCents)
+                + ", betting " + new MoneyPile(playerFavoriteBetInCents)
+                + ", playing " + numRoundsToPlay + " rounds.");
+
+        TableRules tableRules = TableRules.getDefaultRules();
+        tableRules.minBet = new MoneyPile(2500L);
+        tableRules.maxBet = new MoneyPile(100000L);
+
+        List<Player> players = new ArrayList<>();
+        players.add(new Player(
+                "AndyAdvanced",
+                Gender.male,
+                new MoneyPile(initialPlayerBankrollsInCents),
+                new PlayStrategyBasic(tableRules),
+                new MoneyPile(playerFavoriteBetInCents)));
+        players.add(new Player(
+                "BobbyBasic",
+                Gender.male,
+                new MoneyPile(initialPlayerBankrollsInCents),
+                new PlayStrategyHighLowPerfect(tableRules),
+                new MoneyPile(playerFavoriteBetInCents)));
+
+        Casino casino = new Casino(
+                "Redjack Strategy Comparison",
+                Randomness.generateRandomSeed(),
+                new Display(true));
+        Table table = casino.createTable(0, tableRules);
+        assignPlayersToTable(players, table);
+        table.playRounds(numRoundsToPlay);
+        showPlayerResults(initialPlayerBankrollsInCents, players);
+    }
+
+    private void assignPlayersToTable(
+            List<Player> players,
+            Table table) {
+        for (Player player : players) {
+            if (table.areAnySeatsAvailable()) {
+                table.assignPlayerToSeat(
+                        table.getAnAvailableSeatNumber(),
+                        player);
+            }
+        }
+    }
+
+    private void showPlayerResults(
+            long initialPlayerBankrollsInCents,
+            List<Player> players) {
+        System.out.println();
+        for (Player player : players) {
+            MoneyPile initial = new MoneyPile(initialPlayerBankrollsInCents);
+            System.out.println("Player " + player.getPlayerName()
+                    + " started with " + initial
+            + " and " + MoneyPile.computeDifference(player.getBankroll(), initial)
+            + ".");
+        }
     }
 
     private MoneyPile getSumOfPlayerBankrolls(
