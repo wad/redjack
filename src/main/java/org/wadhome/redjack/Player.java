@@ -3,6 +3,7 @@ package org.wadhome.redjack;
 class Player {
     private String playerName;
     private Gender gender;
+    private MoneyPile initialBankroll;
     private MoneyPile bankroll;
     private boolean takesMaxInsurance = true;
     private MoneyPile favoriteBet;
@@ -16,6 +17,7 @@ class Player {
             MoneyPile favoriteBet) {
         this.playerName = playerName;
         this.gender = gender;
+        this.initialBankroll = bankroll.copy();
         this.bankroll = bankroll;
         this.favoriteBet = favoriteBet;
         this.playStrategy = playStrategy;
@@ -30,12 +32,15 @@ class Player {
         this.takesMaxInsurance = takesMaxInsurance;
     }
 
+    MoneyPile getInitialBankroll() {
+        return initialBankroll.copy();
+    }
+
     MoneyPile getBankroll() {
         return this.bankroll;
     }
 
     MoneyPile getBet(Table table) {
-
         TableRules tableRules = table.getTableRules();
         MoneyPile minPossibleBet = tableRules.getMinBet();
         MoneyPile maxPossibleBet = MoneyPile.getLesserOf(tableRules.getMaxBet(), bankroll);

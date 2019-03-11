@@ -1,10 +1,15 @@
 package org.wadhome.redjack;
 
 abstract class CardCountMethod {
-    protected TableRules tableRules;
 
-    CardCountMethod(TableRules tableRules) {
+    protected TableRules tableRules;
+    protected BettingStrategy bettingStrategy;
+
+    CardCountMethod(
+            TableRules tableRules,
+            BettingStrategy bettingStrategy) {
         this.tableRules = tableRules;
+        this.bettingStrategy = bettingStrategy;
     }
 
     abstract void observeCard(Card card);

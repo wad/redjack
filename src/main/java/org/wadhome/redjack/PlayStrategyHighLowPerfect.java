@@ -195,18 +195,6 @@ class PlayStrategyHighLowPerfect extends PlayStrategy {
             MoneyPile favoriteBet,
             MoneyPile minPossibleBet,
             MoneyPile maxPossibleBet) {
-
-        // todo: apply betting strategy here
-
-        int trueCount = getTrueCount(table);
-//        System.out.println("--------------- true count: " + trueCount);
-        if (trueCount >= 3) {
-            return maxPossibleBet;
-        }
-
-        return basicStrategy.getBet(
-                favoriteBet,
-                minPossibleBet,
-                maxPossibleBet);
+        // todo
     }
 }
