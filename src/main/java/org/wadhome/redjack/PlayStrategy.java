@@ -4,34 +4,33 @@ import static org.wadhome.redjack.Value.Ace;
 
 abstract class PlayStrategy {
 
+    protected Table table;
     protected TableRules tableRules;
     protected CardCountMethod cardCountMethod;
 
     PlayStrategy(
-            TableRules tableRules,
+            Table table,
             CardCountMethod cardCountMethod) {
-        this.tableRules = tableRules;
+        this.table = table;
+        this.tableRules = table.getTableRules();
         this.cardCountMethod = cardCountMethod;
     }
 
     abstract BlackjackPlay choosePlay(
             PlayerHand hand,
             Card dealerUpcard,
-            MoneyPile bankrollAvailable,
-            Table table);
+            MoneyPile bankrollAvailable);
 
     abstract MoneyPile getInsuranceBet(
             MoneyPile maximumInsuranceBet,
             PlayerHand hand,
             Card dealerUpcard,
-            MoneyPile bankrollAvailable,
-            Table table);
+            MoneyPile bankrollAvailable);
 
     abstract MoneyPile getBet(
             MoneyPile favoriteBet,
             MoneyPile minPossibleBet,
-            MoneyPile maxPossibleBet,
-            Table table);
+            MoneyPile maxPossibleBet);
 
     protected boolean canHandBeSplit(
             PlayerHand hand,

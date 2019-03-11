@@ -1,6 +1,7 @@
 package org.wadhome.redjack;
 
 // This one estimates cards in the discard rack with half-deck precision.
+// It also doesn't make plays that would make it obvious that card-counting is happening.
 class CardCountMethodHighLowRealistic extends CardCountMethod {
 
     int runningCount;

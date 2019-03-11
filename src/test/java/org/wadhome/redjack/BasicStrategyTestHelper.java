@@ -27,11 +27,10 @@ public class BasicStrategyTestHelper extends TestHelper {
             playerHand.addCard(cards[i]);
         }
 
-        PlayStrategyBasic basicStrategy = new PlayStrategyBasic(tableRules);
+        PlayStrategyBasic basicStrategy = new PlayStrategyBasic(table);
         return basicStrategy.choosePlay(
                 playerHand,
                 dealerUpcard,
-                bankroll,
-                table);
+                bankroll);
     }
 }

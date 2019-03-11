@@ -46,27 +46,23 @@ class Player {
         return playStrategy.getBet(
                 favoriteBet,
                 minPossibleBet,
-                maxPossibleBet,
-                table);
+                maxPossibleBet);
     }
 
     BlackjackPlay getPlay(
             PlayerHand hand,
-            Card dealerUpcard,
-            Table table) {
+            Card dealerUpcard) {
 
         return playStrategy.choosePlay(
                 hand,
                 dealerUpcard,
-                bankroll.copy(),
-                table);
+                bankroll.copy());
     }
 
     MoneyPile getInsuranceBet(
             MoneyPile maximumInsuranceBet,
             PlayerHand hand,
-            Card dealerUpcard,
-            Table table) {
+            Card dealerUpcard) {
 
         // this overrides strategy
         if (takesMaxInsurance) {
@@ -81,8 +77,7 @@ class Player {
                 maximumInsuranceBet,
                 hand,
                 dealerUpcard,
-                bankroll.copy(),
-                table);
+                bankroll.copy());
     }
 
     @Override

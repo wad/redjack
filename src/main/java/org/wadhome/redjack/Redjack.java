@@ -53,6 +53,12 @@ class Redjack {
         tableRules.minBet = new MoneyPile(2500L);
         tableRules.maxBet = new MoneyPile(100000L);
 
+        Casino casino = new Casino(
+                "Redjack",
+                Randomness.generateRandomSeed(),
+                new Display(true));
+        Table table = casino.createTable(0, tableRules);
+
         List<Player> players = new ArrayList<String>() {{
             add("Anne");
             add("Beth");
@@ -65,17 +71,12 @@ class Redjack {
                 name,
                 Gender.female,
                 new MoneyPile(initialPlayerBankrollsInCents),
-                new PlayStrategyBasic(tableRules),
+                new PlayStrategyBasic(table),
                 new MoneyPile(playerFavoriteBetInCents))).
                 collect(toList());
 
         MoneyPile initialPlayerBankrolls = getSumOfPlayerBankrolls(players, false);
 
-        Casino casino = new Casino(
-                "Redjack",
-                Randomness.generateRandomSeed(),
-                new Display(true));
-        Table table = casino.createTable(0, tableRules);
         assignPlayersToTable(players, table);
         table.playRounds(numRoundsToPlay);
 
@@ -100,25 +101,26 @@ class Redjack {
         tableRules.minBet = new MoneyPile(2500L);
         tableRules.maxBet = new MoneyPile(100000L);
 
-        List<Player> players = new ArrayList<>();
-        players.add(new Player(
-                "AndyAdvanced",
-                Gender.male,
-                new MoneyPile(initialPlayerBankrollsInCents),
-                new PlayStrategyBasic(tableRules),
-                new MoneyPile(playerFavoriteBetInCents)));
-        players.add(new Player(
-                "BobbyBasic",
-                Gender.male,
-                new MoneyPile(initialPlayerBankrollsInCents),
-                new PlayStrategyHighLowPerfect(tableRules),
-                new MoneyPile(playerFavoriteBetInCents)));
-
         Casino casino = new Casino(
                 "Redjack Strategy Comparison",
                 Randomness.generateRandomSeed(),
                 new Display(true));
         Table table = casino.createTable(0, tableRules);
+
+        List<Player> players = new ArrayList<>();
+        players.add(new Player(
+                "AndyAdvanced",
+                Gender.male,
+                new MoneyPile(initialPlayerBankrollsInCents),
+                new PlayStrategyBasic(table),
+                new MoneyPile(playerFavoriteBetInCents)));
+        players.add(new Player(
+                "BobbyBasic",
+                Gender.male,
+                new MoneyPile(initialPlayerBankrollsInCents),
+                new PlayStrategyHighLowPerfect(table),
+                new MoneyPile(playerFavoriteBetInCents)));
+
         assignPlayersToTable(players, table);
         table.playRounds(numRoundsToPlay);
         showPlayerResults(initialPlayerBankrollsInCents, players);

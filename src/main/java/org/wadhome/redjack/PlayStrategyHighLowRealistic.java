@@ -4,25 +4,28 @@ class PlayStrategyHighLowRealistic extends PlayStrategy {
 
     private PlayStrategyBasic basicStrategy;
 
-    public PlayStrategyHighLowRealistic(TableRules tableRules) {
-        super(tableRules, new CardCountMethodHighLowRealistic(tableRules));
-        this.basicStrategy = new PlayStrategyBasic(tableRules);
+    PlayStrategyHighLowRealistic(Table table) {
+        super(table, new CardCountMethodHighLowRealistic(table.getTableRules()));
+        this.basicStrategy = new PlayStrategyBasic(table);
+    }
+
+    int getTrueCount(Table table) {
+        CardCountMethodHighLowRealistic cardCountMethod = (CardCountMethodHighLowRealistic) getCardCountMethod();
+        return cardCountMethod.getTrueCount(table.getDiscardTray());
     }
 
     @Override
     BlackjackPlay choosePlay(
             PlayerHand hand,
             Card dealerUpcard,
-            MoneyPile bankrollAvailable,
-            Table table) {
+            MoneyPile bankrollAvailable) {
 
         // todo: use the card count
 
         return this.basicStrategy.choosePlay(
                 hand,
                 dealerUpcard,
-                bankrollAvailable,
-                table);
+                bankrollAvailable);
     }
 
     @Override
@@ -30,8 +33,7 @@ class PlayStrategyHighLowRealistic extends PlayStrategy {
             MoneyPile maximumInsuranceBet,
             PlayerHand hand,
             Card dealerUpcard,
-            MoneyPile bankrollAvailable,
-            Table table) {
+            MoneyPile bankrollAvailable) {
         // todo - apply the strategy rules here
         return MoneyPile.zero();
     }
@@ -40,13 +42,11 @@ class PlayStrategyHighLowRealistic extends PlayStrategy {
     MoneyPile getBet(
             MoneyPile favoriteBet,
             MoneyPile minPossibleBet,
-            MoneyPile maxPossibleBet,
-            Table table) {
+            MoneyPile maxPossibleBet) {
         // todo: apply betting strategy here
         return basicStrategy.getBet(
                 favoriteBet,
                 minPossibleBet,
-                maxPossibleBet,
-                table);
+                maxPossibleBet);
     }
 }

@@ -76,6 +76,10 @@ class Table {
         return tableRules;
     }
 
+    public DiscardTray getDiscardTray() {
+        return this.discardTray;
+    }
+
     private void burn() {
         int numBurnCards = tableRules.getNumBurnCards();
         for (int i = 0; i < numBurnCards; i++) {
@@ -306,8 +310,7 @@ class Table {
                     MoneyPile desiredInsuranceBet = seat.getPlayer().getInsuranceBet(
                             maxInsuranceBet,
                             seat.getHands().get(0), // at this point, each occupied seat will have exactly one hand.
-                            dealerHand.getFirstCard(),
-                            this);
+                            dealerHand.getFirstCard());
                     if (desiredInsuranceBet.hasMoney()) {
                         playerPayCasino(seat.getPlayer(), desiredInsuranceBet);
                         show(seat, "put down " + desiredInsuranceBet
@@ -435,7 +438,7 @@ class Table {
                         boolean shallContinue = true;
                         while (shallContinue) {
                             String initialHand = hand.showCardsWithTotal();
-                            BlackjackPlay playerAction = player.getPlay(hand, dealerUpcard, this);
+                            BlackjackPlay playerAction = player.getPlay(hand, dealerUpcard);
                             switch (playerAction) {
                                 case Stand:
                                     show(hand, "decides to stand.");

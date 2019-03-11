@@ -4,25 +4,28 @@ class PlayStrategyHighLowPerfect extends PlayStrategy {
 
     private PlayStrategyBasic basicStrategy;
 
-    PlayStrategyHighLowPerfect(TableRules tableRules) {
-        super(tableRules, new CardCountMethodHighLowPerfect(tableRules));
-        this.basicStrategy = new PlayStrategyBasic(tableRules);
+    PlayStrategyHighLowPerfect(Table table) {
+        super(table, new CardCountMethodHighLowPerfect(table.getTableRules()));
+        this.basicStrategy = new PlayStrategyBasic(table);
+    }
+
+    int getTrueCount(Table table) {
+        CardCountMethodHighLowPerfect cardCountMethod = (CardCountMethodHighLowPerfect) getCardCountMethod();
+        return cardCountMethod.getTrueCount(table.getShoe().cards.size());
     }
 
     @Override
     BlackjackPlay choosePlay(
             PlayerHand hand,
             Card dealerUpcard,
-            MoneyPile bankrollAvailable,
-            Table table) {
+            MoneyPile bankrollAvailable) {
 
         // todo: use the card count
 
         return this.basicStrategy.choosePlay(
                 hand,
                 dealerUpcard,
-                bankrollAvailable,
-                table);
+                bankrollAvailable);
     }
 
     @Override
@@ -30,9 +33,10 @@ class PlayStrategyHighLowPerfect extends PlayStrategy {
             MoneyPile maximumInsuranceBet,
             PlayerHand hand,
             Card dealerUpcard,
-            MoneyPile bankrollAvailable,
-            Table table) {
-        // todo - apply the strategy rules here
+            MoneyPile bankrollAvailable) {
+        if (getTrueCount(table) > 3) {
+            return maximumInsuranceBet;
+        }
         return MoneyPile.zero();
     }
 
@@ -40,13 +44,11 @@ class PlayStrategyHighLowPerfect extends PlayStrategy {
     MoneyPile getBet(
             MoneyPile favoriteBet,
             MoneyPile minPossibleBet,
-            MoneyPile maxPossibleBet,
-            Table table) {
+            MoneyPile maxPossibleBet) {
         // todo: apply betting strategy here
         return basicStrategy.getBet(
                 favoriteBet,
                 minPossibleBet,
-                maxPossibleBet,
-                table);
+                maxPossibleBet);
     }
 }
