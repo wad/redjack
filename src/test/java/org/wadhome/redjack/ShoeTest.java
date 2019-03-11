@@ -7,7 +7,12 @@ import static org.junit.Assert.assertEquals;
 public class ShoeTest extends TestHelper {
     @Test
     public void testAddAndDraw() {
-        Shoe shoe = new Shoe(new Casino("test"), 0, 2);
+        int numDecks = 2;
+        int tableNumber = 0;
+        Casino casino = new Casino("test");
+        TableRules tableRules = TableRules.getDefaultRules();
+        Table table = new Table(casino, tableNumber, tableRules);
+        Shoe shoe = new Shoe(numDecks, table);
         assertEquals(Blackjack.NUM_CARDS_PER_DECK * 2, shoe.cards.size());
         shoe.dumpAllCards();
 

@@ -6,19 +6,19 @@ class Player {
     private MoneyPile bankroll;
     private boolean takesMaxInsurance = true;
     private MoneyPile favoriteBet;
-    private Strategy strategy;
+    private PlayStrategy playStrategy;
 
     Player(
             String playerName,
             Gender gender,
             MoneyPile bankroll,
-            Strategy strategy,
+            PlayStrategy playStrategy,
             MoneyPile favoriteBet) {
         this.playerName = playerName;
         this.gender = gender;
         this.bankroll = bankroll;
         this.favoriteBet = favoriteBet;
-        this.strategy = strategy;
+        this.playStrategy = playStrategy;
     }
 
     String getPlayerName() {
@@ -43,7 +43,7 @@ class Player {
             return MoneyPile.zero();
         }
 
-        return strategy.getBet(
+        return playStrategy.getBet(
                 favoriteBet,
                 minPossibleBet,
                 maxPossibleBet,
@@ -55,7 +55,7 @@ class Player {
             Card dealerUpcard,
             Table table) {
 
-        return strategy.choosePlay(
+        return playStrategy.choosePlay(
                 hand,
                 dealerUpcard,
                 bankroll.copy(),
@@ -77,7 +77,7 @@ class Player {
             }
         }
 
-        return strategy.getInsuranceBet(
+        return playStrategy.getInsuranceBet(
                 maximumInsuranceBet,
                 hand,
                 dealerUpcard,
@@ -95,6 +95,10 @@ class Player {
     }
 
     public void observeCard(Card card) {
-        // todo
+        this.playStrategy.getCardCountMethod().observeCard(card);
+    }
+
+    public void observeShuffle() {
+        this.playStrategy.getCardCountMethod().observeShuffle();
     }
 }

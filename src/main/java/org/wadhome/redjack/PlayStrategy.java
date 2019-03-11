@@ -2,7 +2,17 @@ package org.wadhome.redjack;
 
 import static org.wadhome.redjack.Value.Ace;
 
-abstract class Strategy {
+abstract class PlayStrategy {
+
+    protected TableRules tableRules;
+    protected CardCountMethod cardCountMethod;
+
+    PlayStrategy(
+            TableRules tableRules,
+            CardCountMethod cardCountMethod) {
+        this.tableRules = tableRules;
+        this.cardCountMethod = cardCountMethod;
+    }
 
     abstract BlackjackPlay choosePlay(
             PlayerHand hand,
@@ -25,8 +35,7 @@ abstract class Strategy {
 
     protected boolean canHandBeSplit(
             PlayerHand hand,
-            MoneyPile bankrollAvailable,
-            TableRules tableRules) {
+            MoneyPile bankrollAvailable) {
         int numSplitsSoFar = hand.getSeat().getNumSplitsSoFar();
 
         boolean canAffordToSplit = bankrollAvailable.isGreaterThanOrEqualTo(hand.getBetAmount());
@@ -56,8 +65,7 @@ abstract class Strategy {
     protected boolean canDoubleDown(
             PlayerHand hand,
             boolean isAfterSplit,
-            MoneyPile bankrollAvailable,
-            TableRules tableRules) {
+            MoneyPile bankrollAvailable) {
 
         if (isAfterSplit && !tableRules.canDoubleDownAfterSplit()) {
             return false;
@@ -81,5 +89,9 @@ abstract class Strategy {
         if (hand.isBlackjack()) {
             throw new RuntimeException("Already blackjack.");
         }
+    }
+
+    public CardCountMethod getCardCountMethod() {
+        return this.cardCountMethod;
     }
 }

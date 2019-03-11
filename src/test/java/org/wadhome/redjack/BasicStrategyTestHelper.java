@@ -5,7 +5,7 @@ public class BasicStrategyTestHelper extends TestHelper {
     private MoneyPile bankroll = new MoneyPile(1000000);
     private TableRules tableRules = TableRules.getDefaultRules();
     private Seat seat = new Seat(SeatNumber.one);
-    private BasicStrategy basicStrategy = new BasicStrategy();
+    private PlayStrategyBasic basicStrategy = new PlayStrategyBasic(tableRules);
 
     BlackjackPlay compute(Card... cards) {
         return compute(this.tableRules, cards);

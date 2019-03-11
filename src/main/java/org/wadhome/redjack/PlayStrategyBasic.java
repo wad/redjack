@@ -3,7 +3,13 @@ package org.wadhome.redjack;
 import static org.wadhome.redjack.BlackjackPlay.*;
 import static org.wadhome.redjack.Value.*;
 
-class BasicStrategy extends Strategy {
+class PlayStrategyBasic extends PlayStrategy {
+
+    PlayStrategyBasic(TableRules tableRules) {
+        super(
+                tableRules,
+                new CardCountMethodNone(tableRules));
+    }
 
     @Override
     MoneyPile getInsuranceBet(
@@ -39,14 +45,12 @@ class BasicStrategy extends Strategy {
             Table table) {
 
         validateHand(hand);
-        TableRules tableRules = table.getTableRules();
 
         if (hand.isPair()) {
             return handlePair(
                     hand,
                     dealerUpcard,
-                    bankrollAvailable,
-                    tableRules);
+                    bankrollAvailable);
         }
 
         if (hand.hasAtLeastOneAce()) {
@@ -54,24 +58,21 @@ class BasicStrategy extends Strategy {
                     hand,
                     dealerUpcard,
                     false,
-                    bankrollAvailable,
-                    tableRules);
+                    bankrollAvailable);
         }
 
         return handleHardHand(
                 hand,
                 dealerUpcard,
                 false,
-                bankrollAvailable,
-                tableRules);
+                bankrollAvailable);
     }
 
     private BlackjackPlay handleHardHand(
             PlayerHand hand,
             Card dealerUpcard,
             boolean isAfterSplit,
-            MoneyPile bankrollAvailable,
-            TableRules tableRules) {
+            MoneyPile bankrollAvailable) {
         Value upcardValue = dealerUpcard.getValue();
         int sum = hand.computeMaxSum();
 
@@ -81,8 +82,7 @@ class BasicStrategy extends Strategy {
 
         boolean isDoubleDownPermittedHere = canDoubleDown(
                 hand, isAfterSplit,
-                bankrollAvailable,
-                tableRules);
+                bankrollAvailable);
 
         if (sum <= 8) {
             return Hit;
@@ -152,8 +152,7 @@ class BasicStrategy extends Strategy {
             PlayerHand hand,
             Card dealerUpcard,
             boolean isAfterSplit,
-            MoneyPile bankrollAvailable,
-            TableRules tableRules) {
+            MoneyPile bankrollAvailable) {
         int sumWithLowAces = 0;
         for (Card card : hand.cards) {
             sumWithLowAces += card.getValue().getPoints();
@@ -166,8 +165,7 @@ class BasicStrategy extends Strategy {
                     hand,
                     dealerUpcard,
                     isAfterSplit,
-                    bankrollAvailable,
-                    tableRules);
+                    bankrollAvailable);
         }
 
         Value upcardValue = dealerUpcard.getValue();
@@ -175,8 +173,7 @@ class BasicStrategy extends Strategy {
         boolean isDoubleDownPermittedHere = canDoubleDown(
                 hand,
                 isAfterSplit,
-                bankrollAvailable,
-                tableRules);
+                bankrollAvailable);
 
         int sumWithoutOneAce = sumWithLowAces - 1;
 
@@ -234,8 +231,7 @@ class BasicStrategy extends Strategy {
     private BlackjackPlay handlePair(
             PlayerHand hand,
             Card dealerUpcard,
-            MoneyPile bankrollAvailable,
-            TableRules tableRules) {
+            MoneyPile bankrollAvailable) {
 
         if (hand.getNumCards() != 2) {
             throw new RuntimeException("Bug! Hand: " + hand);
@@ -244,7 +240,7 @@ class BasicStrategy extends Strategy {
         Value value = hand.getFirstCard().getValue();
         Value upcardValue = dealerUpcard.getValue();
 
-        boolean canSplit = canHandBeSplit(hand, bankrollAvailable, tableRules);
+        boolean canSplit = canHandBeSplit(hand, bankrollAvailable);
         boolean canDoubleDown = bankrollAvailable.isGreaterThanOrEqualTo(hand.getBetAmount());
 
         switch (value) {
@@ -258,8 +254,7 @@ class BasicStrategy extends Strategy {
                             hand,
                             dealerUpcard,
                             true,
-                            bankrollAvailable,
-                            tableRules);
+                            bankrollAvailable);
                 }
                 return Split;
             case Four:
@@ -272,8 +267,7 @@ class BasicStrategy extends Strategy {
                                 hand,
                                 dealerUpcard,
                                 true,
-                                bankrollAvailable,
-                                tableRules);
+                                bankrollAvailable);
                     }
                     return Split;
                 }
@@ -298,8 +292,7 @@ class BasicStrategy extends Strategy {
                             hand,
                             dealerUpcard,
                             true,
-                            bankrollAvailable,
-                            tableRules);
+                            bankrollAvailable);
                 }
                 return Split;
             case Seven:
@@ -316,8 +309,7 @@ class BasicStrategy extends Strategy {
                             hand,
                             dealerUpcard,
                             true,
-                            bankrollAvailable,
-                            tableRules);
+                            bankrollAvailable);
                 }
                 return Split;
             case Eight:
@@ -326,8 +318,7 @@ class BasicStrategy extends Strategy {
                             hand,
                             dealerUpcard,
                             true,
-                            bankrollAvailable,
-                            tableRules);
+                            bankrollAvailable);
                 }
                 return Split;
             case Nine:
@@ -339,8 +330,7 @@ class BasicStrategy extends Strategy {
                             hand,
                             dealerUpcard,
                             true,
-                            bankrollAvailable,
-                            tableRules);
+                            bankrollAvailable);
                 }
                 return Split;
             case Ten:
@@ -358,8 +348,7 @@ class BasicStrategy extends Strategy {
                             hand,
                             dealerUpcard,
                             true,
-                            bankrollAvailable,
-                            tableRules);
+                            bankrollAvailable);
                 }
                 return Split;
             default:

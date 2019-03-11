@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class BasicStrategyHardHandsTest extends BasicStrategyTestHelper {
+public class PlayStrategyBasicHardHandsTest extends BasicStrategyTestHelper {
 
     @Test
     public void testSumsLessThanNine() {

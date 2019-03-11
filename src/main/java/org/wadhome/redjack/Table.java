@@ -24,7 +24,7 @@ class Table {
         this.tableNumber = tableNumber;
         this.tableRules = tableRules;
         int numDecks = tableRules.getNumDecks();
-        this.shoe = new Shoe(casino, tableNumber, numDecks);
+        this.shoe = new Shoe(numDecks, this);
         this.discardTray = new DiscardTray(numDecks);
         this.dealerHand = new DealerHand();
         this.seats = new HashMap<>(SeatNumber.values().length);
@@ -39,8 +39,16 @@ class Table {
         show(tableRules.toString());
     }
 
+    Casino getCasino() {
+        return casino;
+    }
+
     Shoe getShoe() {
         return shoe;
+    }
+
+    int getTableNumber() {
+        return tableNumber;
     }
 
     void shuffleAndStuff() {
@@ -59,6 +67,8 @@ class Table {
         shoe.placeCutCard(tableRules.getNumCardsAfterCutCard());
         show("The dealer placed placed the cut card with " + tableRules.getNumCardsAfterCutCard() + " cards behind it.");
 
+        showPlayersShuffle();
+
         burn();
     }
 
@@ -73,6 +83,15 @@ class Table {
             show("The dealer burned " + burnCard.toString(true, false)
                     + " from the shoe.");
             discardTray.addCardToBottom(burnCard);
+        }
+    }
+
+    public void showPlayersShuffle() {
+        for (SeatNumber seatNumber : SeatNumber.values()) {
+            Seat seat = seats.get(seatNumber);
+            if (seat.hasPlayer()) {
+                seat.getPlayer().observeShuffle();
+            }
         }
     }
 

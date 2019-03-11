@@ -33,43 +33,43 @@ public class Redjack {
                 "Anne",
                 Gender.female,
                 new MoneyPile(initialPlayerBankrollsInCents),
-                new BasicStrategy(),
+                new PlayStrategyBasic(tableRules),
                 new MoneyPile(playerFavoriteBetInCents)));
         players.add(new Player(
                 "Bart",
                 Gender.male,
                 new MoneyPile(initialPlayerBankrollsInCents),
-                new BasicStrategy(),
+                new PlayStrategyBasic(tableRules),
                 new MoneyPile(playerFavoriteBetInCents)));
         players.add(new Player(
                 "Chris",
                 Gender.getRandomGender(casino.getRandomness()),
                 new MoneyPile(initialPlayerBankrollsInCents),
-                new BasicStrategy(),
+                new PlayStrategyBasic(tableRules),
                 new MoneyPile(playerFavoriteBetInCents)));
         players.add(new Player(
                 "Dora",
                 Gender.female,
                 new MoneyPile(initialPlayerBankrollsInCents),
-                new BasicStrategy(),
+                new PlayStrategyBasic(tableRules),
                 new MoneyPile(playerFavoriteBetInCents)));
         players.add(new Player(
                 "Eddie",
                 Gender.male,
                 new MoneyPile(initialPlayerBankrollsInCents),
-                new BasicStrategy(),
+                new PlayStrategyBasic(tableRules),
                 new MoneyPile(playerFavoriteBetInCents)));
         players.add(new Player(
                 "Fran",
                 Gender.female,
                 new MoneyPile(initialPlayerBankrollsInCents),
-                new BasicStrategy(),
+                new PlayStrategyBasic(tableRules),
                 new MoneyPile(playerFavoriteBetInCents)));
         players.add(new Player(
                 "Gonzo",
                 Gender.male,
                 new MoneyPile(initialPlayerBankrollsInCents),
-                new BasicStrategy(),
+                new PlayStrategyBasic(tableRules),
                 new MoneyPile(playerFavoriteBetInCents)));
 
         MoneyPile initialPlayerBankrolls = getSumOfPlayerBankrolls(players, false);

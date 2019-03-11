@@ -1,15 +1,15 @@
 package org.wadhome.redjack;
 
-abstract class CardCount {
-    protected int numDecks;
+abstract class CardCountMethod {
+    protected TableRules tableRules;
 
-    CardCount(int numDecks) {
-        this.numDecks = numDecks;
+    CardCountMethod(TableRules tableRules) {
+        this.tableRules = tableRules;
     }
 
-    abstract void observeCard(Card newCardsSeen);
+    abstract void observeCard(Card card);
 
-    abstract void newShoe();
+    abstract void observeShuffle();
 
     protected static int roundToInt(double value) {
         return (int) (value + 0.5D);

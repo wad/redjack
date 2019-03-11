@@ -9,7 +9,8 @@ public class PlayTest {
     public void testRunningIt() {
         int tableNumber = 1;
         Casino casino = new Casino("TestMe", null);
-        casino.createTable(tableNumber, TableRules.getDefaultRules());
+        TableRules tableRules = TableRules.getDefaultRules();
+        casino.createTable(tableNumber, tableRules);
         Table table = casino.getTable(tableNumber);
         table.shuffleAndStuff();
 
@@ -17,7 +18,7 @@ public class PlayTest {
                 "Alex",
                 Gender.male,
                 new MoneyPile(50000L),
-                new BasicStrategy(),
+                new PlayStrategyBasic(tableRules),
                 new MoneyPile(2500L));
         table.assignPlayerToSeat(SeatNumber.one, alex);
         table.assignPlayerToSeat(SeatNumber.two, alex);
@@ -26,7 +27,7 @@ public class PlayTest {
                 "Becky",
                 Gender.female,
                 new MoneyPile(50000L),
-                new BasicStrategy(),
+                new PlayStrategyBasic(tableRules),
                 new MoneyPile(1000L));
         table.assignPlayerToSeat(SeatNumber.three, becky);
 
@@ -34,7 +35,7 @@ public class PlayTest {
                 "Charles",
                 Gender.male,
                 new MoneyPile(10000L),
-                new BasicStrategy(),
+                new PlayStrategyBasic(tableRules),
                 new MoneyPile(10000L));
         table.assignPlayerToSeat(SeatNumber.five, charles);
 

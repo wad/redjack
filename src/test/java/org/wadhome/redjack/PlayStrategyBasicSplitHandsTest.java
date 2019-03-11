@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class BasicStrategySplitHandsTest extends BasicStrategyTestHelper {
+public class PlayStrategyBasicSplitHandsTest extends BasicStrategyTestHelper {
 
     @Test
     public void testPairOfTwosOrThrees() {

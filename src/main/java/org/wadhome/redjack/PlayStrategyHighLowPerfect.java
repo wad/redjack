@@ -1,8 +1,13 @@
 package org.wadhome.redjack;
 
-class CardCounterHighLowPerfect extends Strategy {
+class PlayStrategyHighLowPerfect extends PlayStrategy {
 
-    private BasicStrategy basicStrategy = new BasicStrategy();
+    private PlayStrategyBasic basicStrategy;
+
+    PlayStrategyHighLowPerfect(TableRules tableRules) {
+        super(tableRules, new CardCountMethodHighLowPerfect(tableRules));
+        this.basicStrategy = new PlayStrategyBasic(tableRules);
+    }
 
     @Override
     BlackjackPlay choosePlay(

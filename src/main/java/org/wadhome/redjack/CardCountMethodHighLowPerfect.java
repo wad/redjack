@@ -1,18 +1,18 @@
 package org.wadhome.redjack;
 
 // This one uses the actual number of remaining cards in the shoe to calculate the true count.
-class CardCountHighLowPerfect extends CardCount {
+class CardCountMethodHighLowPerfect extends CardCountMethod {
 
     int runningCount;
 
-    CardCountHighLowPerfect(int numDecks) {
-        super(numDecks);
+    CardCountMethodHighLowPerfect(TableRules tableRules) {
+        super(tableRules);
         runningCount = 0;
     }
 
     @Override
-    void observeCard(Card newCardsSeen) {
-        switch (newCardsSeen.getValue()) {
+    void observeCard(Card card) {
+        switch (card.getValue()) {
             case Two:
             case Three:
             case Four:
@@ -37,7 +37,7 @@ class CardCountHighLowPerfect extends CardCount {
     }
 
     @Override
-    void newShoe() {
+    void observeShuffle() {
         runningCount = 0;
     }
 

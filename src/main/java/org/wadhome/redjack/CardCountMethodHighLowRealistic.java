@@ -1,18 +1,18 @@
 package org.wadhome.redjack;
 
 // This one estimates cards in the discard rack with half-deck precision.
-class CardCountHighLowRealistic extends CardCount {
+class CardCountMethodHighLowRealistic extends CardCountMethod {
 
     int runningCount;
 
-    CardCountHighLowRealistic(int numDecks) {
-        super(numDecks);
+    CardCountMethodHighLowRealistic(TableRules tableRules) {
+        super(tableRules);
         runningCount = 0;
     }
 
     @Override
-    void observeCard(Card newCardsSeen) {
-        switch (newCardsSeen.getValue()) {
+    void observeCard(Card card) {
+        switch (card.getValue()) {
             case Two:
             case Three:
             case Four:
@@ -37,13 +37,15 @@ class CardCountHighLowRealistic extends CardCount {
     }
 
     @Override
-    void newShoe() {
+    void observeShuffle() {
         runningCount = 0;
     }
 
     int getTrueCount(DiscardTray discardTray) {
         double numDecksInDiscardTray = estimateNumDecksInDiscardTray(discardTray);
-        double numDecksRemaining = estimateNumDecksRemainingInShoe(numDecks, numDecksInDiscardTray);
+        double numDecksRemaining = estimateNumDecksRemainingInShoe(
+                tableRules.getNumDecks(),
+                numDecksInDiscardTray);
         double exactTrueCount = ((double) runningCount) / numDecksRemaining;
         return roundToInt(exactTrueCount);
     }
