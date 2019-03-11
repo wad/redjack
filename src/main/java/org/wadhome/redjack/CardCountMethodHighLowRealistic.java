@@ -42,6 +42,10 @@ class CardCountMethodHighLowRealistic extends CardCountMethod {
         runningCount = 0;
     }
 
+    int getRunningCount() {
+        return runningCount;
+    }
+
     int getTrueCount(DiscardTray discardTray) {
         double numDecksInDiscardTray = estimateNumDecksInDiscardTray(discardTray);
         double numDecksRemaining = estimateNumDecksRemainingInShoe(

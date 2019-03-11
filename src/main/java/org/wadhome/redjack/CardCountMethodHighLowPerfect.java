@@ -41,6 +41,10 @@ class CardCountMethodHighLowPerfect extends CardCountMethod {
         runningCount = 0;
     }
 
+    int getRunningCount() {
+        return runningCount;
+    }
+
     int getTrueCount(int numCardsRemainingInShoe) {
         double numDecksRemaining = ((double) (numCardsRemainingInShoe)) / ((double) Blackjack.NUM_CARDS_PER_DECK);
         double exactTrueCount = ((double) runningCount) / numDecksRemaining;
