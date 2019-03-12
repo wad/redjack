@@ -95,6 +95,10 @@ class Player {
         return gender;
     }
 
+    public PlayStrategy getPlayStrategy() {
+        return playStrategy;
+    }
+
     void observeCard(Card card) {
         this.playStrategy.getCardCountMethod().observeCard(card);
     }

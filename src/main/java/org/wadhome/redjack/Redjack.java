@@ -110,12 +110,16 @@ class Redjack {
         Table table = casino.createTable(0, tableRules);
 
         List<Player> players = new ArrayList<>();
-        players.add(new Player(
+        Player andy = new Player(
                 "AndyAdvanced",
                 Gender.male,
                 new MoneyPile(initialPlayerBankrollsInCents),
                 new PlayStrategyHighLowPerfect(table, new BettingStrategyMaxOnGoodCount()),
-                new MoneyPile(playerFavoriteBetInCents)));
+                new MoneyPile(playerFavoriteBetInCents));
+        andy.getPlayStrategy().getCardCountMethod().setBukofskyBankrollLevelDesired(
+                BettingStrategyBukofsky.BukofskyBankrollLevel.Level2k);
+        players.add(andy);
+
         players.add(new Player(
                 "BobbyBasic",
                 Gender.male,
@@ -124,7 +128,6 @@ class Redjack {
                 new MoneyPile(playerFavoriteBetInCents)));
 
         assignPlayersToTable(players, table);
-//        table.playRoundsUntilEndOfShoe();
         table.playRounds(numRoundsToPlay);
         showPlayerResults(initialPlayerBankrollsInCents, players);
     }

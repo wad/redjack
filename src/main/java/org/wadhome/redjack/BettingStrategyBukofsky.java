@@ -21,7 +21,7 @@ class BettingStrategyBukofsky extends BettingStrategy {
                 return minPossibleBet;
             }
 
-            if (randomness.checkRandomPercentChance(10)) {
+            if (randomness.checkRandomPercentChance(20)) {
                 return constrainBet(
                         minPossibleBet.computeDouble(),
                         minPossibleBet,
@@ -30,7 +30,12 @@ class BettingStrategyBukofsky extends BettingStrategy {
             return minPossibleBet;
         }
 
-        BukofskyBankrollLevel level = BukofskyBankrollLevel.determine(player.getInitialBankroll());
+        BukofskyBankrollLevel level =
+                player.getPlayStrategy().getCardCountMethod().getBukofskyBankrollLevelDesired();
+        if (level == null) {
+            level = BukofskyBankrollLevel.determine(player.getInitialBankroll());
+        }
+
         int[] betMatrix = beSuspiciouslyPerfect ? level.perfectBetMatrix : level.realisticBetMatrix;
         int indexIntoMatrix = trueCount - 3;
         return constrainBet(

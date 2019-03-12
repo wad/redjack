@@ -5,6 +5,7 @@ abstract class CardCountMethod {
     Table table;
     TableRules tableRules;
     BettingStrategy bettingStrategy;
+    private BettingStrategyBukofsky.BukofskyBankrollLevel bukofskyBankrollLevelDesired = null;
 
     CardCountMethod(
             Table table,
@@ -37,5 +38,13 @@ abstract class CardCountMethod {
         double twiceValue = value * 2.0D;
         int rounded = roundToInt(twiceValue);
         return ((double)rounded) / 2.0D;
+    }
+
+    BettingStrategyBukofsky.BukofskyBankrollLevel getBukofskyBankrollLevelDesired() {
+        return bukofskyBankrollLevelDesired;
+    }
+
+    void setBukofskyBankrollLevelDesired(BettingStrategyBukofsky.BukofskyBankrollLevel bukofskyBankrollLevelDesired) {
+        this.bukofskyBankrollLevelDesired = bukofskyBankrollLevelDesired;
     }
 }
