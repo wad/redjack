@@ -31,8 +31,16 @@ class MoneyPile {
         return this.numCents > target.numCents;
     }
 
+    boolean isLessThan(MoneyPile target) {
+        return this.numCents < target.numCents;
+    }
+
     boolean isGreaterThanOrEqualTo(MoneyPile target) {
         return this.numCents >= target.numCents;
+    }
+
+    boolean isGreaterThanOrEqualTo(long dollars) {
+        return this.numCents >= (dollars * 100);
     }
 
     boolean hasMoney() {

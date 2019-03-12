@@ -8,7 +8,8 @@ class BettingStrategyMaxOnGoodCount extends BettingStrategy {
             MoneyPile minPossibleBet,
             MoneyPile maxPossibleBet,
             int trueCount,
-            Player player) {
+            Player player,
+            Randomness randomness) {
         if (trueCount >= 3) {
             return maxPossibleBet;
         }

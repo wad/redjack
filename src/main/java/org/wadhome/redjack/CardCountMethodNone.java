@@ -23,12 +23,14 @@ class CardCountMethodNone extends CardCountMethod {
             MoneyPile favoriteBet,
             MoneyPile minPossibleBet,
             MoneyPile maxPossibleBet,
-            Player player) {
+            Player player,
+            Randomness randomness) {
         return bettingStrategy.getBet(
                 favoriteBet,
                 minPossibleBet,
                 maxPossibleBet,
                 0, // there is no count
-                player);
+                player,
+                getRandomness());
     }
 }

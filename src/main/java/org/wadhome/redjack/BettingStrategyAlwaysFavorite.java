@@ -7,7 +7,8 @@ public class BettingStrategyAlwaysFavorite extends BettingStrategy {
             MoneyPile minPossibleBet,
             MoneyPile maxPossibleBet,
             int trueCount,
-            Player player) {
+            Player player,
+            Randomness randomness) {
         return favoriteBet;
     }
 }

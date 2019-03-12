@@ -17,6 +17,20 @@ class Randomness {
         return (random.nextLong() & 1) == 1;
     }
 
+    int getRandomNumberFromZeroToValueExclusive(int maxValue) {
+        return random.nextInt(maxValue);
+    }
+
+    boolean checkRandomPercentChance(int percentChance) {
+        if (percentChance <= 0) {
+            return false;
+        }
+        if (percentChance >= 100) {
+            return true;
+        }
+        return getRandomNumberFromZeroToValueExclusive(100) < percentChance;
+    }
+
     void shuffle(List list) {
         if (seed == null) {
             Collections.shuffle(list);

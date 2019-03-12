@@ -22,7 +22,12 @@ abstract class CardCountMethod {
             MoneyPile favoriteBet,
             MoneyPile minPossibleBet,
             MoneyPile maxPossibleBet,
-            Player player);
+            Player player,
+            Randomness randomness);
+
+    Randomness getRandomness() {
+        return table.getCasino().getRandomness();
+    }
 
     static int roundToInt(double value) {
         return (int) (value + 0.5D);

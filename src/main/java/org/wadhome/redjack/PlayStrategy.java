@@ -31,7 +31,8 @@ abstract class PlayStrategy {
                 favoriteBet,
                 minPossibleBet,
                 maxPossibleBet,
-                player);
+                player,
+                table.getCasino().getRandomness());
     }
 
     abstract BlackjackPlay choosePlay(

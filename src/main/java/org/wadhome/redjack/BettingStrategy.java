@@ -7,5 +7,19 @@ public abstract class BettingStrategy {
             MoneyPile minPossibleBet,
             MoneyPile maxPossibleBet,
             int trueCount,
-            Player player);
+            Player player,
+            Randomness randomness);
+
+    static MoneyPile constrainBet(
+            MoneyPile desiredBet,
+            MoneyPile minPossibleBet,
+            MoneyPile maxPossibleBet) {
+        if (desiredBet.isGreaterThan(maxPossibleBet)) {
+            return maxPossibleBet;
+        }
+        if (desiredBet.isLessThan(minPossibleBet)) {
+            return minPossibleBet;
+        }
+        return desiredBet;
+    }
 }
