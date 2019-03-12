@@ -2,6 +2,7 @@ package org.wadhome.redjack;
 
 class Player {
     private String playerName;
+    private String notes;
     private Gender gender;
     private MoneyPile initialBankroll;
     private MoneyPile bankroll;
@@ -25,6 +26,14 @@ class Player {
 
     String getPlayerName() {
         return playerName;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public String getNotes() {
+        return notes;
     }
 
     void setTakesMaxInsurance(

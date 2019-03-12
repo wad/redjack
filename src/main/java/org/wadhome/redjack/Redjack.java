@@ -105,20 +105,30 @@ class Redjack {
         Casino casino = new Casino(
                 "Redjack Strategy Comparison",
                 seed,
-                new Display(true));
+                new Display(false));
         System.out.println("Seed: " + seed);
         Table table = casino.createTable(0, tableRules);
 
         List<Player> players = new ArrayList<>();
         Player andy = new Player(
-                "AndyAdvanced",
+                "AndyAdvancedPerfect",
                 Gender.male,
                 new MoneyPile(initialPlayerBankrollsInCents),
-                new PlayStrategyHighLowPerfect(table, new BettingStrategyMaxOnGoodCount()),
+                new PlayStrategyHighLowPerfect(table, new BettingStrategyBukofsky(true)),
                 new MoneyPile(playerFavoriteBetInCents));
         andy.getPlayStrategy().getCardCountMethod().setBukofskyBankrollLevelDesired(
-                BettingStrategyBukofsky.BukofskyBankrollLevel.Level2k);
+                BettingStrategyBukofsky.BukofskyBankrollLevel.Level20k);
         players.add(andy);
+
+        Player andy2 = new Player(
+                "AndyAdvancedRealistic",
+                Gender.male,
+                new MoneyPile(initialPlayerBankrollsInCents),
+                new PlayStrategyHighLowRealistic(table, new BettingStrategyBukofsky(false)),
+                new MoneyPile(playerFavoriteBetInCents));
+        andy2.getPlayStrategy().getCardCountMethod().setBukofskyBankrollLevelDesired(
+                BettingStrategyBukofsky.BukofskyBankrollLevel.Level20k);
+        players.add(andy2);
 
         players.add(new Player(
                 "BobbyBasic",
@@ -129,6 +139,7 @@ class Redjack {
 
         assignPlayersToTable(players, table);
         table.playRounds(numRoundsToPlay);
+//        table.playRoundsUntilEndOfShoe();
         showPlayerResults(initialPlayerBankrollsInCents, players);
     }
 

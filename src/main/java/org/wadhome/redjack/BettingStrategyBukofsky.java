@@ -30,16 +30,13 @@ class BettingStrategyBukofsky extends BettingStrategy {
             return minPossibleBet;
         }
 
-        BukofskyBankrollLevel level =
-                player.getPlayStrategy().getCardCountMethod().getBukofskyBankrollLevelDesired();
+        BukofskyBankrollLevel level = player.getPlayStrategy().getCardCountMethod().getBukofskyBankrollLevelDesired();
         if (level == null) {
             level = BukofskyBankrollLevel.determine(player.getInitialBankroll());
         }
-
-        int[] betMatrix = beSuspiciouslyPerfect ? level.perfectBetMatrix : level.realisticBetMatrix;
-        int indexIntoMatrix = trueCount - 3;
+        MoneyPile desiredBet = level.getBet(trueCount, beSuspiciouslyPerfect);
         return constrainBet(
-                new MoneyPile(betMatrix[indexIntoMatrix]),
+                desiredBet,
                 minPossibleBet,
                 maxPossibleBet);
     }
@@ -81,6 +78,18 @@ class BettingStrategyBukofsky extends BettingStrategy {
             this.minimumBetInDollars = minimumBetInDollars;
             this.perfectBetMatrix = perfectBetMatrix;
             this.realisticBetMatrix = realisticBetMatrix;
+        }
+
+        MoneyPile getBet(
+                int trueCount,
+                boolean beSuspiciouslyPerfect) {
+            int[] betMatrix = beSuspiciouslyPerfect ? perfectBetMatrix : realisticBetMatrix;
+            int indexIntoMatrix = trueCount - 3; // only have extra bets when the true count is >= 3
+            if (indexIntoMatrix >= betMatrix.length) {
+                indexIntoMatrix = betMatrix.length - 1;
+            }
+            int betAmountInDollars = betMatrix[indexIntoMatrix];
+            return new MoneyPile(betAmountInDollars * MoneyPile.NUM_CENTS_PER_DOLLAR);
         }
 
         static BukofskyBankrollLevel determine(MoneyPile initialBankroll) {

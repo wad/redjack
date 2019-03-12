@@ -3,6 +3,9 @@ package org.wadhome.redjack;
 import java.util.Objects;
 
 class MoneyPile {
+
+    static final int NUM_CENTS_PER_DOLLAR = 100;
+
     private long numCents;
 
     public MoneyPile(long numCents) {
@@ -40,7 +43,7 @@ class MoneyPile {
     }
 
     boolean isGreaterThanOrEqualTo(long dollars) {
-        return this.numCents >= (dollars * 100);
+        return this.numCents >= (dollars * NUM_CENTS_PER_DOLLAR);
     }
 
     boolean hasMoney() {
@@ -112,8 +115,8 @@ class MoneyPile {
 
     @Override
     public String toString() {
-        long dollars = numCents / 100;
-        long cents = numCents % 100;
+        long dollars = numCents / NUM_CENTS_PER_DOLLAR;
+        long cents = numCents % NUM_CENTS_PER_DOLLAR;
         String dollarString = String.valueOf(dollars);
         String centsString = String.format("%02d", cents);
         return "$" + dollarString + "." + centsString;
