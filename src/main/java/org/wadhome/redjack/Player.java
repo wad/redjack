@@ -9,15 +9,18 @@ class Player {
     private boolean takesMaxInsurance = true;
     private MoneyPile favoriteBet;
     private PlayStrategy playStrategy;
+    private Casino casino;
 
     Player(
             String playerName,
             Gender gender,
+            Casino casino,
             MoneyPile bankroll,
             PlayStrategy playStrategy,
             MoneyPile favoriteBet) {
         this.playerName = playerName;
         this.gender = gender;
+        this.casino = casino;
         this.initialBankroll = bankroll.copy();
         this.bankroll = bankroll;
         this.favoriteBet = favoriteBet;
@@ -39,6 +42,11 @@ class Player {
     void setTakesMaxInsurance(
             @SuppressWarnings("SameParameterValue") boolean takesMaxInsurance) {
         this.takesMaxInsurance = takesMaxInsurance;
+    }
+
+    void say(String message) {
+        casino.getDisplay().showMessage(
+                getPlayerName() + " says, \"" + message + "\"");
     }
 
     MoneyPile getInitialBankroll() {

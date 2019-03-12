@@ -1,6 +1,6 @@
 package org.wadhome.redjack;
 
-public class BettingStrategyAlwaysFavorite extends BettingStrategy {
+class BettingStrategyAlwaysFavorite extends BettingStrategy {
     @Override
     MoneyPile getBet(
             MoneyPile favoriteBet,

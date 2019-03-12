@@ -1,6 +1,6 @@
 package org.wadhome.redjack;
 
-public class Blackjack {
+class Blackjack {
     static final int NUM_CARDS_PER_DECK = Value.values().length * Suite.values().length; // 52
     static final int NUM_CARDS_AFTER_CUT_CARD_FOR_ONE_POINT_FIVE_DECKS = NUM_CARDS_PER_DECK
             + (NUM_CARDS_PER_DECK >> 1);

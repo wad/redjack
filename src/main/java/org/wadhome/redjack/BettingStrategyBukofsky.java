@@ -4,7 +4,7 @@ class BettingStrategyBukofsky extends BettingStrategy {
 
     private boolean beSuspiciouslyPerfect;
 
-    public BettingStrategyBukofsky(boolean beSuspiciouslyPerfect) {
+    BettingStrategyBukofsky(boolean beSuspiciouslyPerfect) {
         this.beSuspiciouslyPerfect = beSuspiciouslyPerfect;
     }
 
@@ -22,6 +22,8 @@ class BettingStrategyBukofsky extends BettingStrategy {
             }
 
             if (randomness.checkRandomPercentChance(20)) {
+                player.say("True count is only " + trueCount + ", so I'd like to bet the minimum."
+                        + " But that looks suspicious, so I'll bet a little more.");
                 return constrainBet(
                         minPossibleBet.computeDouble(),
                         minPossibleBet,
@@ -35,10 +37,18 @@ class BettingStrategyBukofsky extends BettingStrategy {
             level = BukofskyBankrollLevel.determine(player.getInitialBankroll());
         }
         MoneyPile desiredBet = level.getBet(trueCount, beSuspiciouslyPerfect);
-        return constrainBet(
+        MoneyPile constrainedBet = constrainBet(
                 desiredBet,
                 minPossibleBet,
                 maxPossibleBet);
+
+        if (desiredBet.equals(constrainedBet)) {
+            player.say("True count is " + trueCount + ", so I'm betting " + desiredBet + ".");
+        } else {
+            player.say("True count is " + trueCount + ", so I'd like to bet "
+                    + desiredBet + ", but I must bet " + constrainedBet + " instead.");
+        }
+        return constrainedBet;
     }
 
     enum BukofskyBankrollLevel {

@@ -1,6 +1,6 @@
 package org.wadhome.redjack;
 
-public class RoundResult {
+class RoundResult {
     private boolean allPlayersBankrupt;
     private boolean cutCardDrawn;
 

@@ -70,6 +70,7 @@ class Redjack {
         }}.stream().map(name -> new Player(
                 name,
                 Gender.female,
+                casino,
                 new MoneyPile(initialPlayerBankrollsInCents),
                 new PlayStrategyBasic(table, new BettingStrategyAlwaysFavorite()),
                 new MoneyPile(playerFavoriteBetInCents))).
@@ -113,6 +114,7 @@ class Redjack {
         Player andy = new Player(
                 "AndyAdvancedPerfect",
                 Gender.male,
+                casino,
                 new MoneyPile(initialPlayerBankrollsInCents),
                 new PlayStrategyHighLowPerfect(table, new BettingStrategyBukofsky(true)),
                 new MoneyPile(playerFavoriteBetInCents));
@@ -123,6 +125,7 @@ class Redjack {
         Player andy2 = new Player(
                 "AndyAdvancedRealistic",
                 Gender.male,
+                casino,
                 new MoneyPile(initialPlayerBankrollsInCents),
                 new PlayStrategyHighLowRealistic(table, new BettingStrategyBukofsky(false)),
                 new MoneyPile(playerFavoriteBetInCents));
@@ -133,6 +136,7 @@ class Redjack {
         players.add(new Player(
                 "BobbyBasic",
                 Gender.male,
+                casino,
                 new MoneyPile(initialPlayerBankrollsInCents),
                 new PlayStrategyBasic(table, new BettingStrategyAlwaysFavorite()),
                 new MoneyPile(playerFavoriteBetInCents)));

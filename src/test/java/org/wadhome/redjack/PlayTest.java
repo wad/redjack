@@ -17,6 +17,7 @@ public class PlayTest {
         Player alex = new Player(
                 "Alex",
                 Gender.male,
+                casino,
                 new MoneyPile(50000L),
                 new PlayStrategyBasic(table, new BettingStrategyAlwaysFavorite()),
                 new MoneyPile(2500L));
@@ -26,6 +27,7 @@ public class PlayTest {
         Player becky = new Player(
                 "Becky",
                 Gender.female,
+                casino,
                 new MoneyPile(50000L),
                 new PlayStrategyBasic(table, new BettingStrategyAlwaysFavorite()),
                 new MoneyPile(1000L));
@@ -34,6 +36,7 @@ public class PlayTest {
         Player charles = new Player(
                 "Charles",
                 Gender.male,
+                casino,
                 new MoneyPile(10000L),
                 new PlayStrategyBasic(table, new BettingStrategyAlwaysFavorite()),
                 new MoneyPile(10000L));

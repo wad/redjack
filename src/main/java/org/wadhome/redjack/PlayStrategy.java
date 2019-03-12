@@ -6,7 +6,7 @@ abstract class PlayStrategy {
 
     protected Table table;
     protected TableRules tableRules;
-    protected CardCountMethod cardCountMethod;
+    private CardCountMethod cardCountMethod;
 
     PlayStrategy(
             Table table,
@@ -40,7 +40,7 @@ abstract class PlayStrategy {
             Card dealerUpcard,
             MoneyPile bankrollAvailable);
 
-    protected boolean canHandBeSplit(
+    boolean canHandBeSplit(
             PlayerHand hand,
             MoneyPile bankrollAvailable) {
         int numSplitsSoFar = hand.getSeat().getNumSplitsSoFar();
@@ -69,7 +69,7 @@ abstract class PlayStrategy {
         return true;
     }
 
-    protected boolean canDoubleDown(
+    boolean canDoubleDown(
             PlayerHand hand,
             boolean isAfterSplit,
             MoneyPile bankrollAvailable) {
@@ -86,7 +86,7 @@ abstract class PlayStrategy {
         return hand.getNumCards() == 2;
     }
 
-    protected void validateHand(PlayerHand hand) {
+    void validateHand(PlayerHand hand) {
         if (hand.getNumCards() < 2) {
             throw new RuntimeException("Less than 2 cards.");
         }
@@ -98,7 +98,7 @@ abstract class PlayStrategy {
         }
     }
 
-    public CardCountMethod getCardCountMethod() {
+    CardCountMethod getCardCountMethod() {
         return this.cardCountMethod;
     }
 }

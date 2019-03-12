@@ -22,6 +22,7 @@ public class TableTest extends TestHelper {
         player = new Player(
                 "Abe",
                 Gender.male,
+                casino,
                 new MoneyPile(10000L),
                 new PlayStrategyBasic(table, new BettingStrategyAlwaysFavorite()),
                 new MoneyPile(1000L));

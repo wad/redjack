@@ -37,7 +37,7 @@ class Casino {
         return houseBankroll;
     }
 
-    public Display getDisplay() {
+    Display getDisplay() {
         return display;
     }
 

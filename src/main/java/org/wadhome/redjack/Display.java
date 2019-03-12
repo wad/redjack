@@ -4,7 +4,7 @@ class Display {
 
     private boolean isMute;
 
-    public Display(boolean isMute) {
+    Display(boolean isMute) {
         this.isMute = isMute;
     }
 

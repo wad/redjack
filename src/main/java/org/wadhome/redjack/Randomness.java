@@ -17,7 +17,7 @@ class Randomness {
         return (random.nextLong() & 1) == 1;
     }
 
-    int getRandomNumberFromZeroToValueExclusive(int maxValue) {
+    private int getRandomNumberFromZeroToValueExclusive(int maxValue) {
         return random.nextInt(maxValue);
     }
 

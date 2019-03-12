@@ -72,11 +72,11 @@ class Table {
         burn();
     }
 
-    public TableRules getTableRules() {
+    TableRules getTableRules() {
         return tableRules;
     }
 
-    public DiscardTray getDiscardTray() {
+    DiscardTray getDiscardTray() {
         return this.discardTray;
     }
 
@@ -90,7 +90,7 @@ class Table {
         }
     }
 
-    public void showPlayersShuffle() {
+    private void showPlayersShuffle() {
         for (SeatNumber seatNumber : SeatNumber.values()) {
             Seat seat = seats.get(seatNumber);
             if (seat.hasPlayer()) {
@@ -99,7 +99,7 @@ class Table {
         }
     }
 
-    public void showCard(Card card) {
+    void showCard(Card card) {
         for (SeatNumber seatNumber : SeatNumber.values()) {
             Seat seat = seats.get(seatNumber);
             if (seat.hasPlayer()) {
