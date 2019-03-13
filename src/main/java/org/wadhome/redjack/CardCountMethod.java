@@ -15,6 +15,8 @@ abstract class CardCountMethod {
         this.bettingStrategy = bettingStrategy;
     }
 
+    abstract String reportOnCurrentCardCount();
+
     abstract void observeCard(Card card);
 
     abstract void observeShuffle();

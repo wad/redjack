@@ -36,6 +36,7 @@ abstract class PlayStrategy {
     }
 
     abstract BlackjackPlay choosePlay(
+            Player player,
             PlayerHand hand,
             Card dealerUpcard,
             MoneyPile bankrollAvailable);

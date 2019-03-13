@@ -460,23 +460,25 @@ class Table {
                         while (shallContinue) {
                             String initialHand = hand.showCardsWithTotal();
                             BlackjackPlay playerAction = player.getPlay(hand, dealerUpcard);
+                            String cardCountReportRaw = player.getCardCountReport();
+                            String cardCountReport = cardCountReportRaw.isEmpty() ? "" : " \t\t\t\t\t\t\t\t\t\t\t[" + cardCountReportRaw + "]";
                             switch (playerAction) {
                                 case Stand:
-                                    show(hand, "decides to stand.");
+                                    handlePlayerStand(hand, cardCountReport);
                                     shallContinue = false;
                                     break;
                                 case Hit:
-                                    shallContinue = handlePlayerHit(initialHand, hand);
+                                    shallContinue = handlePlayerHit(initialHand, hand, cardCountReport);
                                     break;
                                 case DoubleDown:
-                                    handlePlayerDoubleDown(initialHand, hand);
+                                    handlePlayerDoubleDown(initialHand, hand, cardCountReport);
                                     shallContinue = false;
                                     break;
                                 case Split:
-                                    shallContinue = handlePlayerSplit(hand);
+                                    shallContinue = handlePlayerSplit(hand, cardCountReport);
                                     break;
                                 case Surrender:
-                                    handlePlayerSurrender(hand);
+                                    handlePlayerSurrender(hand, cardCountReport);
                                     shallContinue = false;
                                     break;
                                 default:
@@ -489,9 +491,16 @@ class Table {
         }
     }
 
+    private void handlePlayerStand(
+            PlayerHand hand,
+            String cardCountReport) {
+        show(hand, "decides to stand." + cardCountReport);
+    }
+
     private boolean handlePlayerHit(
             String initialHand,
-            PlayerHand hand) {
+            PlayerHand hand,
+            String cardCountReport) {
         Card hitCard = shoe.drawTopCard();
         hand.addCard(hitCard);
         Seat seat = hand.getSeat();
@@ -505,7 +514,8 @@ class Table {
                     + " hand of " + initialHand
                     + ", and got " + hitCard.toString(true, false)
                     + ". Hand is now " + hand.showCardsWithTotal()
-                    + ". That's a bust. Lost bet of " + betAmount + ".");
+                    + ". That's a bust. Lost bet of " + betAmount + "."
+                    + cardCountReport);
             return false;
         }
 
@@ -521,7 +531,8 @@ class Table {
                     + " hand of " + initialHand
                     + ", and got " + hitCard.toString(false, true)
                     + ". Hand is now " + hand.showCardsWithTotal()
-                    + ". " + player.getGender().getHeShe(true) + " must now stand.");
+                    + ". " + player.getGender().getHeShe(true) + " must now stand."
+                    + cardCountReport);
             return false;
         }
 
@@ -531,13 +542,15 @@ class Table {
                 + " decides to hit with " + player.getGender().getHisHer(false)
                 + " hand of " + initialHand
                 + ", and got " + hitCard.toString(true, false)
-                + ". Hand is now " + hand.showCardsWithTotal());
+                + ". Hand is now " + hand.showCardsWithTotal()
+                + cardCountReport);
         return true;
     }
 
     private void handlePlayerDoubleDown(
             String initialHand,
-            PlayerHand hand) {
+            PlayerHand hand,
+            String cardCountReport) {
         Seat seat = hand.getSeat();
         Player player = seat.getPlayer();
 
@@ -556,7 +569,8 @@ class Table {
                     + " hand of " + initialHand
                     + ", and got " + doubleDownCard.toString(true, false)
                     + ". Hand is now " + hand.showCardsWithTotal()
-                    + ". That's a bust. Lost doubled bet of " + doubledBet + ".");
+                    + ". That's a bust. Lost doubled bet of " + doubledBet + "."
+                    + cardCountReport);
             return;
         }
 
@@ -590,16 +604,18 @@ class Table {
         discardTray.addCards(hand.removeCards());
     }
 
-    private boolean handlePlayerSplit(PlayerHand hand) {
+    private boolean handlePlayerSplit(
+            PlayerHand hand,
+            String cardCountReport) {
         boolean areSplitAces = hand.getFirstCard().getValue() == Value.Ace;
 
         Seat seat = hand.getSeat();
         int numSplitsSoFar = seat.getNumSplitsSoFar();
         MoneyPile betAmount = hand.getBetAmount();
         if (numSplitsSoFar == 0) {
-            show(hand, "decides to split, and adds another bet of " + betAmount + ".");
+            show(hand, "decides to split, and adds another bet of " + betAmount + "." + cardCountReport);
         } else {
-            show(hand, "decides to split again, and adds another bet of " + betAmount + ".");
+            show(hand, "decides to split again, and adds another bet of " + betAmount + "." + cardCountReport);
         }
         playerPayCasino(seat.getPlayer(), betAmount);
 
@@ -647,12 +663,15 @@ class Table {
         return true;
     }
 
-    private void handlePlayerSurrender(PlayerHand hand) {
+    private void handlePlayerSurrender(
+            PlayerHand hand,
+            String cardCountReport) {
         Player player = hand.getSeat().getPlayer();
         MoneyPile halfBetAmount = hand.removeBet().computeHalf();
         casinoPayPlayer(player, halfBetAmount);
         show(hand, "surrendered, and loses half of "
-                + player.getGender().getHisHer(false) + " bet (" + halfBetAmount + ").");
+                + player.getGender().getHisHer(false) + " bet (" + halfBetAmount + ")."
+                + cardCountReport);
     }
 
     private void dealerPlays() {

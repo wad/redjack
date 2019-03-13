@@ -62,6 +62,7 @@ class Player {
         MoneyPile minPossibleBet = tableRules.getMinBet();
         MoneyPile maxPossibleBet = MoneyPile.getLesserOf(tableRules.getMaxBet(), bankroll);
         if (minPossibleBet.isGreaterThan(bankroll)) {
+            say("Oops, I don't have enough for the minimum bet.");
             return MoneyPile.zero();
         }
 
@@ -75,11 +76,15 @@ class Player {
     BlackjackPlay getPlay(
             PlayerHand hand,
             Card dealerUpcard) {
-
         return playStrategy.choosePlay(
+                this,
                 hand,
                 dealerUpcard,
                 bankroll.copy());
+    }
+
+    String getCardCountReport() {
+        return playStrategy.getCardCountMethod().reportOnCurrentCardCount();
     }
 
     MoneyPile getInsuranceBet(

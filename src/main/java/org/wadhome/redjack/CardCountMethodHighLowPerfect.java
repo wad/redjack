@@ -12,6 +12,10 @@ class CardCountMethodHighLowPerfect extends CardCountMethod {
         runningCount = 0;
     }
 
+    String reportOnCurrentCardCount() {
+        return "RC=" + runningCount + " TC=" + getTrueCount(table.getShoe().cards.size());
+    }
+
     @Override
     void observeCard(Card card) {
         switch (card.getValue()) {

@@ -27,6 +27,7 @@ class PlayStrategyBasic extends PlayStrategy {
     }
 
     BlackjackPlay choosePlay(
+            Player player,
             PlayerHand hand,
             Card dealerUpcard,
             MoneyPile bankrollAvailable) {

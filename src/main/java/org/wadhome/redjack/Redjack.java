@@ -142,8 +142,8 @@ class Redjack {
                 new MoneyPile(playerFavoriteBetInCents)));
 
         assignPlayersToTable(players, table);
-        table.playRounds(numRoundsToPlay);
-//        table.playRoundsUntilEndOfShoe();
+//        table.playRounds(numRoundsToPlay);
+        table.playRoundsUntilEndOfShoe();
         showPlayerResults(initialPlayerBankrollsInCents, players);
     }
 
