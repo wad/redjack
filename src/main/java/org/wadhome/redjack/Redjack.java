@@ -119,7 +119,7 @@ class Redjack {
                 new PlayStrategyHighLowPerfect(table, new BettingStrategyBukofsky(true)),
                 new MoneyPile(playerFavoriteBetInCents));
         andy.getPlayStrategy().getCardCountMethod().setBukofskyBankrollLevelDesired(
-                BettingStrategyBukofsky.BukofskyBankrollLevel.Level20k);
+                BukofskyBankrollLevel.Level20k);
         players.add(andy);
 
         Player andy2 = new Player(
@@ -130,7 +130,7 @@ class Redjack {
                 new PlayStrategyHighLowRealistic(table, new BettingStrategyBukofsky(false)),
                 new MoneyPile(playerFavoriteBetInCents));
         andy2.getPlayStrategy().getCardCountMethod().setBukofskyBankrollLevelDesired(
-                BettingStrategyBukofsky.BukofskyBankrollLevel.Level20k);
+                BukofskyBankrollLevel.Level20k);
         players.add(andy2);
 
         players.add(new Player(

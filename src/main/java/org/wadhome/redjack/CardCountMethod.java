@@ -5,7 +5,7 @@ abstract class CardCountMethod {
     Table table;
     TableRules tableRules;
     BettingStrategy bettingStrategy;
-    private BettingStrategyBukofsky.BukofskyBankrollLevel bukofskyBankrollLevelDesired = null;
+    private BukofskyBankrollLevel bukofskyBankrollLevelDesired = null;
 
     CardCountMethod(
             Table table,
@@ -40,11 +40,11 @@ abstract class CardCountMethod {
         return ((double)rounded) / 2.0D;
     }
 
-    BettingStrategyBukofsky.BukofskyBankrollLevel getBukofskyBankrollLevelDesired() {
+    BukofskyBankrollLevel getBukofskyBankrollLevelDesired() {
         return bukofskyBankrollLevelDesired;
     }
 
-    void setBukofskyBankrollLevelDesired(BettingStrategyBukofsky.BukofskyBankrollLevel bukofskyBankrollLevelDesired) {
+    void setBukofskyBankrollLevelDesired(BukofskyBankrollLevel bukofskyBankrollLevelDesired) {
         this.bukofskyBankrollLevelDesired = bukofskyBankrollLevelDesired;
     }
 }
