@@ -460,25 +460,24 @@ class Table {
                         while (shallContinue) {
                             String initialHand = hand.showCardsWithTotal();
                             BlackjackPlay playerAction = player.getPlay(hand, dealerUpcard);
-                            String cardCountReportRaw = player.getCardCountReport();
-                            String cardCountReport = cardCountReportRaw.isEmpty() ? "" : " \t\t\t\t\t\t\t\t\t\t\t[" + cardCountReportRaw + "]";
+                            CardCountStatus cardCountStatus = player.getCardCountStatus();
                             switch (playerAction) {
                                 case Stand:
-                                    handlePlayerStand(hand, cardCountReport);
+                                    handlePlayerStand(hand, cardCountStatus);
                                     shallContinue = false;
                                     break;
                                 case Hit:
-                                    shallContinue = handlePlayerHit(initialHand, hand, cardCountReport);
+                                    shallContinue = handlePlayerHit(initialHand, hand, cardCountStatus);
                                     break;
                                 case DoubleDown:
-                                    handlePlayerDoubleDown(initialHand, hand, cardCountReport);
+                                    handlePlayerDoubleDown(initialHand, hand, cardCountStatus);
                                     shallContinue = false;
                                     break;
                                 case Split:
-                                    shallContinue = handlePlayerSplit(hand, cardCountReport);
+                                    shallContinue = handlePlayerSplit(hand, cardCountStatus);
                                     break;
                                 case Surrender:
-                                    handlePlayerSurrender(hand, cardCountReport);
+                                    handlePlayerSurrender(hand, cardCountStatus);
                                     shallContinue = false;
                                     break;
                                 default:
@@ -493,14 +492,14 @@ class Table {
 
     private void handlePlayerStand(
             PlayerHand hand,
-            String cardCountReport) {
-        show(hand, "decides to stand." + cardCountReport);
+            CardCountStatus cardCountStatus) {
+        show(hand, "decides to stand.", cardCountStatus);
     }
 
     private boolean handlePlayerHit(
             String initialHand,
             PlayerHand hand,
-            String cardCountReport) {
+            CardCountStatus cardCountStatus) {
         Card hitCard = shoe.drawTopCard();
         hand.addCard(hitCard);
         Seat seat = hand.getSeat();
@@ -509,13 +508,13 @@ class Table {
         if (hand.isBust()) {
             MoneyPile betAmount = hand.removeBet();
             show("Seat " + seat.getSeatNumeral()
-                    + " : " + player.getPlayerName()
-                    + " decides to hit with " + player.getGender().getHisHer(false)
-                    + " hand of " + initialHand
-                    + ", and got " + hitCard.toString(true, false)
-                    + ". Hand is now " + hand.showCardsWithTotal()
-                    + ". That's a bust. Lost bet of " + betAmount + "."
-                    + cardCountReport);
+                            + " : " + player.getPlayerName()
+                            + " decides to hit with " + player.getGender().getHisHer(false)
+                            + " hand of " + initialHand
+                            + ", and got " + hitCard.toString(true, false)
+                            + ". Hand is now " + hand.showCardsWithTotal()
+                            + ". That's a bust. Lost bet of " + betAmount + ".",
+                    cardCountStatus);
             return false;
         }
 
@@ -526,31 +525,31 @@ class Table {
 
         if (hand.isTwentyOne()) {
             show("Seat " + seat.getSeatNumeral()
-                    + " : " + player.getPlayerName()
-                    + " decides to hit with " + player.getGender().getHisHer(false)
-                    + " hand of " + initialHand
-                    + ", and got " + hitCard.toString(false, true)
-                    + ". Hand is now " + hand.showCardsWithTotal()
-                    + ". " + player.getGender().getHeShe(true) + " must now stand."
-                    + cardCountReport);
+                            + " : " + player.getPlayerName()
+                            + " decides to hit with " + player.getGender().getHisHer(false)
+                            + " hand of " + initialHand
+                            + ", and got " + hitCard.toString(false, true)
+                            + ". Hand is now " + hand.showCardsWithTotal()
+                            + ". " + player.getGender().getHeShe(true) + " must now stand.",
+                    cardCountStatus);
             return false;
         }
 
         // The hit didn't bust them, they can have another play if they want.
         show("Seat " + seat.getSeatNumeral()
-                + " : " + player.getPlayerName()
-                + " decides to hit with " + player.getGender().getHisHer(false)
-                + " hand of " + initialHand
-                + ", and got " + hitCard.toString(true, false)
-                + ". Hand is now " + hand.showCardsWithTotal()
-                + cardCountReport);
+                        + " : " + player.getPlayerName()
+                        + " decides to hit with " + player.getGender().getHisHer(false)
+                        + " hand of " + initialHand
+                        + ", and got " + hitCard.toString(true, false)
+                        + ". Hand is now " + hand.showCardsWithTotal(),
+                cardCountStatus);
         return true;
     }
 
     private void handlePlayerDoubleDown(
             String initialHand,
             PlayerHand hand,
-            String cardCountReport) {
+            CardCountStatus cardCountStatus) {
         Seat seat = hand.getSeat();
         Player player = seat.getPlayer();
 
@@ -564,23 +563,24 @@ class Table {
         if (hand.isBust()) {
             MoneyPile doubledBet = hand.removeBet();
             show("Seat " + seat.getSeatNumeral()
-                    + " : " + player.getPlayerName()
-                    + " decides to double down with " + player.getGender().getHisHer(false)
-                    + " hand of " + initialHand
-                    + ", and got " + doubleDownCard.toString(true, false)
-                    + ". Hand is now " + hand.showCardsWithTotal()
-                    + ". That's a bust. Lost doubled bet of " + doubledBet + "."
-                    + cardCountReport);
+                            + " : " + player.getPlayerName()
+                            + " decides to double down with " + player.getGender().getHisHer(false)
+                            + " hand of " + initialHand
+                            + ", and got " + doubleDownCard.toString(true, false)
+                            + ". Hand is now " + hand.showCardsWithTotal()
+                            + ". That's a bust. Lost doubled bet of " + doubledBet + ".",
+                    cardCountStatus);
             return;
         }
 
         show("Seat " + seat.getSeatNumeral()
-                + " : " + player.getPlayerName()
-                + " decides to double down with " + player.getGender().getHisHer(false)
-                + " hand of " + initialHand
-                + ", and got " + doubleDownCard.toString(true, false)
-                + ". Hand is now " + hand.showCardsWithTotal()
-                + ". Must now stand. Bet is now " + originalBetAmount.computeDouble() + ".");
+                        + " : " + player.getPlayerName()
+                        + " decides to double down with " + player.getGender().getHisHer(false)
+                        + " hand of " + initialHand
+                        + ", and got " + doubleDownCard.toString(true, false)
+                        + ". Hand is now " + hand.showCardsWithTotal()
+                        + ". Must now stand. Bet is now " + originalBetAmount.computeDouble() + ".",
+                cardCountStatus);
     }
 
     private void handlePlayerCharlie(
@@ -606,16 +606,16 @@ class Table {
 
     private boolean handlePlayerSplit(
             PlayerHand hand,
-            String cardCountReport) {
+            CardCountStatus cardCountStatus) {
         boolean areSplitAces = hand.getFirstCard().getValue() == Value.Ace;
 
         Seat seat = hand.getSeat();
         int numSplitsSoFar = seat.getNumSplitsSoFar();
         MoneyPile betAmount = hand.getBetAmount();
         if (numSplitsSoFar == 0) {
-            show(hand, "decides to split, and adds another bet of " + betAmount + "." + cardCountReport);
+            show(hand, "decides to split, and adds another bet of " + betAmount + ".", cardCountStatus);
         } else {
-            show(hand, "decides to split again, and adds another bet of " + betAmount + "." + cardCountReport);
+            show(hand, "decides to split again, and adds another bet of " + betAmount + ".", cardCountStatus);
         }
         playerPayCasino(seat.getPlayer(), betAmount);
 
@@ -665,13 +665,13 @@ class Table {
 
     private void handlePlayerSurrender(
             PlayerHand hand,
-            String cardCountReport) {
+            CardCountStatus cardCountStatus) {
         Player player = hand.getSeat().getPlayer();
         MoneyPile halfBetAmount = hand.removeBet().computeHalf();
         casinoPayPlayer(player, halfBetAmount);
         show(hand, "surrendered, and loses half of "
-                + player.getGender().getHisHer(false) + " bet (" + halfBetAmount + ")."
-                + cardCountReport);
+                        + player.getGender().getHisHer(false) + " bet (" + halfBetAmount + ").",
+                cardCountStatus);
     }
 
     private void dealerPlays() {
@@ -745,6 +745,10 @@ class Table {
         casino.getDisplay().showMessage(message);
     }
 
+    private void show(String message, CardCountStatus cardCountStatus) {
+        casino.getDisplay().showMessage(message, cardCountStatus);
+    }
+
     private void show(String message, boolean overrideMute) {
         casino.getDisplay().showMessage(message, overrideMute);
     }
@@ -758,6 +762,13 @@ class Table {
     private void show(
             PlayerHand hand,
             String message) {
+        show(hand, message, null);
+    }
+
+    private void show(
+            PlayerHand hand,
+            String message,
+            CardCountStatus cardCountStatus) {
         Seat seat = hand.getSeat();
         String playerName = seat.getPlayer().getPlayerName();
         String msg;
@@ -778,6 +789,6 @@ class Table {
                     + " "
                     + message;
         }
-        casino.getDisplay().showMessage(msg);
+        casino.getDisplay().showMessage(msg, cardCountStatus);
     }
 }

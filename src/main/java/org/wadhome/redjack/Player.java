@@ -83,8 +83,8 @@ class Player {
                 bankroll.copy());
     }
 
-    String getCardCountReport() {
-        return playStrategy.getCardCountMethod().reportOnCurrentCardCount();
+    CardCountStatus getCardCountStatus() {
+        return playStrategy.getCardCountMethod().getCardCountStatus();
     }
 
     MoneyPile getInsuranceBet(

@@ -13,8 +13,11 @@ class CardCountMethodHighLowRealistic extends CardCountMethod {
         runningCount = 0;
     }
 
-    String reportOnCurrentCardCount() {
-        return "RC=" + runningCount + " TC=" + getTrueCount(table.getDiscardTray());
+    @Override
+    CardCountStatus getCardCountStatus() {
+        return new CardCountStatusRunningAndTrue(
+                runningCount,
+                getTrueCount(table.getDiscardTray()));
     }
 
     @Override

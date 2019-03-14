@@ -8,8 +8,9 @@ class CardCountMethodNone extends CardCountMethod {
         super(table, bettingStrategy);
     }
 
-    String reportOnCurrentCardCount() {
-        return "";
+    @Override
+    CardCountStatus getCardCountStatus() {
+        return new CardCountStatusNone();
     }
 
     @Override

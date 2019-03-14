@@ -15,7 +15,7 @@ abstract class CardCountMethod {
         this.bettingStrategy = bettingStrategy;
     }
 
-    abstract String reportOnCurrentCardCount();
+    abstract CardCountStatus getCardCountStatus();
 
     abstract void observeCard(Card card);
 
