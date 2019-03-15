@@ -42,4 +42,24 @@ abstract class Execution {
         }
         return sum;
     }
+
+    int countBankruptPlayers(List<Player> players) {
+        int numBankruptPlayers = 0;
+        for (Player player : players) {
+            if (player.isBankrupt()) {
+                numBankruptPlayers++;
+            }
+        }
+        return numBankruptPlayers;
+    }
+
+    int countRetiredPlayers(List<Player> players) {
+        int numRetiredPlayers = 0;
+        for (Player player : players) {
+            if (player.isRetired()) {
+                numRetiredPlayers++;
+            }
+        }
+        return numRetiredPlayers;
+    }
 }

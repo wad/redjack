@@ -192,8 +192,8 @@ class Table {
                 continueRounds = false;
             }
 
-            if (roundResult.areAllPlayersBankrupt()) {
-                showAndDisplay("\nAll players are bankrupt on round number " + roundNumber + ".");
+            if (roundResult.haveAllPlayersQuit()) {
+                showAndDisplay("\nAll players have quit on round number " + roundNumber + ".");
                 continueRounds = false;
             }
         }
@@ -213,8 +213,8 @@ class Table {
                 shuffleAndStuff();
             }
 
-            if (roundResult.areAllPlayersBankrupt()) {
-                showAndDisplay("\nAll players are bankrupt on round number " + roundNumber + ".");
+            if (roundResult.haveAllPlayersQuit()) {
+                showAndDisplay("\nAll players have quit on round number " + roundNumber + ".");
                 continueRounds = false;
             }
         }

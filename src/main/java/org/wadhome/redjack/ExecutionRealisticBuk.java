@@ -14,7 +14,7 @@ class ExecutionRealisticBuk extends Execution {
         System.out.println("Seven players, each with "
                 + new MoneyPile(initialPlayerBankrollsInCents)
                 + ", betting " + new MoneyPile(playerFavoriteBetInCents)
-                + ", playing " + numRoundsToPlay + " rounds.");
+                + ", playing " + numRoundsToPlay + " max rounds, until bust or double.");
 
         TableRules tableRules = TableRules.getDefaultRules();
         tableRules.minBet = new MoneyPile(500L);
@@ -35,26 +35,26 @@ class ExecutionRealisticBuk extends Execution {
             add("Buky Edna");
             add("Buky Fran");
             add("Buky Grace");
-        }}.stream().map(name -> new Player(
-                name,
-                Gender.female,
-                casino,
-                new MoneyPile(initialPlayerBankrollsInCents),
-                new PlayStrategyHighLowPerfect(table, new BettingStrategyBukofsky(false)),
-                new MoneyPile(playerFavoriteBetInCents))).
+        }}.stream().map(name -> {
+            MoneyPile initialPlayerBankroll = new MoneyPile(initialPlayerBankrollsInCents);
+            Player player = new Player(
+                    name,
+                    Gender.female,
+                    casino,
+                    initialPlayerBankroll,
+                    new PlayStrategyHighLowPerfect(table, new BettingStrategyBukofsky(false)),
+                    new MoneyPile(playerFavoriteBetInCents));
+            player.setRetirementTriggerBankroll(initialPlayerBankroll.computeDouble());
+            return player;
+        }).
                 collect(toList());
-
-        MoneyPile initialPlayerBankrolls = getSumOfPlayerBankrolls(players, false);
 
         assignPlayersToTable(players, table);
         table.playRounds(numRoundsToPlay);
 
-        MoneyPile finalPlayerBankrolls = getSumOfPlayerBankrolls(players, false);
-
         System.out.println();
-        System.out.println("Initial player bankrolls: " + initialPlayerBankrolls);
-        System.out.println("Final player bankrolls: " + finalPlayerBankrolls);
-        System.out.println("Players " + MoneyPile.computeDifference(finalPlayerBankrolls, initialPlayerBankrolls));
+        System.out.println("Retired players: " + countRetiredPlayers(players)
+                + ". Bankrupt players: " + countBankruptPlayers(players) + ".");
 
         return casino;
     }

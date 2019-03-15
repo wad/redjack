@@ -5,6 +5,9 @@ class Player {
     private String notes;
     private Gender gender;
     private MoneyPile initialBankroll;
+    private MoneyPile retirementTriggerBankroll;
+    private boolean isRetired = false;
+    private boolean isBankrupt = false;
     private MoneyPile bankroll;
     private boolean takesMaxInsurance = true;
     private MoneyPile favoriteBet;
@@ -39,6 +42,10 @@ class Player {
         return notes;
     }
 
+    public void setRetirementTriggerBankroll(MoneyPile retirementTriggerBankroll) {
+        this.retirementTriggerBankroll = retirementTriggerBankroll;
+    }
+
     void setTakesMaxInsurance(
             @SuppressWarnings("SameParameterValue") boolean takesMaxInsurance) {
         this.takesMaxInsurance = takesMaxInsurance;
@@ -57,12 +64,32 @@ class Player {
         return this.bankroll;
     }
 
+    boolean isRetired() {
+        if (!isRetired) {
+            if(bankroll.isGreaterThanOrEqualTo(retirementTriggerBankroll)) {
+                say("I've doubled my initial bankroll, so I'm retiring.");
+                isRetired = true;
+            }
+        }
+        return isRetired;
+    }
+
+    boolean isBankrupt() {
+        return isBankrupt;
+    }
+
     MoneyPile getBet(Table table) {
+
+        if (isRetired()) {
+            return MoneyPile.zero();
+        }
+
         TableRules tableRules = table.getTableRules();
         MoneyPile minPossibleBet = tableRules.getMinBet();
         MoneyPile maxPossibleBet = MoneyPile.getLesserOf(tableRules.getMaxBet(), bankroll);
         if (minPossibleBet.isGreaterThan(bankroll)) {
             say("Oops, I don't have enough for the minimum bet.");
+            isBankrupt = true;
             return MoneyPile.zero();
         }
 

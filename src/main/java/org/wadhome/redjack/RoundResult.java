@@ -1,13 +1,13 @@
 package org.wadhome.redjack;
 
 class RoundResult {
-    private boolean allPlayersBankrupt;
+    private boolean allPlayersQuit;
     private boolean cutCardDrawn;
 
     private RoundResult(
-            boolean allPlayersBankrupt,
+            boolean allPlayersQuit,
             boolean cutCardDrawn) {
-        this.allPlayersBankrupt = allPlayersBankrupt;
+        this.allPlayersQuit = allPlayersQuit;
         this.cutCardDrawn = cutCardDrawn;
     }
 
@@ -23,8 +23,8 @@ class RoundResult {
         return new RoundResult(true, false);
     }
 
-    boolean areAllPlayersBankrupt() {
-        return allPlayersBankrupt;
+    boolean haveAllPlayersQuit() {
+        return allPlayersQuit;
     }
 
     boolean isCutCardDrawn() {
