@@ -10,19 +10,22 @@ class Casino {
     private MoneyPile houseBankroll = new MoneyPile(100000000000000L);
     private Display display;
 
-    Casino(String casinoName) {
-        this(casinoName, null, null);
+    // used for testing
+    Casino() {
+        this(
+                "test",
+                Randomness.generateRandomSeed(),
+                true,
+                false);
     }
 
     Casino(
             String casinoName,
-            Long seed, // you can supply Randomness.generateRandomSeed() here
-            Display display) {
+            Long seed,
+            boolean isDisplaying,
+            boolean isLogging) {
         this.casinoName = casinoName;
-        if (seed == null) {
-            seed = Randomness.generateRandomSeed();
-        }
-        this.display = display == null ? new Display(true) : display;
+        this.display = new Display(isDisplaying, isLogging);
         randomness = new Randomness(seed);
         showWelcomeInfo();
     }
@@ -60,5 +63,11 @@ class Casino {
 
     Randomness getRandomness() {
         return randomness;
+    }
+
+    void closeCasino() {
+        if (display != null) {
+            display.closeLogs();
+        }
     }
 }

@@ -9,7 +9,7 @@ public class ShoeTest extends TestHelper {
     public void testAddAndDraw() {
         int numDecks = 2;
         int tableNumber = 0;
-        Casino casino = new Casino("test");
+        Casino casino = new Casino();
         TableRules tableRules = TableRules.getDefaultRules();
         Table table = new Table(casino, tableNumber, tableRules);
         Shoe shoe = new Shoe(numDecks, table);

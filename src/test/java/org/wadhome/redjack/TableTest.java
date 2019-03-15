@@ -14,7 +14,7 @@ public class TableTest extends TestHelper {
 
     @Before
     public void setup() {
-        Casino casino = new Casino("Test");
+        Casino casino = new Casino();
         tableRules = TableRules.getDefaultRules();
         table = new Table(casino, 0, tableRules);
         shoe = table.getShoe();

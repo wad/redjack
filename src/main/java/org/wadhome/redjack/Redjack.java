@@ -25,22 +25,33 @@ class Redjack {
 
         String commandName = args[0];
         Command command = Command.determine(commandName);
-        switch (command) {
-            case playBasic_100k:
-                redjack.runBasicStrategyAtTwentyFiveDollarMinimums();
-                break;
-            case strategyCompare_basic_vs_highLow:
-                redjack.runStrategyComparisonBasicVsHighLow();
-                break;
-            case unknown:
-                System.out.println("Unknown command: " + commandName);
-                break;
-            default:
-                throw new RuntimeException("Bug.");
+        Casino casino = null;
+        try {
+            switch (command) {
+                case playBasic_100k:
+                    casino = redjack.runBasicStrategyAtTwentyFiveDollarMinimums();
+                    break;
+                case strategyCompare_basic_vs_highLow:
+                    casino = redjack.runStrategyComparisonBasicVsHighLow();
+                    break;
+                case strategyCompare_basic_vs_highLow_one_shoe:
+                    casino = redjack.runStrategyComparisonBasicVsHighLowOneShoe();
+                    break;
+                case unknown:
+                    System.out.println("Unknown command: " + commandName);
+                    break;
+                default:
+                    throw new RuntimeException("Bug.");
+            }
+        }
+        finally {
+            if (casino != null) {
+                casino.closeCasino();
+            }
         }
     }
 
-    private void runBasicStrategyAtTwentyFiveDollarMinimums() {
+    private Casino runBasicStrategyAtTwentyFiveDollarMinimums() {
         int numRoundsToPlay = 100000;
         long playerFavoriteBetInCents = 2500L;
         long initialPlayerBankrollsInCents = 1000000L;
@@ -56,7 +67,8 @@ class Redjack {
         Casino casino = new Casino(
                 "Redjack",
                 Randomness.generateRandomSeed(),
-                new Display(true));
+                true,
+                true);
         Table table = casino.createTable(0, tableRules);
 
         List<Player> players = new ArrayList<String>() {{
@@ -87,9 +99,11 @@ class Redjack {
         System.out.println("Initial player bankrolls: " + initialPlayerBankrolls);
         System.out.println("Final player bankrolls: " + finalPlayerBankrolls);
         System.out.println("Players " + MoneyPile.computeDifference(finalPlayerBankrolls, initialPlayerBankrolls));
+
+        return casino;
     }
 
-    private void runStrategyComparisonBasicVsHighLow() {
+    private Casino runStrategyComparisonBasicVsHighLow() {
         int numRoundsToPlay = 100000;
         long playerFavoriteBetInCents = 2500L;
         long initialPlayerBankrollsInCents = 10000000L;
@@ -106,7 +120,8 @@ class Redjack {
         Casino casino = new Casino(
                 "Redjack Strategy Comparison",
                 seed,
-                new Display(false));
+                false,
+                true);
         System.out.println("Seed: " + seed);
         Table table = casino.createTable(0, tableRules);
 
@@ -142,9 +157,69 @@ class Redjack {
                 new MoneyPile(playerFavoriteBetInCents)));
 
         assignPlayersToTable(players, table);
-//        table.playRounds(numRoundsToPlay);
+        table.playRounds(numRoundsToPlay);
+        showPlayerResults(initialPlayerBankrollsInCents, players);
+
+        return casino;
+    }
+
+    private Casino runStrategyComparisonBasicVsHighLowOneShoe() {
+        long playerFavoriteBetInCents = 2500L;
+        long initialPlayerBankrollsInCents = 10000000L;
+        System.out.println("Two players, each with "
+                + new MoneyPile(initialPlayerBankrollsInCents)
+                + ", betting " + new MoneyPile(playerFavoriteBetInCents)
+                + ", playing one shoe.");
+
+        TableRules tableRules = TableRules.getDefaultRules();
+        tableRules.minBet = new MoneyPile(2500L);
+        tableRules.maxBet = new MoneyPile(30000L);
+
+        long seed = Randomness.generateRandomSeed();
+        Casino casino = new Casino(
+                "Redjack Strategy Comparison, 1 shoe",
+                seed,
+                true,
+                true);
+        System.out.println("Seed: " + seed);
+        Table table = casino.createTable(0, tableRules);
+
+        List<Player> players = new ArrayList<>();
+        Player andy = new Player(
+                "AndyAdvancedPerfect",
+                Gender.male,
+                casino,
+                new MoneyPile(initialPlayerBankrollsInCents),
+                new PlayStrategyHighLowPerfect(table, new BettingStrategyBukofsky(true)),
+                new MoneyPile(playerFavoriteBetInCents));
+        andy.getPlayStrategy().getCardCountMethod().setBukofskyBankrollLevelDesired(
+                BukofskyBankrollLevel.Level20k);
+        players.add(andy);
+
+        Player andy2 = new Player(
+                "AndyAdvancedRealistic",
+                Gender.male,
+                casino,
+                new MoneyPile(initialPlayerBankrollsInCents),
+                new PlayStrategyHighLowRealistic(table, new BettingStrategyBukofsky(false)),
+                new MoneyPile(playerFavoriteBetInCents));
+        andy2.getPlayStrategy().getCardCountMethod().setBukofskyBankrollLevelDesired(
+                BukofskyBankrollLevel.Level20k);
+        players.add(andy2);
+
+        players.add(new Player(
+                "BobbyBasic",
+                Gender.male,
+                casino,
+                new MoneyPile(initialPlayerBankrollsInCents),
+                new PlayStrategyBasic(table, new BettingStrategyAlwaysFavorite()),
+                new MoneyPile(playerFavoriteBetInCents)));
+
+        assignPlayersToTable(players, table);
         table.playRoundsUntilEndOfShoe();
         showPlayerResults(initialPlayerBankrollsInCents, players);
+
+        return casino;
     }
 
     private void assignPlayersToTable(

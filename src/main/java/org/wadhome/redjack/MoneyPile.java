@@ -100,6 +100,14 @@ class MoneyPile {
         return pile2;
     }
 
+    String format(boolean includeDollarSign) {
+        long dollars = numCents / NUM_CENTS_PER_DOLLAR;
+        long cents = numCents % NUM_CENTS_PER_DOLLAR;
+        String dollarString = String.valueOf(dollars);
+        String centsString = String.format("%02d", cents);
+        return (includeDollarSign ? "$" : "") + dollarString + "." + centsString;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -115,10 +123,6 @@ class MoneyPile {
 
     @Override
     public String toString() {
-        long dollars = numCents / NUM_CENTS_PER_DOLLAR;
-        long cents = numCents % NUM_CENTS_PER_DOLLAR;
-        String dollarString = String.valueOf(dollars);
-        String centsString = String.format("%02d", cents);
-        return "$" + dollarString + "." + centsString;
+        return format(true);
     }
 }

@@ -1,5 +1,6 @@
 package org.wadhome.redjack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -161,7 +162,7 @@ class Table {
             Player player,
             MoneyPile amount) {
         if (amount.isGreaterThan(casino.getBankroll())) {
-            System.out.println("Casino ran out of money! Adding another billion dollars to the bank account, like the Federal Reserve does.");
+            showAndDisplay("Casino ran out of money! Adding another billion dollars to the bank account, like the Federal Reserve does.");
             casino.getBankroll().addToPile(new MoneyPile(100000000000L));
         }
         moveMoney(
@@ -179,20 +180,20 @@ class Table {
     }
 
     void playRoundsUntilEndOfShoe() {
-        show("Running hands until the end of this shoe is reached.", true);
+        showAndDisplay("Running hands until the end of this shoe is reached.");
         int roundNumber = 0;
         boolean continueRounds = true;
         while (continueRounds) {
             roundNumber++;
 
-            RoundResult roundResult = playRound();
+            RoundResult roundResult = playRound(roundNumber);
             if (roundResult.isCutCardDrawn()) {
                 shuffleAndStuff();
                 continueRounds = false;
             }
 
             if (roundResult.areAllPlayersBankrupt()) {
-                show("\nAll players are bankrupt on round number " + roundNumber + ".", true);
+                showAndDisplay("\nAll players are bankrupt on round number " + roundNumber + ".");
                 continueRounds = false;
             }
         }
@@ -200,27 +201,34 @@ class Table {
     }
 
     void playRounds(int numRoundsToPlay) {
-        show("Running " + numRoundsToPlay + " rounds of play.", true);
+        showAndDisplay("Running " + numRoundsToPlay + " rounds of play.");
         boolean continueRounds = true;
         for (int roundNumber = 0; continueRounds && (roundNumber < numRoundsToPlay); roundNumber++) {
             if (roundNumber % 1000 == 0) {
                 System.out.print(".");
             }
 
-            RoundResult roundResult = playRound();
+            RoundResult roundResult = playRound(roundNumber);
             if (roundResult.isCutCardDrawn()) {
                 shuffleAndStuff();
             }
 
             if (roundResult.areAllPlayersBankrupt()) {
-                show("\nAll players are bankrupt on round number " + roundNumber + ".", true);
+                showAndDisplay("\nAll players are bankrupt on round number " + roundNumber + ".");
                 continueRounds = false;
             }
         }
         System.out.println();
     }
 
-    RoundResult playRound() {
+    // used for testing
+    void playRound() {
+        playRound(0);
+    }
+
+    private RoundResult playRound(int roundNumber) {
+        logRound(roundNumber);
+
         if (areAllPlayersBankrupt()) {
             return RoundResult.allPlayersBankrupt();
         }
@@ -248,6 +256,20 @@ class Table {
             return RoundResult.cutCardDrawn();
         }
         return RoundResult.normal();
+    }
+
+    private void logRound(int roundNumber) {
+        Display display = getCasino().getDisplay();
+        if (display.isLogging()) {
+            List<Player> players = new ArrayList<>(SeatNumber.values().length);
+            for (SeatNumber seatNumber : SeatNumber.values()) {
+                Seat seat = seats.get(seatNumber);
+                if (seat.hasPlayer()) {
+                    players.add(seat.getPlayer());
+                }
+            }
+            display.logRound(roundNumber, players);
+        }
     }
 
     private boolean areAllPlayersBankrupt() {
@@ -741,16 +763,19 @@ class Table {
         }
     }
 
+    private void showAndDisplay(String message) {
+        if (!casino.getDisplay().isOutputting()) {
+            System.out.println(message);
+        }
+        show(message);
+    }
+
     private void show(String message) {
         casino.getDisplay().showMessage(message);
     }
 
     private void show(String message, CardCountStatus cardCountStatus) {
         casino.getDisplay().showMessage(message, cardCountStatus);
-    }
-
-    private void show(String message, boolean overrideMute) {
-        casino.getDisplay().showMessage(message, overrideMute);
     }
 
     private void show(
