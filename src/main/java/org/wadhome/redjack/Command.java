@@ -8,6 +8,7 @@ enum Command {
     playOneShoe,
     playBasic,
     playHiLoPerfect,
+    playHiLoRealisticBuk,
     play100k,
     unknown;
 
@@ -22,6 +23,9 @@ enum Command {
                 break;
             case playHiLoPerfect:
                 execution = new ExecutionHiLoCounterPerfect();
+                break;
+            case playHiLoRealisticBuk:
+                execution = new ExecutionRealisticBuk();
                 break;
             case play100k:
                 execution = new Execution100k();
