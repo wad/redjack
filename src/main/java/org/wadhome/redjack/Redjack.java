@@ -9,6 +9,10 @@ import static java.util.stream.Collectors.toList;
 
 // todo: add multithreading
 
+// todo: log true counts from table
+
+// todo: make log at shoe level
+
 class Redjack {
 
     public static void main(String... args) {

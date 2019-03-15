@@ -11,12 +11,15 @@ import static java.util.stream.Collectors.joining;
 
 class Display {
 
-    private static final String BANKROLL_LOG_FILENAME = "bankroll-log";
-    private static final String PLAY_LOG_FILENAME = "play-log";
+    private static final String BANKROLL_LOG_FILENAME = "bankroll.csv";
+    private static final String BANKROLL_SAMPLE_LOG_FILENAME = "bankroll_sample.csv";
+    private static final String PLAY_LOG_FILENAME = "play.log";
     private BufferedWriter writerBankroll;
+    private BufferedWriter writerBankrollSample;
     private BufferedWriter writerPlay;
 
     private static final int CARD_COUNT_REPORT_COLUMN_START = 170;
+    private static final int SAMPLE_FACTOR = 100;
 
     private boolean isDisplaying;
     private boolean isLogging;
@@ -67,11 +70,13 @@ class Display {
         }
     }
 
-    void openLogs() {
+    private void openLogs() {
         Path pathBankroll = Paths.get(BANKROLL_LOG_FILENAME);
+        Path pathBankrollSample = Paths.get(BANKROLL_SAMPLE_LOG_FILENAME);
         Path pathPlay = Paths.get(PLAY_LOG_FILENAME);
         try {
             writerBankroll = Files.newBufferedWriter(pathBankroll);
+            writerBankrollSample = Files.newBufferedWriter(pathBankrollSample);
             writerPlay = Files.newBufferedWriter(pathPlay);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -82,7 +87,8 @@ class Display {
         if (isLogging) {
             try {
                 writerBankroll.close();
-                writerBankroll.close();
+                writerBankrollSample.close();
+                writerPlay.close();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -93,31 +99,34 @@ class Display {
             int roundNumber,
             List<Player> players) {
         if (isLogging) {
-            boolean isFirstRound = roundNumber == 1;
+            boolean isFirstRound = roundNumber == 0;
             if (isFirstRound) {
                 String nameLine = players.stream()
                         .map(Player::getPlayerName)
                         .map(n -> n.replace(',', ' '))
                         .collect(joining(","));
-                writeLineToBankrollLog("round," + nameLine);
+                writeLineToBankrollLog(roundNumber, "round," + nameLine);
             }
             String bankrollLine = players
                     .stream()
                     .map(n -> n.getBankroll().format(false))
                     .collect(joining(","));
-            writeLineToBankrollLog(roundNumber + "," + bankrollLine);
+            writeLineToBankrollLog(roundNumber, roundNumber + "," + bankrollLine);
         }
     }
 
-    void writeLineToBankrollLog(String line) {
+    private void writeLineToBankrollLog(int roundNumber, String line) {
         writeLineToFile(writerBankroll, line);
+        if (roundNumber % SAMPLE_FACTOR == 0) {
+            writeLineToFile(writerBankrollSample, line);
+        }
     }
 
-    void writeLineToPlayLog(String line) {
+    private void writeLineToPlayLog(String line) {
         writeLineToFile(writerPlay, line);
     }
 
-    void writeLineToFile(
+    private void writeLineToFile(
             BufferedWriter writer,
             String line) {
         try {
