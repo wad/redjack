@@ -5,7 +5,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-class ExecutionBasic extends Execution {
+class ExecutionHiLoCounterPerfect extends Execution {
     @Override
     Casino execute() {
         int numRoundsToPlay = 100000;
@@ -28,19 +28,19 @@ class ExecutionBasic extends Execution {
         Table table = casino.createTable(0, tableRules);
 
         List<Player> players = new ArrayList<String>() {{
-            add("Basic Anne");
-            add("Basic Beth");
-            add("Basic Callie");
-            add("Basic Dora");
-            add("Basic Edna");
-            add("Basic Fran");
-            add("Basic Grace");
+            add("Perfect Anne");
+            add("Perfect Beth");
+            add("Perfect Callie");
+            add("Perfect Dora");
+            add("Perfect Edna");
+            add("Perfect Fran");
+            add("Perfect Grace");
         }}.stream().map(name -> new Player(
                 name,
                 Gender.female,
                 casino,
                 new MoneyPile(initialPlayerBankrollsInCents),
-                new PlayStrategyBasic(table, new BettingStrategyAlwaysFavorite()),
+                new PlayStrategyHighLowPerfect(table, new BettingStrategyBukofsky(true)),
                 new MoneyPile(playerFavoriteBetInCents))).
                 collect(toList());
 

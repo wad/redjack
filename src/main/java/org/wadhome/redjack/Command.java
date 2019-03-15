@@ -7,6 +7,7 @@ import static java.util.stream.Collectors.joining;
 enum Command {
     playOneShoe,
     playBasic,
+    playHiLoPerfect,
     play100k,
     unknown;
 
@@ -18,6 +19,9 @@ enum Command {
                 break;
             case playBasic:
                 execution = new ExecutionBasic();
+                break;
+            case playHiLoPerfect:
+                execution = new ExecutionHiLoCounterPerfect();
                 break;
             case play100k:
                 execution = new Execution100k();
