@@ -65,6 +65,10 @@ class Player {
     }
 
     boolean isRetired() {
+        if (retirementTriggerBankroll == null) {
+            return false;
+        }
+
         if (!isRetired) {
             if(bankroll.isGreaterThanOrEqualTo(retirementTriggerBankroll)) {
                 say("I've doubled my initial bankroll, so I'm retiring.");

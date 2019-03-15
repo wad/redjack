@@ -5,7 +5,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-class ExecutionRealisticBuk extends Execution {
+class ExecutionPerfectBuk extends Execution {
     @Override
     Casino execute() {
         int numRoundsToPlay = 100000;
@@ -28,13 +28,13 @@ class ExecutionRealisticBuk extends Execution {
         Table table = casino.createTable(0, tableRules);
 
         List<Player> players = new ArrayList<String>() {{
-            add("Real Buky Anne");
-            add("Real Buky Beth");
-            add("Real Buky Callie");
-            add("Real Buky Dora");
-            add("Real Buky Edna");
-            add("Real Buky Fran");
-            add("Real Buky Grace");
+            add("Perfect Buky Anne");
+            add("Perfect Buky Beth");
+            add("Perfect Buky Callie");
+            add("Perfect Buky Dora");
+            add("Perfect Buky Edna");
+            add("Perfect Buky Fran");
+            add("Perfect Buky Grace");
         }}.stream().map(name -> {
             MoneyPile initialPlayerBankroll = new MoneyPile(initialPlayerBankrollsInCents);
             Player player = new Player(
@@ -42,7 +42,7 @@ class ExecutionRealisticBuk extends Execution {
                     Gender.female,
                     casino,
                     initialPlayerBankroll,
-                    new PlayStrategyHighLowRealistic(table, new BettingStrategyBukofsky(false)),
+                    new PlayStrategyHighLowPerfect(table, new BettingStrategyBukofsky(true)),
                     new MoneyPile(playerFavoriteBetInCents));
             player.setRetirementTriggerBankroll(initialPlayerBankroll.computeDouble());
             return player;
