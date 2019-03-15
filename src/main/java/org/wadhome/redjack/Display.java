@@ -38,6 +38,10 @@ class Display {
         return isLogging;
     }
 
+    boolean isDisplaying() {
+        return isDisplaying;
+    }
+
     boolean isOutputting() {
         return isDisplaying || isLogging;
     }

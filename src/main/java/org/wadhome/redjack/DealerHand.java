@@ -32,7 +32,7 @@ class DealerHand extends Hand {
         return super.removeCards();
     }
 
-    public List<Card> getVisibleCards() {
+    List<Card> getVisibleCards() {
         List<Card> cardsSeen = new ArrayList<>(cards);
         if (getSecondCard() != null && !isHoleCardRevealed) {
             cards.remove(INDEX_OF_HOLE_CARD);

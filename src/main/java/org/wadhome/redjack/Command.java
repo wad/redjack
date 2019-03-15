@@ -42,7 +42,7 @@ enum Command {
 
         Casino casino = null;
         try {
-            casino = execution.execute();
+            casino = execution.execute(this);
         } finally {
             if (casino != null) {
                 casino.closeCasino();

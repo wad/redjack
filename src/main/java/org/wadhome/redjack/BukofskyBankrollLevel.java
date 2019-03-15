@@ -1,6 +1,6 @@
 package org.wadhome.redjack;
 
-public enum BukofskyBankrollLevel {
+enum BukofskyBankrollLevel {
     Level100k(100000, 500,
             new int[]{417, 667, 909, 1333, 1538, 1818, 2222, 2632, 2857, 3125},
             new int[]{500, 500, 1000, 1500, 1500, 2000, 2000, 2500, 3000, 3500}),

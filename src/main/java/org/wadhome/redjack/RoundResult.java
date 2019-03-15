@@ -19,7 +19,7 @@ class RoundResult {
         return new RoundResult(false, true);
     }
 
-    static RoundResult allPlayersBankrupt() {
+    static RoundResult allPlayersQuit() {
         return new RoundResult(true, false);
     }
 

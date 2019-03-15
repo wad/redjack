@@ -3,7 +3,7 @@ package org.wadhome.redjack;
 import java.util.List;
 
 abstract class Execution {
-    abstract Casino execute();
+    abstract Casino execute(Command command);
 
     void assignPlayersToTable(
             List<Player> players,

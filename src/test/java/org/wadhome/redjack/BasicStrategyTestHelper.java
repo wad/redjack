@@ -12,7 +12,7 @@ public class BasicStrategyTestHelper extends TestHelper {
     BlackjackPlay compute(
             TableRules tableRules,
             Card... cards) {
-        Casino casino = new Casino();
+        Casino casino = new Casino("test", Randomness.generateRandomSeed(), false, false);
         Table table = casino.createTable(0, tableRules);
         int numCards = cards.length;
         if (numCards < 3) {

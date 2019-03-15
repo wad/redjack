@@ -1,6 +1,6 @@
 package org.wadhome.redjack;
 
-public abstract class BettingStrategy {
+abstract class BettingStrategy {
 
     abstract MoneyPile getBet(
             MoneyPile favoriteBet,

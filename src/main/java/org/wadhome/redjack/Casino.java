@@ -15,7 +15,7 @@ class Casino {
         this(
                 "test",
                 Randomness.generateRandomSeed(),
-                true,
+                false,
                 false);
     }
 
@@ -24,16 +24,10 @@ class Casino {
             Long seed,
             boolean isDisplaying,
             boolean isLogging) {
+        randomness = new Randomness(seed);
         this.casinoName = casinoName;
         this.display = new Display(isDisplaying, isLogging);
-        randomness = new Randomness(seed);
-        showWelcomeInfo();
-    }
-
-    private void showWelcomeInfo() {
-        display.showMessage("Welcome to the " + casinoName + " casino.");
-        Long seed = randomness.getSeed();
-        display.showMessage("Randomness seed: " + seed);
+        display.showMessage("Running " + casinoName + " with seed " + randomness.getSeed() + ".");
     }
 
     MoneyPile getBankroll() {

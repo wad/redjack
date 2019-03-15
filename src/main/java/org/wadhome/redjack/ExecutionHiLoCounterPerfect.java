@@ -7,7 +7,7 @@ import static java.util.stream.Collectors.toList;
 
 class ExecutionHiLoCounterPerfect extends Execution {
     @Override
-    Casino execute() {
+    Casino execute(Command command) {
         int numRoundsToPlay = 100000;
         long playerFavoriteBetInCents = 1000L;
         long initialPlayerBankrollsInCents = 1000000L;
@@ -21,7 +21,7 @@ class ExecutionHiLoCounterPerfect extends Execution {
         tableRules.maxBet = new MoneyPile(30000L);
 
         Casino casino = new Casino(
-                "Redjack",
+                "Redjack (" + command + ")",
                 Randomness.generateRandomSeed(),
                 false,
                 true);

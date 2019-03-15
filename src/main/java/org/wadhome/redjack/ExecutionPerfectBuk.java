@@ -7,7 +7,7 @@ import static java.util.stream.Collectors.toList;
 
 class ExecutionPerfectBuk extends Execution {
     @Override
-    Casino execute() {
+    Casino execute(Command command) {
         int numRoundsToPlay = 100000;
         long playerFavoriteBetInCents = 500L;
         long initialPlayerBankrollsInCents = 200000L;
@@ -21,7 +21,7 @@ class ExecutionPerfectBuk extends Execution {
         tableRules.maxBet = new MoneyPile(10000L);
 
         Casino casino = new Casino(
-                "Redjack",
+                "Redjack (" + command + ")",
                 Randomness.generateRandomSeed(),
                 false,
                 true);

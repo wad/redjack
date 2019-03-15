@@ -14,7 +14,7 @@ class Card {
         this.value = value;
     }
 
-    public Value getValue() {
+    Value getValue() {
         return value;
     }
 
@@ -23,7 +23,7 @@ class Card {
         return value.toString() + suite.toString();
     }
 
-    public String toString(
+    String toString(
             boolean includeIndefiniteArticle,
             boolean shouldCapitalize) {
         String indefiniteArticle = "";

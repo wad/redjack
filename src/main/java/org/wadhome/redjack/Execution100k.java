@@ -5,7 +5,7 @@ import java.util.List;
 
 class Execution100k extends Execution {
     @Override
-    Casino execute() {
+    Casino execute(Command command) {
         int numRoundsToPlay = 100000;
         long playerFavoriteBetInCents = 2500L;
         long initialPlayerBankrollsInCents = 10000000L;
@@ -20,11 +20,10 @@ class Execution100k extends Execution {
 
         long seed = Randomness.generateRandomSeed();
         Casino casino = new Casino(
-                "Redjack Strategy Comparison",
+                "Redjack (" + command + ")",
                 seed,
                 false,
                 true);
-        System.out.println("Seed: " + seed);
         Table table = casino.createTable(0, tableRules);
 
         List<Player> players = new ArrayList<>();

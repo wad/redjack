@@ -57,7 +57,7 @@ enum Value {
         return symbol;
     }
 
-    public String getIndefiniteArticle(boolean shouldCapitalize) {
+    String getIndefiniteArticle(boolean shouldCapitalize) {
         switch (this) {
             case Two:
             case Three:

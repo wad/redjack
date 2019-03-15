@@ -8,12 +8,12 @@ class MoneyPile {
 
     private long numCents;
 
-    public MoneyPile(long numCents) {
+    MoneyPile(long numCents) {
         this.numCents = numCents;
         validate();
     }
 
-    public MoneyPile(MoneyPile... moneyPiles) {
+    MoneyPile(MoneyPile... moneyPiles) {
         this(0L);
         for (MoneyPile moneyPile : moneyPiles) {
             this.numCents += moneyPile.numCents;

@@ -34,15 +34,15 @@ class Player {
         return playerName;
     }
 
-    public void setNotes(String notes) {
+    void setNotes(String notes) {
         this.notes = notes;
     }
 
-    public String getNotes() {
+    String getNotes() {
         return notes;
     }
 
-    public void setRetirementTriggerBankroll(MoneyPile retirementTriggerBankroll) {
+    void setRetirementTriggerBankroll(MoneyPile retirementTriggerBankroll) {
         this.retirementTriggerBankroll = retirementTriggerBankroll;
     }
 
@@ -84,7 +84,7 @@ class Player {
 
     MoneyPile getBet(Table table) {
 
-        if (isRetired()) {
+        if (isRetired() || isBankrupt()) {
             return MoneyPile.zero();
         }
 
@@ -148,7 +148,7 @@ class Player {
         return gender;
     }
 
-    public PlayStrategy getPlayStrategy() {
+    PlayStrategy getPlayStrategy() {
         return playStrategy;
     }
 

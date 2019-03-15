@@ -197,15 +197,17 @@ class Table {
                 continueRounds = false;
             }
         }
-        System.out.println();
     }
 
     void playRounds(int numRoundsToPlay) {
-        showAndDisplay("Running " + numRoundsToPlay + " rounds of play.");
+        show("Running " + numRoundsToPlay + " rounds of play.");
         boolean continueRounds = true;
-        for (int roundNumber = 0; continueRounds && (roundNumber < numRoundsToPlay); roundNumber++) {
-            if (roundNumber % 1000 == 0) {
-                System.out.print(".");
+        int roundNumber;
+        for (roundNumber = 0; continueRounds && (roundNumber < numRoundsToPlay); roundNumber++) {
+            if (!casino.getDisplay().isDisplaying()) {
+                if (roundNumber > 0 && roundNumber % 1000 == 0) {
+                    System.out.print(".");
+                }
             }
 
             RoundResult roundResult = playRound(roundNumber);
@@ -218,7 +220,11 @@ class Table {
                 continueRounds = false;
             }
         }
-        System.out.println();
+
+        if (!casino.getDisplay().isDisplaying()) {
+            System.out.println();
+        }
+        System.out.println("Completed " + roundNumber + " rounds.");
     }
 
     // used for testing
@@ -230,13 +236,13 @@ class Table {
         logRound(roundNumber);
 
         if (areAllPlayersBankrupt()) {
-            return RoundResult.allPlayersBankrupt();
+            return RoundResult.allPlayersQuit();
         }
 
         takeBetsFromPlayers();
         if (!anySeatsHaveBets()) {
             show("No seats have hands with bets.");
-            return RoundResult.normal();
+            return RoundResult.allPlayersQuit();
         }
 
         dealCardsToPlayers();

@@ -23,7 +23,7 @@ public class CardCountMethodHighLowRealisticTest extends TestHelper {
         assertEquals("1.0", String.valueOf(CardCountMethodHighLowRealistic.estimateNumDecksInDiscardTray(makeDiscardTray(1, 52))));
     }
 
-    DiscardTray makeDiscardTray(
+    private DiscardTray makeDiscardTray(
             int numDecks,
             int numCards) {
         DiscardTray discardTray = new DiscardTray(numDecks);

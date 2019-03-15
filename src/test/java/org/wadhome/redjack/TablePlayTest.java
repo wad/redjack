@@ -1,14 +1,15 @@
 package org.wadhome.redjack;
 
-import org.junit.Assert;
 import org.junit.Test;
 
-public class PlayTest {
+import static org.junit.Assert.assertEquals;
+
+public class TablePlayTest {
 
     @Test
-    public void testRunningIt() {
+    public void testRunningBankrollBalance() {
         int tableNumber = 1;
-        Casino casino = new Casino();
+        Casino casino = new Casino("test", Randomness.generateRandomSeed(), false, false);
         TableRules tableRules = TableRules.getDefaultRules();
         casino.createTable(tableNumber, tableRules);
         Table table = casino.getTable(tableNumber);
@@ -58,13 +59,15 @@ public class PlayTest {
                 charles.getBankroll());
         MoneyPile finalMoney = new MoneyPile(finalCasinoBankroll, finalSumOfPlayerBankrolls);
 
+        /*
         System.out.println("Initial casino bankroll: " + initialCasinoBankroll);
         System.out.println("Final casino bankroll: " + finalCasinoBankroll);
 
         System.out.println("Initial player bankrolls: " + initialSumOfPlayerBankrolls);
         System.out.println("Final player bankrolls: " + finalSumOfPlayerBankrolls);
+        */
 
-        Assert.assertEquals(initialMoney, finalMoney);
+        assertEquals(initialMoney, finalMoney);
 
         table.removePlayerFromSeat(SeatNumber.one);
         table.removePlayerFromSeat(SeatNumber.two);
