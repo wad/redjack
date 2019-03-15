@@ -1,9 +1,5 @@
 package org.wadhome.redjack;
 
-import java.util.Arrays;
-
-import static java.util.stream.Collectors.joining;
-
 // todo: add multithreading
 
 // todo: log true counts from table
@@ -14,11 +10,7 @@ class Redjack {
 
     public static void main(String... args) {
         if (args.length != 1) {
-            String listOfCommands = Arrays
-                    .stream(Command.values())
-                    .map(Enum::toString)
-                    .collect(joining(", "));
-            System.out.println("Supply a command. One of " + listOfCommands);
+            System.out.println("Valid commands: " + Command.getListOfValidCommands());
             return;
         }
 

@@ -1,5 +1,9 @@
 package org.wadhome.redjack;
 
+import java.util.Arrays;
+
+import static java.util.stream.Collectors.joining;
+
 enum Command {
     playOneShoe,
     playBasic,
@@ -41,7 +45,15 @@ enum Command {
                 return command;
             }
         }
-        System.out.println("Unknown command received: " + commandName);
+        System.out.println("Unknown command received: '" + commandName + "'");
+        System.out.println("Valid commands: " + getListOfValidCommands());
         return unknown;
+    }
+
+    static String getListOfValidCommands() {
+        return Arrays
+                .stream(Command.values())
+                .map(Enum::toString)
+                .collect(joining(", "));
     }
 }
