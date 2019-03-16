@@ -78,7 +78,7 @@ class PlayStrategyBasic extends PlayStrategy {
 
         if (sum == 9) {
             if (upcardValue.ordinal() >= Three.ordinal() && upcardValue.ordinal() <= Six.ordinal()) {
-                if (isDoubleDownPermittedHere && tableRules.getDoubleDownOptions() == TableRules.DoubleDownOptions.Any) {
+                if (isDoubleDownPermittedHere && tableRules.getDoubleDownOptions() == DoubleDownRuleOptions.Any) {
                     return DoubleDown;
                 }
             }
@@ -167,7 +167,7 @@ class PlayStrategyBasic extends PlayStrategy {
 
         if (sumWithoutOneAce == 8) {
             if (upcardValue == Six) {
-                if (isDoubleDownPermittedHere && tableRules.getDoubleDownOptions() == TableRules.DoubleDownOptions.Any) {
+                if (isDoubleDownPermittedHere && tableRules.getDoubleDownOptions() == DoubleDownRuleOptions.Any) {
                     return DoubleDown;
                 }
                 return Stand;
@@ -184,7 +184,7 @@ class PlayStrategyBasic extends PlayStrategy {
             if (upcardValue.ordinal() >= Nine.ordinal()) {
                 return Hit;
             }
-            if (isDoubleDownPermittedHere && tableRules.getDoubleDownOptions() == TableRules.DoubleDownOptions.Any) {
+            if (isDoubleDownPermittedHere && tableRules.getDoubleDownOptions() == DoubleDownRuleOptions.Any) {
                 return DoubleDown;
             }
             return Stand;
@@ -208,7 +208,7 @@ class PlayStrategyBasic extends PlayStrategy {
             tryDoubling = true;
         }
         if (tryDoubling) {
-            if (isDoubleDownPermittedHere && tableRules.getDoubleDownOptions() == TableRules.DoubleDownOptions.Any) {
+            if (isDoubleDownPermittedHere && tableRules.getDoubleDownOptions() == DoubleDownRuleOptions.Any) {
                 return DoubleDown;
             }
         }

@@ -62,6 +62,10 @@ class MoneyPile {
         return new MoneyPile(this.numCents + (this.numCents >> 1));
     }
 
+    MoneyPile computeSixFifths() {
+        return new MoneyPile((long)(((double)this.numCents) * (1.2D)));
+    }
+
     MoneyPile computeDouble() {
         return new MoneyPile(this.numCents << 1);
     }
@@ -89,15 +93,6 @@ class MoneyPile {
 
     static MoneyPile zero() {
         return new MoneyPile(0L);
-    }
-
-    static MoneyPile getLesserOf(
-            MoneyPile pile1,
-            MoneyPile pile2) {
-        if (pile1.numCents < pile2.numCents) {
-            return pile1;
-        }
-        return pile2;
     }
 
     String format(boolean includeDollarSign) {

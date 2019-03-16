@@ -465,7 +465,7 @@ class Table {
         Player player = hand.getSeat().getPlayer();
         MoneyPile betAmount = hand.removeBet();
         casinoPayPlayer(player, betAmount); // original bet returned
-        MoneyPile winnings = betAmount.computeOneAndHalf();
+        MoneyPile winnings = tableRules.getBlackjackPayOptions().computePlayerBlackjackWinnings(betAmount);
         casinoPayPlayer(player, winnings);
         show(hand, "got a blackjack, and won " + winnings + ".");
         discardTray.addCards(hand.removeCards());
@@ -546,7 +546,7 @@ class Table {
             return false;
         }
 
-        if (hand.isCharlie()) {
+        if (hand.isCharlie() && tableRules.sevenCardCharlieRuleIsActive()) {
             handlePlayerCharlie(initialHand, hitCard, hand);
             return false;
         }

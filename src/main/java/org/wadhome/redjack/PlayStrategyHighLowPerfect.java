@@ -42,7 +42,7 @@ class PlayStrategyHighLowPerfect extends PlayStrategy {
         boolean hasFundsToCoverDoubleDownsAndSplits = bankrollAvailable.isGreaterThanOrEqualTo(hand.getBetAmount());
         boolean doubleDownIsPossibleOnNine = isFirstPlayOnHand
                 && hasFundsToCoverDoubleDownsAndSplits
-                && tableRules.getDoubleDownOptions() == TableRules.DoubleDownOptions.Any;
+                && tableRules.getDoubleDownOptions() == DoubleDownRuleOptions.Any;
         boolean doubleDownIsPossibleOnTenOrEleven = isFirstPlayOnHand
                 && hasFundsToCoverDoubleDownsAndSplits;
 

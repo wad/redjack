@@ -2,36 +2,19 @@ package org.wadhome.redjack;
 
 class TableRules {
 
-    enum BlackjackPayOptions {
-        TwoToOne("2:1"),
-        ThreeToTwo("3:2"),
-        SixToFive("6:5");
-
-        String displayValue;
-
-        BlackjackPayOptions(String displayValue) {
-            this.displayValue = displayValue;
-        }
-    }
-
-    enum DoubleDownOptions {
-        Any,
-        TenAndAceOnly
-    }
-
     MoneyPile minBet = new MoneyPile(1000);
     MoneyPile maxBet = new MoneyPile(100000);
     boolean hitSoftSeventeen = true;
     BlackjackPayOptions blackjackPayOptions = BlackjackPayOptions.ThreeToTwo;
     boolean canDoubleDownAfterSplit = true;
-    DoubleDownOptions doubleDownOptions = DoubleDownOptions.Any;
+    DoubleDownRuleOptions doubleDownOptions = DoubleDownRuleOptions.Any;
     boolean canHitSplitAces = false;
     int maxNumSplits = 3; // This means that a hand can turn into a max of 4 split hands.
     int numBurnCards = 1;
     int numDecks = 6;
     int numCardsAfterCutCard = Blackjack.NUM_CARDS_AFTER_CUT_CARD_FOR_ONE_POINT_FIVE_DECKS;
     boolean canSurrender = false;
-    boolean sevenCardCharlie = true;
+    boolean sevenCardCharlieRuleIsActive = true;
 
     private TableRules() {
         // use a creator method
@@ -87,7 +70,7 @@ class TableRules {
         return canDoubleDownAfterSplit;
     }
 
-    DoubleDownOptions getDoubleDownOptions() {
+    DoubleDownRuleOptions getDoubleDownOptions() {
         return this.doubleDownOptions;
     }
 
@@ -115,7 +98,7 @@ class TableRules {
         return canSurrender;
     }
 
-    boolean sevenCardCharlie() {
-        return sevenCardCharlie;
+    boolean sevenCardCharlieRuleIsActive() {
+        return sevenCardCharlieRuleIsActive;
     }
 }

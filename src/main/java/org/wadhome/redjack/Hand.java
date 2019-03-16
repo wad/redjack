@@ -146,15 +146,20 @@ abstract class Hand {
             return "(empty hand)";
         }
 
-        String total = toString() + " (";
-        int minSum = this.computeMinSum();
-        int maxSum = this.computeMaxSum();
-        if (minSum == maxSum) {
-            total += minSum;
+        String total;
+        if (isBlackjack()) {
+            total = "blackjack";
         } else {
-            total += ("" + minSum + " or " + maxSum);
+            int minSum = this.computeMinSum();
+            int maxSum = this.computeMaxSum();
+            if (minSum == maxSum) {
+                total = String.valueOf(minSum);
+            } else {
+                total = (minSum + " or " + maxSum);
+            }
         }
-        return total + ")";
+        total = " (" + total + ")";
+        return toString() + total;
     }
 
     @Override

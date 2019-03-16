@@ -123,7 +123,7 @@ public class PlayStrategyBasicSoftHandsTest extends BasicStrategyTestHelper {
     @Test
     public void testAceWithSeven() {
         TableRules tableRulesDoubleDownLimited = TableRules.getDefaultRules();
-        tableRulesDoubleDownLimited.doubleDownOptions = TableRules.DoubleDownOptions.TenAndAceOnly;
+        tableRulesDoubleDownLimited.doubleDownOptions = DoubleDownRuleOptions.TenAndAceOnly;
 
         for (Value upcardValue : Value.values()) {
             switch (upcardValue) {
@@ -169,7 +169,7 @@ public class PlayStrategyBasicSoftHandsTest extends BasicStrategyTestHelper {
     @Test
     public void testAceWithEight() {
         TableRules tableRulesDoubleDownLimited = TableRules.getDefaultRules();
-        tableRulesDoubleDownLimited.doubleDownOptions = TableRules.DoubleDownOptions.TenAndAceOnly;
+        tableRulesDoubleDownLimited.doubleDownOptions = DoubleDownRuleOptions.TenAndAceOnly;
 
         for (Value upcardValue : Value.values()) {
             switch (upcardValue) {
@@ -205,7 +205,7 @@ public class PlayStrategyBasicSoftHandsTest extends BasicStrategyTestHelper {
     @Test
     public void testAceWithNine() {
         TableRules tableRulesDoubleDownLimited = TableRules.getDefaultRules();
-        tableRulesDoubleDownLimited.doubleDownOptions = TableRules.DoubleDownOptions.TenAndAceOnly;
+        tableRulesDoubleDownLimited.doubleDownOptions = DoubleDownRuleOptions.TenAndAceOnly;
 
         for (Value upcardValue : Value.values()) {
             assertEquals(BlackjackPlay.Stand, compute(cA(), c9(), c(upcardValue)));

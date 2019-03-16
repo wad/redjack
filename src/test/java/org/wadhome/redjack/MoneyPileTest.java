@@ -26,6 +26,24 @@ public class MoneyPileTest {
     }
 
     @Test
+    public void testComputeSixFifths() {
+        assertEquals("$96.00", (new MoneyPile(8000L)).computeSixFifths().toString());
+        assertEquals("$0.00", (new MoneyPile(0L)).computeSixFifths().toString());
+    }
+
+    @Test
+    public void testComputeOneAndHalf() {
+        assertEquals("$120.00", (new MoneyPile(8000L)).computeOneAndHalf().toString());
+        assertEquals("$0.00", (new MoneyPile(0L)).computeOneAndHalf().toString());
+    }
+
+    @Test
+    public void testComputeDouble() {
+        assertEquals("$160.00", (new MoneyPile(8000L)).computeDouble().toString());
+        assertEquals("$0.00", (new MoneyPile(0L)).computeDouble().toString());
+    }
+
+    @Test
     public void testComputeDifference() {
         MoneyPile pile1 = new MoneyPile(4000L);
         MoneyPile pile2 = new MoneyPile(1000L);

@@ -32,7 +32,7 @@ public class PlayStrategyBasicHardHandsTest extends BasicStrategyTestHelper {
     @Test
     public void testSumsOfNine() {
         TableRules doubleDownLimited = TableRules.getDefaultRules();
-        doubleDownLimited.doubleDownOptions = TableRules.DoubleDownOptions.TenAndAceOnly;
+        doubleDownLimited.doubleDownOptions = DoubleDownRuleOptions.TenAndAceOnly;
 
         for (Value upcardValue : Value.values()) {
             switch (upcardValue) {
