@@ -6,9 +6,8 @@ import java.util.Map;
 class Casino {
     private Randomness randomness;
     private Map<Integer, Table> tables = new HashMap<>();
-    private String casinoName;
     private MoneyPile houseBankroll = new MoneyPile(100000000000000L);
-    private Display display;
+    private Output output;
 
     // used for testing
     Casino() {
@@ -25,17 +24,16 @@ class Casino {
             boolean isDisplaying,
             boolean isLogging) {
         randomness = new Randomness(seed);
-        this.casinoName = casinoName;
-        this.display = new Display(isDisplaying, isLogging);
-        display.showMessage("Running " + casinoName + " with seed " + randomness.getSeed() + ".");
+        this.output = new Output(isDisplaying, isLogging);
+        output.showMessage("Running " + casinoName + " with seed " + randomness.getSeed() + ".");
     }
 
     MoneyPile getBankroll() {
         return houseBankroll;
     }
 
-    Display getDisplay() {
-        return display;
+    Output getOutput() {
+        return output;
     }
 
     Table createTable(
@@ -60,8 +58,8 @@ class Casino {
     }
 
     void closeCasino() {
-        if (display != null) {
-            display.closeLogs();
+        if (output != null) {
+            output.closeLogs();
         }
     }
 }

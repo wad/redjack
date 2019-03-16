@@ -202,9 +202,10 @@ class Table {
     void playRounds(int numRoundsToPlay) {
         show("Running " + numRoundsToPlay + " rounds of play.");
         boolean continueRounds = true;
+        int shoeCount = 1;
         int roundNumber;
         for (roundNumber = 0; continueRounds && (roundNumber < numRoundsToPlay); roundNumber++) {
-            if (!casino.getDisplay().isDisplaying()) {
+            if (!casino.getOutput().isDisplaying()) {
                 if (roundNumber > 0 && roundNumber % 1000 == 0) {
                     System.out.print(".");
                 }
@@ -213,6 +214,7 @@ class Table {
             RoundResult roundResult = playRound(roundNumber);
             if (roundResult.isCutCardDrawn()) {
                 shuffleAndStuff();
+                shoeCount++;
             }
 
             if (roundResult.haveAllPlayersQuit()) {
@@ -221,10 +223,10 @@ class Table {
             }
         }
 
-        if (!casino.getDisplay().isDisplaying()) {
+        if (!casino.getOutput().isDisplaying()) {
             System.out.println();
         }
-        System.out.println("Completed " + roundNumber + " rounds.");
+        showAndDisplay("Completed " + roundNumber + " rounds, in " + shoeCount + " shoes.");
     }
 
     // used for testing
@@ -265,8 +267,8 @@ class Table {
     }
 
     private void logRound(int roundNumber) {
-        Display display = getCasino().getDisplay();
-        if (display.isLogging()) {
+        Output output = getCasino().getOutput();
+        if (output.isLogging()) {
             List<Player> players = new ArrayList<>(SeatNumber.values().length);
             for (SeatNumber seatNumber : SeatNumber.values()) {
                 Seat seat = seats.get(seatNumber);
@@ -274,7 +276,7 @@ class Table {
                     players.add(seat.getPlayer());
                 }
             }
-            display.logRound(roundNumber, players);
+            output.logRound(roundNumber, players);
         }
     }
 
@@ -770,18 +772,18 @@ class Table {
     }
 
     private void showAndDisplay(String message) {
-        if (!casino.getDisplay().isOutputting()) {
+        if (!casino.getOutput().isDisplaying()) {
             System.out.println(message);
         }
         show(message);
     }
 
     private void show(String message) {
-        casino.getDisplay().showMessage(message);
+        casino.getOutput().showMessage(message);
     }
 
     private void show(String message, CardCountStatus cardCountStatus) {
-        casino.getDisplay().showMessage(message, cardCountStatus);
+        casino.getOutput().showMessage(message, cardCountStatus);
     }
 
     private void show(
@@ -820,6 +822,6 @@ class Table {
                     + " "
                     + message;
         }
-        casino.getDisplay().showMessage(msg, cardCountStatus);
+        casino.getOutput().showMessage(msg, cardCountStatus);
     }
 }

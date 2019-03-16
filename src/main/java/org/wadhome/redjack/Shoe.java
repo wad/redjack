@@ -54,7 +54,7 @@ class Shoe extends CardStack {
         if (hasCutCardBeenDrawn()) {
             if (!hasCutCardDrawnBeenAnnounced) {
                 hasCutCardDrawnBeenAnnounced = true;
-                table.getCasino().getDisplay().showMessage("Cut card was drawn. Will shuffle after this hand.");
+                table.getCasino().getOutput().showMessage("Cut card was drawn. Will shuffle after this hand.");
             }
         }
     }

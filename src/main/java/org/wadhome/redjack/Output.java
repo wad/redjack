@@ -9,7 +9,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.joining;
 
-class Display {
+class Output {
 
     private static final String BANKROLL_LOG_FILENAME = "bankroll.csv";
     private static final String BANKROLL_SAMPLE_LOG_FILENAME = "bankroll_sample.csv";
@@ -24,7 +24,7 @@ class Display {
     private boolean isDisplaying;
     private boolean isLogging;
 
-    Display(
+    Output(
             boolean isDisplaying,
             boolean isLogging) {
         this.isDisplaying = isDisplaying;

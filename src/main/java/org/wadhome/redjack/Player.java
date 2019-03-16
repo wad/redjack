@@ -52,7 +52,7 @@ class Player {
     }
 
     void say(String message) {
-        casino.getDisplay().showMessage(
+        casino.getOutput().showMessage(
                 getPlayerName() + " says, \"" + message + "\"");
     }
 
