@@ -22,17 +22,8 @@ abstract class PlayStrategy {
             Card dealerUpcard,
             MoneyPile bankrollAvailable);
 
-    MoneyPile getBet(
-            MoneyPile favoriteBet,
-            MoneyPile minPossibleBet,
-            MoneyPile maxPossibleBet,
-            Player player) { // some betting strategies want to know the initial bankroll amount
-        return getCardCountMethod().getBet(
-                favoriteBet,
-                minPossibleBet,
-                maxPossibleBet,
-                player,
-                table.getCasino().getRandomness());
+    void getBet(BetRequest betRequest) {
+        getCardCountMethod().getBet(betRequest);
     }
 
     abstract BlackjackPlay choosePlay(

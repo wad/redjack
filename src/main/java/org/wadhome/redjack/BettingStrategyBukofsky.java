@@ -9,45 +9,41 @@ class BettingStrategyBukofsky extends BettingStrategy {
     }
 
     @Override
-    MoneyPile getBet(
-            MoneyPile favoriteBet,
-            MoneyPile minPossibleBet,
-            MoneyPile maxPossibleBet,
-            int trueCount,
-            Player player,
-            Randomness randomness) {
-        if (trueCount < 3) {
-            if (beSuspiciouslyPerfect) {
-                return minPossibleBet;
+    void getBet(BetRequest betRequest) {
+        if (betRequest.canPlaceBet()) {
+            int trueCount = betRequest.getTrueCount();
+
+            if (trueCount < 3) {
+                if (beSuspiciouslyPerfect) {
+                    betRequest.setConstrainedActualBetAmount(betRequest.getMinPossibleBet());
+                } else {
+                    if (betRequest.getRandomness().checkRandomPercentChance(20)) {
+                        betRequest.setBetComment("True count is only " + trueCount + ", so I'd like to bet the minimum."
+                                + " But that looks suspicious, so I'll bet a little more.");
+                        betRequest.setConstrainedActualBetAmount(betRequest.getMinPossibleBet().computeDouble());
+                    } else {
+                        betRequest.setConstrainedActualBetAmount(betRequest.getMinPossibleBet());
+                    }
+                }
+            } else {
+                Player player = betRequest.getPlayer();
+                BukofskyBankrollLevel level = player
+                        .getPlayStrategy()
+                        .getCardCountMethod()
+                        .getBukofskyBankrollLevelDesired();
+                if (level == null) {
+                    level = BukofskyBankrollLevel.determine(player.getInitialBankroll());
+                }
+
+                MoneyPile desiredBet = level.getBet(trueCount, beSuspiciouslyPerfect);
+                MoneyPile actualBet = betRequest.setConstrainedActualBetAmount(desiredBet);
+                if (actualBet.equals(desiredBet)) {
+                    betRequest.setBetComment("True count is " + trueCount + ", so I'm betting " + desiredBet + ".");
+                } else {
+                    betRequest.setBetComment("True count is " + trueCount + ", so I'd like to bet "
+                            + desiredBet + ", but I must bet " + actualBet + " instead.");
+                }
             }
-
-            if (randomness.checkRandomPercentChance(20)) {
-                player.say("True count is only " + trueCount + ", so I'd like to bet the minimum."
-                        + " But that looks suspicious, so I'll bet a little more.");
-                return constrainBet(
-                        minPossibleBet.computeDouble(),
-                        minPossibleBet,
-                        maxPossibleBet);
-            }
-            return minPossibleBet;
         }
-
-        BukofskyBankrollLevel level = player.getPlayStrategy().getCardCountMethod().getBukofskyBankrollLevelDesired();
-        if (level == null) {
-            level = BukofskyBankrollLevel.determine(player.getInitialBankroll());
-        }
-        MoneyPile desiredBet = level.getBet(trueCount, beSuspiciouslyPerfect);
-        MoneyPile constrainedBet = constrainBet(
-                desiredBet,
-                minPossibleBet,
-                maxPossibleBet);
-
-        if (desiredBet.equals(constrainedBet)) {
-            player.say("True count is " + trueCount + ", so I'm betting " + desiredBet + ".");
-        } else {
-            player.say("True count is " + trueCount + ", so I'd like to bet "
-                    + desiredBet + ", but I must bet " + constrainedBet + " instead.");
-        }
-        return constrainedBet;
     }
 }

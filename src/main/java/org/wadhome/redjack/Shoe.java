@@ -6,11 +6,13 @@ class Shoe extends CardStack {
     private Table table;
     private int numDecks;
     private int numCardsAfterCutCard;
+    private boolean hasCutCardDrawnBeenAnnounced;
 
     Shoe(int numDecks, Table table) {
         setStackNumber(table.getTableNumber());
         this.numDecks = numDecks;
         this.table = table;
+        this.hasCutCardDrawnBeenAnnounced = false;
 
         cards = new ArrayList<>(Blackjack.NUM_CARDS_PER_DECK * numDecks);
         for (int deckNumber = 0; deckNumber < numDecks; deckNumber++) {
@@ -40,6 +42,7 @@ class Shoe extends CardStack {
         }
 
         numCardsAfterCutCard = numCardsAfterCutCardInShoe;
+        hasCutCardDrawnBeenAnnounced = false;
     }
 
     boolean hasCutCardBeenDrawn() {
@@ -49,7 +52,10 @@ class Shoe extends CardStack {
     @Override
     protected void extraHandlingOnCardDraw() {
         if (hasCutCardBeenDrawn()) {
-            table.getCasino().getDisplay().showMessage("Cut card was drawn. Will shuffle after this hand.");
+            if (!hasCutCardDrawnBeenAnnounced) {
+                hasCutCardDrawnBeenAnnounced = true;
+                table.getCasino().getDisplay().showMessage("Cut card was drawn. Will shuffle after this hand.");
+            }
         }
     }
 

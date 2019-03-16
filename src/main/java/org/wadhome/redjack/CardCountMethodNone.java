@@ -24,18 +24,8 @@ class CardCountMethodNone extends CardCountMethod {
     }
 
     @Override
-    MoneyPile getBet(
-            MoneyPile favoriteBet,
-            MoneyPile minPossibleBet,
-            MoneyPile maxPossibleBet,
-            Player player,
-            Randomness randomness) {
-        return bettingStrategy.getBet(
-                favoriteBet,
-                minPossibleBet,
-                maxPossibleBet,
-                0, // there is no count
-                player,
-                getRandomness());
+    void getBet(BetRequest betRequest) {
+        betRequest.setTrueCount(0); // there really is none, but whatever.
+        bettingStrategy.getBet(betRequest);
     }
 }

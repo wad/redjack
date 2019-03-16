@@ -70,7 +70,7 @@ class Player {
         }
 
         if (!isRetired) {
-            if(bankroll.isGreaterThanOrEqualTo(retirementTriggerBankroll)) {
+            if (bankroll.isGreaterThanOrEqualTo(retirementTriggerBankroll)) {
                 say("I've doubled my initial bankroll, so I'm retiring.");
                 isRetired = true;
             }
@@ -89,19 +89,24 @@ class Player {
         }
 
         TableRules tableRules = table.getTableRules();
-        MoneyPile minPossibleBet = tableRules.getMinBet();
-        MoneyPile maxPossibleBet = MoneyPile.getLesserOf(tableRules.getMaxBet(), bankroll);
-        if (minPossibleBet.isGreaterThan(bankroll)) {
-            say("Oops, I don't have enough for the minimum bet.");
+        BetRequest betRequest = new BetRequest(
+                this,
+                casino.getRandomness(),
+                favoriteBet,
+                tableRules.getMinBet(),
+                tableRules.getMaxBet(),
+                bankroll.copy());
+        playStrategy.getBet(betRequest);
+        if (betRequest.canPlaceBet()) {
+            String comment = betRequest.getBetComment();
+            if (comment != null) {
+                say(comment);
+            }
+            return betRequest.getActualBetAmount();
+        } else {
             isBankrupt = true;
             return MoneyPile.zero();
         }
-
-        return playStrategy.getBet(
-                favoriteBet,
-                minPossibleBet,
-                maxPossibleBet,
-                this);
     }
 
     BlackjackPlay getPlay(

@@ -21,12 +21,7 @@ abstract class CardCountMethod {
 
     abstract void observeShuffle();
 
-    abstract MoneyPile getBet(
-            MoneyPile favoriteBet,
-            MoneyPile minPossibleBet,
-            MoneyPile maxPossibleBet,
-            Player player,
-            Randomness randomness);
+    abstract void getBet(BetRequest betRequest);
 
     Randomness getRandomness() {
         return table.getCasino().getRandomness();

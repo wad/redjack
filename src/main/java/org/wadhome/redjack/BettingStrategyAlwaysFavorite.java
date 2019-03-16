@@ -2,13 +2,9 @@ package org.wadhome.redjack;
 
 class BettingStrategyAlwaysFavorite extends BettingStrategy {
     @Override
-    MoneyPile getBet(
-            MoneyPile favoriteBet,
-            MoneyPile minPossibleBet,
-            MoneyPile maxPossibleBet,
-            int trueCount,
-            Player player,
-            Randomness randomness) {
-        return favoriteBet;
+    void getBet(BetRequest betRequest) {
+        if (betRequest.canPlaceBet()) {
+            betRequest.setConstrainedActualBetAmount(betRequest.getDesiredBet());
+        }
     }
 }

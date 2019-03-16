@@ -52,19 +52,9 @@ class CardCountMethodHighLowRealistic extends CardCountMethod {
     }
 
     @Override
-    MoneyPile getBet(
-            MoneyPile favoriteBet,
-            MoneyPile minPossibleBet,
-            MoneyPile maxPossibleBet,
-            Player player,
-            Randomness randomness) {
-        return bettingStrategy.getBet(
-                favoriteBet,
-                minPossibleBet,
-                maxPossibleBet,
-                getTrueCount(table.getDiscardTray()),
-                player,
-                getRandomness());
+    void getBet(BetRequest betRequest) {
+        betRequest.setTrueCount(getTrueCount(table.getDiscardTray()));
+        bettingStrategy.getBet(betRequest);
     }
 
     int getRunningCount() {
