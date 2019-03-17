@@ -1,6 +1,7 @@
 package org.wadhome.redjack;
 
 import org.junit.Test;
+import org.wadhome.redjack.rules.ComparisonResult;
 
 import static org.junit.Assert.*;
 

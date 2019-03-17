@@ -1,15 +1,15 @@
 package org.wadhome.redjack;
 
-class PlayerHand extends Hand {
+public class PlayerHand extends Hand {
     private Seat seat;
     private MoneyPile betAmount = MoneyPile.zero();
     private boolean isSplitHandAndIsFinished;
 
-    PlayerHand(Seat seat) {
+    public PlayerHand(Seat seat) {
         this.seat = seat;
     }
 
-    MoneyPile getBetAmount() {
+    public MoneyPile getBetAmount() {
         return betAmount;
     }
 
@@ -23,7 +23,7 @@ class PlayerHand extends Hand {
         this.betAmount = betAmount;
     }
 
-    Seat getSeat() {
+    public Seat getSeat() {
         return seat;
     }
 

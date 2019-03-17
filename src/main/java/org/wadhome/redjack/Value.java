@@ -1,6 +1,6 @@
 package org.wadhome.redjack;
 
-enum Value {
+public enum Value {
     Two("2", 2),
     Three("3", 3),
     Four("4", 4),
@@ -15,7 +15,7 @@ enum Value {
     King("K", 10),
     Ace("A", 1); // Can also be 11 points.
 
-    static final int OPTIONAL_EXTRA_ACE_POINTS = 10;
+    public static final int OPTIONAL_EXTRA_ACE_POINTS = 10;
 
     private String symbol;
     private int points;
@@ -29,7 +29,7 @@ enum Value {
         return points;
     }
 
-    boolean isTen() {
+    public boolean isTen() {
         switch (this) {
             case Two:
             case Three:

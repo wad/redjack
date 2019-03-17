@@ -1,6 +1,9 @@
 package org.wadhome.redjack;
 
 import org.junit.Test;
+import org.wadhome.redjack.bet.BettingStrategyAlwaysFavorite;
+import org.wadhome.redjack.rules.TableRules;
+import org.wadhome.redjack.strategy.PlayStrategyBasic;
 
 import static org.junit.Assert.assertEquals;
 

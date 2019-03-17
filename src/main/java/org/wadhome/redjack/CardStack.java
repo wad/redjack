@@ -17,7 +17,7 @@ abstract class CardStack {
 
     // These are added to the end (bottom) of the stack, which is the back of the shoe.
     // The first one added will be the first one drawn.
-    void addCardToBottom(Card... cardsToAdd) {
+    public void addCardToBottom(Card... cardsToAdd) {
         Collections.addAll(cards, cardsToAdd);
     }
 
@@ -33,5 +33,9 @@ abstract class CardStack {
     }
 
     protected void extraHandlingOnCardDraw() {
+    }
+
+    public int numCards() {
+        return cards.size();
     }
 }

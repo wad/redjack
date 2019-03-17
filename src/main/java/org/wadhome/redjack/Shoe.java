@@ -1,8 +1,10 @@
 package org.wadhome.redjack;
 
+import org.wadhome.redjack.rules.Blackjack;
+
 import java.util.ArrayList;
 
-class Shoe extends CardStack {
+public class Shoe extends CardStack {
     private Table table;
     private int numDecks;
     private int numCardsAfterCutCard;

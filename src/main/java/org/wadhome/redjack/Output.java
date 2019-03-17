@@ -1,5 +1,7 @@
 package org.wadhome.redjack;
 
+import org.wadhome.redjack.cardcount.CardCountStatus;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,9 +11,9 @@ import java.util.List;
 
 import static java.util.stream.Collectors.joining;
 
-class Output {
+public class Output {
     // The spreadsheet with the chart is set to display 1000 rows of data (rounds).
-    static final int SPREADHSEET_ROUNDS = 1000;
+    public static final int SPREADHSEET_ROUNDS = 1000;
 
     private static final String BANKROLL_LOG_FILENAME = "bankroll.csv";
     private static final String BANKROLL_SAMPLE_LOG_FILENAME = "bankroll_sample.csv";

@@ -6,6 +6,8 @@ package org.wadhome.redjack;
 
 // todo: make log at shoe level
 
+import org.wadhome.redjack.execution.Command;
+
 class Redjack {
 
     public static void main(String... args) {

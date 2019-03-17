@@ -1,6 +1,6 @@
 package org.wadhome.redjack;
 
-class Card {
+public class Card {
     private int deckNumber;
     private Suite suite;
     private Value value;
@@ -14,7 +14,7 @@ class Card {
         this.value = value;
     }
 
-    Value getValue() {
+    public Value getValue() {
         return value;
     }
 

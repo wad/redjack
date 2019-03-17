@@ -1,9 +1,11 @@
 package org.wadhome.redjack;
 
+import org.wadhome.redjack.rules.TableRules;
+
 import java.util.HashMap;
 import java.util.Map;
 
-class Casino {
+public class Casino {
     private Randomness randomness;
     private Map<Integer, Table> tables = new HashMap<>();
     private MoneyPile houseBankroll = new MoneyPile(100000000000000L);
@@ -18,7 +20,7 @@ class Casino {
                 false);
     }
 
-    Casino(
+    public Casino(
             String casinoName,
             Long seed,
             boolean isDisplaying,
@@ -32,11 +34,11 @@ class Casino {
         return houseBankroll;
     }
 
-    Output getOutput() {
+    public Output getOutput() {
         return output;
     }
 
-    Table createTable(
+    public Table createTable(
             int tableNumber,
             TableRules tableRules) {
         Table table = new Table(
@@ -53,11 +55,11 @@ class Casino {
         return tables.get(tableNumber);
     }
 
-    Randomness getRandomness() {
+    public Randomness getRandomness() {
         return randomness;
     }
 
-    void closeCasino() {
+    public void closeCasino() {
         if (output != null) {
             output.closeLogs();
         }

@@ -1,5 +1,8 @@
 package org.wadhome.redjack;
 
+import org.wadhome.redjack.rules.Blackjack;
+import org.wadhome.redjack.rules.ComparisonResult;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +13,7 @@ abstract class Hand {
     private Card firstCard = null;
     private Card secondCard = null;
 
-    void addCard(Card card) {
+    public void addCard(Card card) {
         if (cards.size() == 0) {
             firstCard = card;
         }
@@ -28,11 +31,11 @@ abstract class Hand {
         return cardsToRemove;
     }
 
-    int getNumCards() {
+    public int getNumCards() {
         return cards.size();
     }
 
-    Card getFirstCard() {
+    public Card getFirstCard() {
         return firstCard;
     }
 
@@ -40,7 +43,7 @@ abstract class Hand {
         return secondCard;
     }
 
-    boolean hasAtLeastOneAce() {
+    public boolean hasAtLeastOneAce() {
         for (Card card : cards) {
             if (card.getValue() == Value.Ace) {
                 return true;
@@ -58,15 +61,16 @@ abstract class Hand {
         return false;
     }
 
-    int computeMinSum() {
+    public int computeMinSum() {
         int minSum = 0;
         for (Card card : cards) {
+            // ace will have point value of 1
             minSum += card.getValue().getPoints();
         }
         return minSum;
     }
 
-    int computeMaxSum() {
+    public int computeMaxSum() {
         int maxSum = 0;
         for (Card card : cards) {
             maxSum += card.getValue().getPoints();
@@ -99,16 +103,16 @@ abstract class Hand {
         return cards.size() == 2;
     }
 
-    boolean isPair() {
+    public boolean isPair() {
         return hasExactlyTwoCards()
                 && firstCard.getValue().getPoints() == secondCard.getValue().getPoints();
     }
 
-    boolean isBust() {
+    public boolean isBust() {
         return computeMinSum() > Blackjack.MAX_VALID_HAND_POINTS;
     }
 
-    boolean isBlackjack() {
+    public boolean isBlackjack() {
         return hasExactlyTwoCards()
                 && hasAtLeastOneAce()
                 && hasAtLeastOneTenPointCard();

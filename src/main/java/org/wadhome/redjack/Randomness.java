@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-class Randomness {
+public class Randomness {
     private Random random;
     private Long seed;
 
@@ -21,7 +21,7 @@ class Randomness {
         return random.nextInt(maxValue);
     }
 
-    boolean checkRandomPercentChance(int percentChance) {
+    public boolean checkRandomPercentChance(int percentChance) {
         if (percentChance <= 0) {
             return false;
         }
@@ -39,7 +39,7 @@ class Randomness {
         }
     }
 
-    static long generateRandomSeed() {
+    public static long generateRandomSeed() {
         Random rand = new Random();
         return rand.nextLong();
     }

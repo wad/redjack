@@ -1,6 +1,8 @@
 package org.wadhome.redjack;
 
 import org.junit.Test;
+import org.wadhome.redjack.rules.Blackjack;
+import org.wadhome.redjack.rules.TableRules;
 
 import static org.junit.Assert.assertEquals;
 

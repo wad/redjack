@@ -1,6 +1,12 @@
 package org.wadhome.redjack;
 
-class Player {
+import org.wadhome.redjack.bet.BetRequest;
+import org.wadhome.redjack.cardcount.CardCountStatus;
+import org.wadhome.redjack.rules.BlackjackPlay;
+import org.wadhome.redjack.rules.TableRules;
+import org.wadhome.redjack.strategy.PlayStrategy;
+
+public class Player {
     private String playerName;
     private String notes;
     private Gender gender;
@@ -14,7 +20,7 @@ class Player {
     private PlayStrategy playStrategy;
     private Casino casino;
 
-    Player(
+    public Player(
             String playerName,
             Gender gender,
             Casino casino,
@@ -34,7 +40,7 @@ class Player {
         return playerName;
     }
 
-    void setNotes(String notes) {
+    public void setNotes(String notes) {
         this.notes = notes;
     }
 
@@ -42,7 +48,7 @@ class Player {
         return notes;
     }
 
-    void setRetirementTriggerBankroll(MoneyPile retirementTriggerBankroll) {
+    public void setRetirementTriggerBankroll(MoneyPile retirementTriggerBankroll) {
         this.retirementTriggerBankroll = retirementTriggerBankroll;
     }
 
@@ -51,20 +57,20 @@ class Player {
         this.takesMaxInsurance = takesMaxInsurance;
     }
 
-    void say(String message) {
+    public void say(String message) {
         casino.getOutput().showMessage(
                 getPlayerName() + " says, \"" + message + "\"");
     }
 
-    MoneyPile getInitialBankroll() {
+    public MoneyPile getInitialBankroll() {
         return initialBankroll.copy();
     }
 
-    MoneyPile getBankroll() {
+    public MoneyPile getBankroll() {
         return this.bankroll;
     }
 
-    boolean isRetired() {
+    public boolean isRetired() {
         if (retirementTriggerBankroll == null) {
             return false;
         }
@@ -78,7 +84,7 @@ class Player {
         return isRetired;
     }
 
-    boolean isBankrupt() {
+    public boolean isBankrupt() {
         return isBankrupt;
     }
 
@@ -158,7 +164,7 @@ class Player {
         return gender;
     }
 
-    PlayStrategy getPlayStrategy() {
+    public PlayStrategy getPlayStrategy() {
         return playStrategy;
     }
 

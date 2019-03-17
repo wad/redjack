@@ -3,12 +3,12 @@ package org.wadhome.redjack;
 import java.util.ArrayList;
 import java.util.List;
 
-class Seat {
+public class Seat {
     private final SeatNumber seatNumber;
     private Player player = null;
     private List<PlayerHand> hands = new ArrayList<>();
 
-    Seat(SeatNumber seatNumber) {
+    public Seat(SeatNumber seatNumber) {
         this.seatNumber = seatNumber;
     }
 
@@ -63,7 +63,7 @@ class Seat {
         return sum;
     }
 
-    int getNumSplitsSoFar() {
+    public int getNumSplitsSoFar() {
         if (hands.isEmpty()) {
             return 0;
         }

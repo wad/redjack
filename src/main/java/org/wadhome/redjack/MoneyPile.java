@@ -2,13 +2,13 @@ package org.wadhome.redjack;
 
 import java.util.Objects;
 
-class MoneyPile {
+public class MoneyPile {
 
-    static final int NUM_CENTS_PER_DOLLAR = 100;
+    public static final int NUM_CENTS_PER_DOLLAR = 100;
 
     private long numCents;
 
-    MoneyPile(long numCents) {
+    public MoneyPile(long numCents) {
         this.numCents = numCents;
         validate();
     }
@@ -20,7 +20,7 @@ class MoneyPile {
         }
     }
 
-    void addToPile(MoneyPile moneyToAdd) {
+    public void addToPile(MoneyPile moneyToAdd) {
         this.numCents += moneyToAdd.numCents;
         validate();
     }
@@ -30,19 +30,19 @@ class MoneyPile {
         validate();
     }
 
-    boolean isGreaterThan(MoneyPile target) {
+    public boolean isGreaterThan(MoneyPile target) {
         return this.numCents > target.numCents;
     }
 
-    boolean isLessThan(MoneyPile target) {
+    public boolean isLessThan(MoneyPile target) {
         return this.numCents < target.numCents;
     }
 
-    boolean isGreaterThanOrEqualTo(MoneyPile target) {
+    public boolean isGreaterThanOrEqualTo(MoneyPile target) {
         return this.numCents >= target.numCents;
     }
 
-    boolean isGreaterThanOrEqualTo(long dollars) {
+    public boolean isGreaterThanOrEqualTo(long dollars) {
         return this.numCents >= (dollars * NUM_CENTS_PER_DOLLAR);
     }
 
@@ -50,27 +50,28 @@ class MoneyPile {
         return numCents > 0L;
     }
 
-    MoneyPile copy() {
+    // todo: make this private, clean up usage
+    public MoneyPile copy() {
         return new MoneyPile(numCents);
     }
 
-    MoneyPile computeHalf() {
+    public MoneyPile computeHalf() {
         return new MoneyPile(this.numCents >> 1);
     }
 
-    MoneyPile computeOneAndHalf() {
+    public MoneyPile computeOneAndHalf() {
         return new MoneyPile(this.numCents + (this.numCents >> 1));
     }
 
-    MoneyPile computeSixFifths() {
-        return new MoneyPile((long)(((double)this.numCents) * (1.2D)));
+    public MoneyPile computeSixFifths() {
+        return new MoneyPile((long) (((double) this.numCents) * (1.2D)));
     }
 
-    MoneyPile computeDouble() {
+    public MoneyPile computeDouble() {
         return new MoneyPile(this.numCents << 1);
     }
 
-    static String computeDifference(
+    public static String computeDifference(
             MoneyPile original,
             MoneyPile amountToSubtract) {
         long delta = original.numCents - amountToSubtract.numCents;
@@ -91,7 +92,7 @@ class MoneyPile {
         }
     }
 
-    static MoneyPile zero() {
+    public static MoneyPile zero() {
         return new MoneyPile(0L);
     }
 

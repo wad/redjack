@@ -1,11 +1,15 @@
 package org.wadhome.redjack;
 
+import org.wadhome.redjack.cardcount.CardCountStatus;
+import org.wadhome.redjack.rules.BlackjackPlay;
+import org.wadhome.redjack.rules.TableRules;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class Table {
+public class Table {
     private Casino casino;
     private int tableNumber;
     private TableRules tableRules;
@@ -40,11 +44,11 @@ class Table {
         show(tableRules.getRulesDisplay(tableNumber));
     }
 
-    Casino getCasino() {
+    public Casino getCasino() {
         return casino;
     }
 
-    Shoe getShoe() {
+    public Shoe getShoe() {
         return shoe;
     }
 
@@ -73,11 +77,11 @@ class Table {
         burn();
     }
 
-    TableRules getTableRules() {
+    public TableRules getTableRules() {
         return tableRules;
     }
 
-    DiscardTray getDiscardTray() {
+    public DiscardTray getDiscardTray() {
         return this.discardTray;
     }
 
@@ -109,7 +113,7 @@ class Table {
         }
     }
 
-    boolean areAnySeatsAvailable() {
+    public boolean areAnySeatsAvailable() {
         for (SeatNumber seatNumber : SeatNumber.values()) {
             if (!seats.get(seatNumber).hasPlayer()) {
                 return true;
@@ -118,7 +122,7 @@ class Table {
         return false;
     }
 
-    SeatNumber getAnAvailableSeatNumber() {
+    public SeatNumber getAnAvailableSeatNumber() {
         for (SeatNumber seatNumber : SeatNumber.values()) {
             if (!seats.get(seatNumber).hasPlayer()) {
                 return seatNumber;
@@ -127,7 +131,7 @@ class Table {
         throw new RuntimeException("No free seats. Should have checked for an available seat first.");
     }
 
-    void assignPlayerToSeat(
+    public void assignPlayerToSeat(
             SeatNumber seatNumber,
             Player player) {
         Seat seat = seats.get(seatNumber);
@@ -183,7 +187,7 @@ class Table {
         toPile.addToPile(amountToMove);
     }
 
-    void playRoundsUntilEndOfShoe() {
+    public void playRoundsUntilEndOfShoe() {
         showAndDisplay("\nRunning hands until the end of this shoe is reached.");
         int roundNumber = 0;
         boolean continueRounds = true;
@@ -207,7 +211,7 @@ class Table {
         showAndDisplayPlayerResults();
     }
 
-    void playRounds(int numRoundsToPlay) {
+    public void playRounds(int numRoundsToPlay) {
         Output output = casino.getOutput();
         showAndDisplay("\nRunning " + numRoundsToPlay + " rounds of play.");
         boolean continueRounds = true;

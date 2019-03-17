@@ -2,6 +2,9 @@ package org.wadhome.redjack;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.wadhome.redjack.bet.BettingStrategyAlwaysFavorite;
+import org.wadhome.redjack.rules.TableRules;
+import org.wadhome.redjack.strategy.PlayStrategyBasic;
 
 import static org.junit.Assert.assertEquals;
 
@@ -60,7 +63,7 @@ public class TableTest extends TestHelper {
 
     @Test
     public void testSurrender() {
-        tableRules.canSurrender = true;
+        tableRules.setCanSurrender(true);
         shoe.addCardToBottom(cT(), cT(), c6(), cT(), cT());
         table.playRound();
         assertEquals("$95.00", player.getBankroll().toString());
@@ -192,7 +195,7 @@ public class TableTest extends TestHelper {
 
     @Test
     public void testSplitAcesNoHittingAllowed() {
-        tableRules.canHitSplitAces = false;
+        tableRules.setCanHitSplitAces(false);
         shoe.addCardToBottom(cA(), cT(), cA(), cT(), cA(), c8());
         table.playRound();
         assertEquals("$80.00", player.getBankroll().toString());
@@ -200,7 +203,7 @@ public class TableTest extends TestHelper {
 
     @Test
     public void testSplitAcesFirstLosesSecondIsBlackjack() {
-        tableRules.canHitSplitAces = false;
+        tableRules.setCanHitSplitAces(false);
         shoe.addCardToBottom(cA(), cT(), cA(), cT(), c8(), cT());
         table.playRound();
         assertEquals("$100.00", player.getBankroll().toString());
@@ -208,7 +211,7 @@ public class TableTest extends TestHelper {
 
     @Test
     public void testSplitAcesFirstIsBlackjackSecondLoses() {
-        tableRules.canHitSplitAces = false;
+        tableRules.setCanHitSplitAces(false);
         shoe.addCardToBottom(cA(), cT(), cA(), cT(), cT(), c8());
         table.playRound();
         assertEquals("$100.00", player.getBankroll().toString());
@@ -216,7 +219,7 @@ public class TableTest extends TestHelper {
 
     @Test
     public void testSplitAcesNoHittingAllowedTwoBlackjacks() {
-        tableRules.canHitSplitAces = false;
+        tableRules.setCanHitSplitAces(false);
         shoe.addCardToBottom(cA(), cT(), cA(), cT(), cT(), cT());
         table.playRound();
         assertEquals("$120.00", player.getBankroll().toString());
@@ -224,7 +227,7 @@ public class TableTest extends TestHelper {
 
     @Test
     public void testSplitAcesHittingAllowed() {
-        tableRules.canHitSplitAces = true;
+        tableRules.setCanHitSplitAces(true);
         shoe.addCardToBottom(cA(), cT(), cA(), cT(), c2(), c9(), c3(), c2(), cT());
         table.playRound();
         assertEquals("$90.00", player.getBankroll().toString());
@@ -233,7 +236,7 @@ public class TableTest extends TestHelper {
     @Test
     public void testSplitAcesHittingAllowedTwoSplits() {
         // todo: hands processed in the wrong order. A,9 hand is processed last, should be next-to-last.
-        tableRules.canHitSplitAces = true;
+        tableRules.setCanHitSplitAces(true);
         shoe.addCardToBottom(cA(), cT(), cA(), cT(), cA(), c6(), c2(), c9(), c8(), cT());
         table.playRound();
         assertEquals("$100.00", player.getBankroll().toString());

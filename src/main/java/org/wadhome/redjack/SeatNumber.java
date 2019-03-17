@@ -1,6 +1,6 @@
 package org.wadhome.redjack;
 
-enum SeatNumber {
+public enum SeatNumber {
     one,
     two,
     three,

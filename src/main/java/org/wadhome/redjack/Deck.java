@@ -1,5 +1,7 @@
 package org.wadhome.redjack;
 
+import org.wadhome.redjack.rules.Blackjack;
+
 import java.util.ArrayList;
 import java.util.List;
 

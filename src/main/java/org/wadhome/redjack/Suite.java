@@ -1,6 +1,6 @@
 package org.wadhome.redjack;
 
-enum Suite {
+public enum Suite {
     Spades("♠"),
     Hearts("♥"),
     Clubs("♣"),
