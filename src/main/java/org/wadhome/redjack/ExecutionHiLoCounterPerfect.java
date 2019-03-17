@@ -25,6 +25,7 @@ class ExecutionHiLoCounterPerfect extends Execution {
                 getSeed(),
                 false,
                 true);
+        casino.getOutput().setSampleFactor(Output.SPREADHSEET_ROUNDS, numRoundsToPlay);
         Table table = casino.createTable(0, tableRules);
 
         List<Player> players = new ArrayList<String>() {{

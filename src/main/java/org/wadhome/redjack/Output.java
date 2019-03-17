@@ -10,6 +10,8 @@ import java.util.List;
 import static java.util.stream.Collectors.joining;
 
 class Output {
+    // The spreadsheet with the chart is set to display 1000 rows of data (rounds).
+    static final int SPREADHSEET_ROUNDS = 1000;
 
     private static final String BANKROLL_LOG_FILENAME = "bankroll.csv";
     private static final String BANKROLL_SAMPLE_LOG_FILENAME = "bankroll_sample.csv";
@@ -18,11 +20,14 @@ class Output {
     private BufferedWriter writerBankrollSample;
     private BufferedWriter writerPlay;
 
+    private static final int NUM_ROUNDS_TO_CUT_OFF_PLAY_LOGGING = 100100;
+    private boolean isPlayLoggingCutOff = false;
+
     private static final int CARD_COUNT_REPORT_COLUMN_START = 170;
-    private static final int SAMPLE_FACTOR = 100;
 
     private boolean isDisplaying;
     private boolean isLogging;
+    private int sampleFactor = 100; // this works for runs of 100000 rounds.
 
     Output(
             boolean isDisplaying,
@@ -32,6 +37,12 @@ class Output {
         if (isLogging) {
             openLogs();
         }
+    }
+
+    public void setSampleFactor(
+            int desiredTotalRoundsInBankrollSample,
+            int expectedNumRounds) {
+        sampleFactor = expectedNumRounds / desiredTotalRoundsInBankrollSample;
     }
 
     boolean isLogging() {
@@ -111,6 +122,9 @@ class Output {
                         .collect(joining(","));
                 writeLineToBankrollLog(roundNumber, "round," + nameLine);
             }
+            if (roundNumber > NUM_ROUNDS_TO_CUT_OFF_PLAY_LOGGING) {
+                isPlayLoggingCutOff = true;
+            }
             String bankrollLine = players
                     .stream()
                     .map(n -> n.getBankroll().format(false))
@@ -121,13 +135,15 @@ class Output {
 
     private void writeLineToBankrollLog(int roundNumber, String line) {
         writeLineToFile(writerBankroll, line);
-        if (roundNumber % SAMPLE_FACTOR == 0) {
+        if (roundNumber % sampleFactor == 0 || sampleFactor <= 1) {
             writeLineToFile(writerBankrollSample, line);
         }
     }
 
     private void writeLineToPlayLog(String line) {
-        writeLineToFile(writerPlay, line);
+        if (!isPlayLoggingCutOff) {
+            writeLineToFile(writerPlay, line);
+        }
     }
 
     private void writeLineToFile(

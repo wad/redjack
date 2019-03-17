@@ -5,20 +5,20 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-class ExecutionPerfectBuk extends Execution {
+class ExecutionPerfectBuk10M extends Execution {
     @Override
     Casino execute(Command command) {
-        int numRoundsToPlay = 100000;
-        long playerFavoriteBetInCents = 500L;
-        long initialPlayerBankrollsInCents = 200000L;
+        int numRoundsToPlay = 10000000;
+        long playerFavoriteBetInCents = 2500L;
+        long initialPlayerBankrollsInCents = 10000000L;
         System.out.println("Seven players, each with "
                 + new MoneyPile(initialPlayerBankrollsInCents)
                 + ", betting " + new MoneyPile(playerFavoriteBetInCents)
                 + ", playing until double, bankrupt, or " + numRoundsToPlay + " rounds.");
 
         TableRules tableRules = TableRules.getDefaultRules();
-        tableRules.minBet = new MoneyPile(500L);
-        tableRules.maxBet = new MoneyPile(10000L);
+        tableRules.minBet = new MoneyPile(2500L);
+        tableRules.maxBet = new MoneyPile(50000L);
 
         Casino casino = new Casino(
                 "Redjack (" + command + ")",
@@ -29,13 +29,13 @@ class ExecutionPerfectBuk extends Execution {
         Table table = casino.createTable(0, tableRules);
 
         List<Player> players = new ArrayList<String>() {{
-            add("Perfect Buky Anne");
-            add("Perfect Buky Beth");
-            add("Perfect Buky Callie");
-            add("Perfect Buky Dora");
-            add("Perfect Buky Edna");
-            add("Perfect Buky Fran");
-            add("Perfect Buky Grace");
+            add("Buky Anne");
+            add("Buky Beth");
+            add("Buky Callie");
+            add("Buky Dora");
+            add("Buky Edna");
+            add("Buky Fran");
+            add("Buky Grace");
         }}.stream().map(name -> {
             MoneyPile initialPlayerBankroll = new MoneyPile(initialPlayerBankrollsInCents);
             Player player = new Player(
@@ -45,7 +45,7 @@ class ExecutionPerfectBuk extends Execution {
                     initialPlayerBankroll,
                     new PlayStrategyHighLowPerfect(table, new BettingStrategyBukofsky(true)),
                     new MoneyPile(playerFavoriteBetInCents));
-            player.setRetirementTriggerBankroll(initialPlayerBankroll.computeDouble());
+            player.getPlayStrategy().getCardCountMethod().setBukofskyBankrollLevelDesired(BukofskyBankrollLevel.Level10k);
             return player;
         }).collect(toList());
 
