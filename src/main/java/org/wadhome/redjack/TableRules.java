@@ -36,7 +36,7 @@ class TableRules {
 
     @Override
     public String toString() {
-        return "===\n" +
+        return "\n" +
                 "=== Table rules\n" +
                 "=== Number of decks: " + getNumDecks() + "\n" +
                 "=== Minimum bet: " + getMinBet() + "\n" +
@@ -46,8 +46,7 @@ class TableRules {
                 "=== Can double down after split: " + (canDoubleDownAfterSplit() ? "yes" : "no") + "\n" +
                 "=== Can hit split aces: " + (canHitSplitAces() ? "yes" : "no") + "\n" +
                 "=== Maximum number of splits: " + getMaxNumSplits() + "\n" +
-                "=== Surrender allowed: " + (canSurrender() ? "yes" : "no") + "\n" +
-                "===";
+                "=== Surrender allowed: " + (canSurrender() ? "yes" : "no") + "\n";
     }
 
     MoneyPile getMinBet() {

@@ -137,6 +137,10 @@ class Table {
 
         seat.setPlayer(player);
         show(seat, "sat down in seat " + seatNumber + ".");
+        String notes = player.getNotes();
+        if (notes != null) {
+            show(notes);
+        }
     }
 
     void removePlayerFromSeat(SeatNumber seatNumber) {
@@ -180,11 +184,14 @@ class Table {
     }
 
     void playRoundsUntilEndOfShoe() {
-        showAndDisplay("Running hands until the end of this shoe is reached.");
+        showAndDisplay("\nRunning hands until the end of this shoe is reached.");
         int roundNumber = 0;
         boolean continueRounds = true;
         while (continueRounds) {
             roundNumber++;
+
+            show("");
+            show("===> Round " + roundNumber + " begins <===");
 
             RoundResult roundResult = playRound(roundNumber);
             if (roundResult.isCutCardDrawn()) {
@@ -200,16 +207,20 @@ class Table {
     }
 
     void playRounds(int numRoundsToPlay) {
+        Output output = casino.getOutput();
         show("Running " + numRoundsToPlay + " rounds of play.");
         boolean continueRounds = true;
         int shoeCount = 1;
         int roundNumber;
         for (roundNumber = 0; continueRounds && (roundNumber < numRoundsToPlay); roundNumber++) {
-            if (!casino.getOutput().isDisplaying()) {
+            if (!output.isDisplaying()) {
                 if (roundNumber > 0 && roundNumber % 1000 == 0) {
                     System.out.print(".");
                 }
             }
+
+            show("");
+            show("===> Round " + (roundNumber + 1) + " begins <===");
 
             RoundResult roundResult = playRound(roundNumber);
             if (roundResult.isCutCardDrawn()) {
@@ -223,7 +234,7 @@ class Table {
             }
         }
 
-        if (!casino.getOutput().isDisplaying()) {
+        if (!output.isDisplaying()) {
             System.out.println();
         }
         showAndDisplay("Completed " + roundNumber + " rounds, in " + shoeCount + " shoes.");
@@ -412,7 +423,7 @@ class Table {
             } else {
                 show("Dealer turns over the hole card, and it's "
                         + dealerHand.getSecondCard().toString(false, true)
-                        + ". Not a blackjack. insurance bets all lose.");
+                        + ". Not a blackjack. Insurance bets all lose.");
                 dealerHand.revealHoleCard(this);
             }
         }
@@ -420,7 +431,9 @@ class Table {
 
     private boolean handleDealerBlackjack() {
         if (!dealerHand.isBlackjack()) {
-            show("Dealer checks the hole card. No blackjack for the dealer.");
+            if (dealerHand.getFirstCard().getValue().isTen()) {
+                show("Dealer checks the hole card. No blackjack for the dealer.");
+            }
             return false;
         }
 
@@ -571,7 +584,7 @@ class Table {
                         + " decides to hit with " + player.getGender().getHisHer(false)
                         + " hand of " + initialHand
                         + ", and got " + hitCard.toString(true, false)
-                        + ". Hand is now " + hand.showCardsWithTotal(),
+                        + ".",
                 cardCountStatus);
         return true;
     }

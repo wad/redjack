@@ -5,6 +5,7 @@ import java.util.Arrays;
 import static java.util.stream.Collectors.joining;
 
 enum Command {
+    demo,
     playOneShoe,
     playBasic,
     playHiLoPerfect,
@@ -12,11 +13,15 @@ enum Command {
     playHiLoRealisticBukBut4k,
     playHiLoPerfectBuk,
     play100k,
+    play100kBetMaxOnGoodCount,
     unknown;
 
     void execute() {
         Execution execution;
         switch (this) {
+            case demo:
+                execution = new ExecutionDemo();
+                break;
             case playOneShoe:
                 execution = new ExecutionOneShoe();
                 break;
@@ -37,6 +42,9 @@ enum Command {
                 break;
             case play100k:
                 execution = new Execution100k();
+                break;
+            case play100kBetMaxOnGoodCount:
+                execution = new ExecutionHiLoCounterBallzy();
                 break;
             case unknown:
                 return;

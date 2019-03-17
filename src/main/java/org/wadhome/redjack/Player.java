@@ -9,7 +9,7 @@ class Player {
     private boolean isRetired = false;
     private boolean isBankrupt = false;
     private MoneyPile bankroll;
-    private boolean takesMaxInsurance = true;
+    private boolean takesMaxInsurance = false;
     private MoneyPile favoriteBet;
     private PlayStrategy playStrategy;
     private Casino casino;
@@ -137,11 +137,16 @@ class Player {
             }
         }
 
-        return playStrategy.getInsuranceBet(
+        MoneyPile desiredInsurance = playStrategy.getInsuranceBet(
                 maximumInsuranceBet,
                 hand,
                 dealerUpcard,
                 bankroll.copy());
+
+        if (desiredInsurance.isGreaterThan(bankroll)) {
+            return bankroll.copy();
+        }
+        return desiredInsurance;
     }
 
     @Override

@@ -18,9 +18,11 @@ class BettingStrategyBukofsky extends BettingStrategy {
                     betRequest.setConstrainedActualBetAmount(betRequest.getMinPossibleBet());
                 } else {
                     if (betRequest.getRandomness().checkRandomPercentChance(20)) {
+                        MoneyPile betToUse = betRequest.getMinPossibleBet().copy();
+                        betToUse.addToPile(betRequest.getMinPossibleBet().computeHalf());
                         betRequest.setBetComment("True count is only " + trueCount + ", so I'd like to bet the minimum."
                                 + " But that looks suspicious, so I'll bet a little more.");
-                        betRequest.setConstrainedActualBetAmount(betRequest.getMinPossibleBet().computeDouble());
+                        betRequest.setConstrainedActualBetAmount(betToUse);
                     } else {
                         betRequest.setConstrainedActualBetAmount(betRequest.getMinPossibleBet());
                     }
