@@ -22,7 +22,7 @@ class ExecutionBasic extends Execution {
 
         Casino casino = new Casino(
                 "Redjack (" + command + ")",
-                Randomness.generateRandomSeed(),
+                getSeed(),
                 false,
                 true);
         Table table = casino.createTable(0, tableRules);
@@ -44,12 +44,12 @@ class ExecutionBasic extends Execution {
                 new MoneyPile(playerFavoriteBetInCents))).
                 collect(toList());
 
-        MoneyPile initialPlayerBankrolls = getSumOfPlayerBankrolls(players, false);
+        MoneyPile initialPlayerBankrolls = getSumOfPlayerBankrolls(players);
 
         assignPlayersToTable(players, table);
         table.playRounds(numRoundsToPlay);
 
-        MoneyPile finalPlayerBankrolls = getSumOfPlayerBankrolls(players, false);
+        MoneyPile finalPlayerBankrolls = getSumOfPlayerBankrolls(players);
 
         System.out.println();
         System.out.println("Initial player bankrolls: " + initialPlayerBankrolls);

@@ -9,14 +9,24 @@ enum Command {
     playOneShoe,
     playBasic,
     playHiLoPerfect,
-    playHiLoRealisticBuk,
+    playHiLoRealisticBuk10k,
     playHiLoRealisticBukBut4k,
     playHiLoPerfectBuk,
     play100k,
     play100kBetMaxOnGoodCount,
     unknown;
 
-    void execute() {
+    void execute(String[] args) {
+        Long seed = null;
+        if (args.length > 1) {
+            String seedParameter = args[1];
+            try {
+                seed = Long.valueOf(seedParameter);
+            } catch (NumberFormatException ignored) {
+                throw new RuntimeException("I don't know what to do with your second parameter: " + seedParameter);
+            }
+        }
+
         Execution execution;
         switch (this) {
             case demo:
@@ -31,8 +41,8 @@ enum Command {
             case playHiLoPerfect:
                 execution = new ExecutionHiLoCounterPerfect();
                 break;
-            case playHiLoRealisticBuk:
-                execution = new ExecutionRealisticBuk();
+            case playHiLoRealisticBuk10k:
+                execution = new ExecutionRealisticBuk10k();
                 break;
             case playHiLoRealisticBukBut4k:
                 execution = new ExecutionRealisticBukBut4k();
@@ -52,6 +62,7 @@ enum Command {
                 throw new IllegalStateException("bug");
         }
 
+        execution.setSeedOverride(seed);
         Casino casino = null;
         try {
             casino = execution.execute(this);

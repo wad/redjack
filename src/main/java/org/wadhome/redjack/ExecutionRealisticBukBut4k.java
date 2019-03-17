@@ -23,7 +23,7 @@ class ExecutionRealisticBukBut4k extends Execution {
 
         Casino casino = new Casino(
                 "Redjack (" + command + ")",
-                Randomness.generateRandomSeed(),
+                getSeed(),
                 false,
                 true);
         Table table = casino.createTable(0, tableRules);

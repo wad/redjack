@@ -17,10 +17,9 @@ class ExecutionDemo extends Execution {
         tableRules.minBet = new MoneyPile(500L);
         tableRules.maxBet = new MoneyPile(10000L);
 
-        long seed = Randomness.generateRandomSeed();
         Casino casino = new Casino(
                 "Redjack (" + command + ")",
-                seed,
+                getSeed(),
                 true,
                 true);
         Table table = casino.createTable(1, tableRules);
@@ -57,14 +56,14 @@ class ExecutionDemo extends Execution {
                 new PlayStrategyHighLowRealistic(table, new BettingStrategyBukofsky(false)),
                 new MoneyPile(playerFavoriteBetInCents));
         callie.setNotes("Callie read Bukofsky's book, counts cards using the hi-low method,"
-                + " and is playing with 5% risk of ruin, at the $2000 bankroll level."
-                + "\nShe is careful to not be too obvious, and avoids certain plays,"
+                + " and is playing with 5% risk of ruin, at the $2000 bankroll level, betting accordingly."
+                + "\nShe is careful to not be too obvious, avoids certain plays,"
                 + " and won't flatline the table minimum bet.");
         players.add(callie);
 
         assignPlayersToTable(players, table);
+
         table.playRoundsUntilEndOfShoe();
-        showPlayerResults(initialPlayerBankrollsInCents, players);
 
         return casino;
     }

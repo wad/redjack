@@ -36,9 +36,7 @@ class TableRules {
 
     @Override
     public String toString() {
-        return "\n" +
-                "=== Table rules\n" +
-                "=== Number of decks: " + getNumDecks() + "\n" +
+        return "=== Number of decks: " + getNumDecks() + "\n" +
                 "=== Minimum bet: " + getMinBet() + "\n" +
                 "=== Maximum bet: " + getMaxBet() + "\n" +
                 "=== Dealer hits soft 17: " + (mustHitSoftSeventeen() ? "yes" : "no") + "\n" +
@@ -47,6 +45,11 @@ class TableRules {
                 "=== Can hit split aces: " + (canHitSplitAces() ? "yes" : "no") + "\n" +
                 "=== Maximum number of splits: " + getMaxNumSplits() + "\n" +
                 "=== Surrender allowed: " + (canSurrender() ? "yes" : "no") + "\n";
+    }
+
+    public String getRulesDisplay(int tableNumber) {
+        String message = toString();
+        return "\n=== Table number " + tableNumber + " rules\n" + message;
     }
 
     MoneyPile getMinBet() {

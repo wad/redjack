@@ -36,8 +36,8 @@ class Table {
     }
 
     void showPreparationMessages() {
-        show("The dealer is preparing table " + tableNumber + " for blackjack.");
-        show(tableRules.toString());
+        show("\nThe dealer prepares table " + tableNumber + " for blackjack.");
+        show(tableRules.getRulesDisplay(tableNumber));
     }
 
     Casino getCasino() {
@@ -59,14 +59,14 @@ class Table {
         }
 
         if (numCardsInDiscardTray > 0) {
-            show("The dealer removed all " + numCardsInDiscardTray + " cards from the discard tray.");
+            show("The dealer removes all " + numCardsInDiscardTray + " cards from the discard tray.");
         }
 
         shoe.shuffle(casino.getRandomness());
-        show("The dealer shuffled all " + tableRules.getNumDecks() + " decks, and loaded them into the shoe.");
+        show("The dealer shuffles all " + tableRules.getNumDecks() + " decks, and loads them into the shoe.");
 
         shoe.placeCutCard(tableRules.getNumCardsAfterCutCard());
-        show("The dealer placed placed the cut card with " + tableRules.getNumCardsAfterCutCard() + " cards behind it.");
+        show("The dealer places the cut card with " + tableRules.getNumCardsAfterCutCard() + " cards behind it.");
 
         showPlayersShuffle();
 
@@ -85,7 +85,7 @@ class Table {
         int numBurnCards = tableRules.getNumBurnCards();
         for (int i = 0; i < numBurnCards; i++) {
             Card burnCard = shoe.drawTopCard();
-            show("The dealer burned " + burnCard.toString(true, false)
+            show("The dealer burns " + burnCard.toString(true, false)
                     + " from the shoe.");
             discardTray.addCardToBottom(burnCard);
         }
@@ -149,7 +149,7 @@ class Table {
             throw new RuntimeException("Nobody is at seat " + seatNumber);
         }
 
-        show(seat, "left seat " + seatNumber + ".");
+        show(seat, "leaves seat " + seatNumber + ".");
         seat.removePlayer();
     }
 
@@ -204,11 +204,12 @@ class Table {
                 continueRounds = false;
             }
         }
+        showAndDisplayPlayerResults();
     }
 
     void playRounds(int numRoundsToPlay) {
         Output output = casino.getOutput();
-        show("Running " + numRoundsToPlay + " rounds of play.");
+        showAndDisplay("\nRunning " + numRoundsToPlay + " rounds of play.");
         boolean continueRounds = true;
         int shoeCount = 1;
         int roundNumber;
@@ -238,6 +239,7 @@ class Table {
             System.out.println();
         }
         showAndDisplay("Completed " + roundNumber + " rounds, in " + shoeCount + " shoes.");
+        showAndDisplayPlayerResults();
     }
 
     // used for testing
@@ -712,7 +714,7 @@ class Table {
         Player player = hand.getSeat().getPlayer();
         MoneyPile halfBetAmount = hand.removeBet().computeHalf();
         casinoPayPlayer(player, halfBetAmount);
-        show(hand, "surrendered, and loses half of "
+        show(hand, "surrenders, and loses half of "
                         + player.getGender().getHisHer(false) + " bet (" + halfBetAmount + ").",
                 cardCountStatus);
     }
@@ -731,8 +733,11 @@ class Table {
             } else {
                 show("Dealer hits, and gets a " + dealerHitCard.toString(true, false)
                         + ". Now showing " + dealerHand.showCardsWithTotal()
-                        + ". Dealer stands.");
+                        + ".");
             }
+        }
+        if (!dealerHand.isBust()) {
+            show("Dealer stands with " + dealerHand.showCardsWithTotal() + ".");
         }
     }
 
@@ -780,6 +785,21 @@ class Table {
                 }
                 seat.destroyHands();
                 show(seat, "has a bankroll of " + player.getBankroll() + ".");
+            }
+        }
+    }
+
+    private void showAndDisplayPlayerResults() {
+        showAndDisplay("");
+        for (SeatNumber seatNumber : SeatNumber.values()) {
+            Seat seat = seats.get(seatNumber);
+            if (seat.hasPlayer()) {
+                Player player = seat.getPlayer();
+                MoneyPile initial = player.getInitialBankroll();
+                showAndDisplay("Player " + player.getPlayerName()
+                        + " started with " + initial
+                        + " and " + MoneyPile.computeDifference(player.getBankroll(), initial)
+                        + ".");
             }
         }
     }

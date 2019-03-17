@@ -5,36 +5,36 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-class ExecutionRealisticBuk extends Execution {
+class ExecutionRealisticBuk10k extends Execution {
     @Override
     Casino execute(Command command) {
         int numRoundsToPlay = 100000;
-        long playerFavoriteBetInCents = 500L;
-        long initialPlayerBankrollsInCents = 200000L;
+        long playerFavoriteBetInCents = 2500L;
+        long initialPlayerBankrollsInCents = 1000000L;
         System.out.println("Seven players, each with "
                 + new MoneyPile(initialPlayerBankrollsInCents)
                 + ", betting " + new MoneyPile(playerFavoriteBetInCents)
                 + ", playing until double, bankrupt, or " + numRoundsToPlay + " rounds.");
 
         TableRules tableRules = TableRules.getDefaultRules();
-        tableRules.minBet = new MoneyPile(500L);
-        tableRules.maxBet = new MoneyPile(10000L);
+        tableRules.minBet = new MoneyPile(2500L);
+        tableRules.maxBet = new MoneyPile(50000L);
 
         Casino casino = new Casino(
                 "Redjack (" + command + ")",
-                Randomness.generateRandomSeed(),
+                getSeed(),
                 false,
                 true);
         Table table = casino.createTable(0, tableRules);
 
         List<Player> players = new ArrayList<String>() {{
-            add("Real Buky Anne");
-            add("Real Buky Beth");
-            add("Real Buky Callie");
-            add("Real Buky Dora");
-            add("Real Buky Edna");
-            add("Real Buky Fran");
-            add("Real Buky Grace");
+            add("Buky Anne");
+            add("Buky Beth");
+            add("Buky Callie");
+            add("Buky Dora");
+            add("Buky Edna");
+            add("Buky Fran");
+            add("Buky Grace");
         }}.stream().map(name -> {
             MoneyPile initialPlayerBankroll = new MoneyPile(initialPlayerBankrollsInCents);
             Player player = new Player(
@@ -46,8 +46,7 @@ class ExecutionRealisticBuk extends Execution {
                     new MoneyPile(playerFavoriteBetInCents));
             player.setRetirementTriggerBankroll(initialPlayerBankroll.computeDouble());
             return player;
-        }).
-                collect(toList());
+        }).collect(toList());
 
         assignPlayersToTable(players, table);
         table.playRounds(numRoundsToPlay);

@@ -22,7 +22,7 @@ class ExecutionPerfectBuk extends Execution {
 
         Casino casino = new Casino(
                 "Redjack (" + command + ")",
-                Randomness.generateRandomSeed(),
+                getSeed(),
                 false,
                 true);
         Table table = casino.createTable(0, tableRules);
@@ -46,8 +46,7 @@ class ExecutionPerfectBuk extends Execution {
                     new MoneyPile(playerFavoriteBetInCents));
             player.setRetirementTriggerBankroll(initialPlayerBankroll.computeDouble());
             return player;
-        }).
-                collect(toList());
+        }).collect(toList());
 
         assignPlayersToTable(players, table);
         table.playRounds(numRoundsToPlay);

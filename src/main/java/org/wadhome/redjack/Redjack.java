@@ -9,11 +9,11 @@ package org.wadhome.redjack;
 class Redjack {
 
     public static void main(String... args) {
-        if (args.length != 1) {
+        if (args.length < 1) {
             System.out.println("Valid commands: " + Command.getListOfValidCommands());
             return;
         }
 
-        Command.determine(args[0]).execute();
+        Command.determine(args[0]).execute(args);
     }
 }

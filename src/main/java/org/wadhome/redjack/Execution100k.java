@@ -18,10 +18,9 @@ class Execution100k extends Execution {
         tableRules.minBet = new MoneyPile(2500L);
         tableRules.maxBet = new MoneyPile(30000L);
 
-        long seed = Randomness.generateRandomSeed();
         Casino casino = new Casino(
                 "Redjack (" + command + ")",
-                seed,
+                getSeed(),
                 false,
                 true);
         Table table = casino.createTable(0, tableRules);
@@ -58,8 +57,8 @@ class Execution100k extends Execution {
                 new MoneyPile(playerFavoriteBetInCents)));
 
         assignPlayersToTable(players, table);
+
         table.playRounds(numRoundsToPlay);
-        showPlayerResults(initialPlayerBankrollsInCents, players);
 
         return casino;
     }

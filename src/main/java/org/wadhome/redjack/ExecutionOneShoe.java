@@ -17,10 +17,9 @@ class ExecutionOneShoe extends Execution {
         tableRules.minBet = new MoneyPile(2500L);
         tableRules.maxBet = new MoneyPile(30000L);
 
-        long seed = Randomness.generateRandomSeed();
         Casino casino = new Casino(
                 "Redjack (" + command + ")",
-                seed,
+                getSeed(),
                 true,
                 true);
         Table table = casino.createTable(0, tableRules);
@@ -58,7 +57,6 @@ class ExecutionOneShoe extends Execution {
 
         assignPlayersToTable(players, table);
         table.playRoundsUntilEndOfShoe();
-        showPlayerResults(initialPlayerBankrollsInCents, players);
 
         return casino;
     }
