@@ -39,7 +39,12 @@ public class BetRequestTest {
         assertEquals("$10.00", betRequest.getMinPossibleBet().toString());
         assertEquals("$100.00", betRequest.getMaxPossibleBet().toString());
         assertTrue(betRequest.canPlaceBet());
-        assertNull(betRequest.getTrueCount());
+        try {
+            assertNull(betRequest.getTrueCount());
+            fail("Should have thrown.");
+        } catch (IllegalStateException ignored) {
+            // yay
+        }
     }
 
     @Test

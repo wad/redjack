@@ -1,10 +1,12 @@
 package org.wadhome.redjack.strategy;
 
-import org.wadhome.redjack.*;
+import org.wadhome.redjack.Card;
+import org.wadhome.redjack.Player;
+import org.wadhome.redjack.PlayerHand;
+import org.wadhome.redjack.Table;
 import org.wadhome.redjack.bet.BetRequest;
 import org.wadhome.redjack.cardcount.CardCountMethod;
 import org.wadhome.redjack.money.CurrencyAmount;
-import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.BlackjackPlay;
 import org.wadhome.redjack.rules.TableRules;
 

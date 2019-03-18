@@ -83,6 +83,9 @@ public class BetRequest {
     }
 
     Integer getTrueCount() {
+        if (trueCount == null) {
+            throw new IllegalStateException("True count requested, but never set!");
+        }
         return trueCount;
     }
 

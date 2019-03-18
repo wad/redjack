@@ -1,7 +1,6 @@
 package org.wadhome.redjack.cardcount;
 
 import org.wadhome.redjack.Card;
-import org.wadhome.redjack.Randomness;
 import org.wadhome.redjack.Table;
 import org.wadhome.redjack.bet.BetRequest;
 import org.wadhome.redjack.bet.BettingStrategy;
@@ -30,10 +29,6 @@ public abstract class CardCountMethod {
     public abstract void observeShuffle();
 
     public abstract void getBet(BetRequest betRequest);
-
-    Randomness getRandomness() {
-        return table.getCasino().getRandomness();
-    }
 
     static int roundToInt(double value) {
         return (int) (value + 0.5D);

@@ -7,7 +7,7 @@ public class BettingStrategyMaxOnGoodCount extends BettingStrategy {
     @Override
     public void getBet(BetRequest betRequest) {
         if (betRequest.canPlaceBet()) {
-            int trueCount = betRequest.getTrueCount();
+            Integer trueCount = betRequest.getTrueCount();
             if (trueCount >= 3) {
                 CurrencyAmount maxPossibleBet = betRequest.getMaxPossibleBet();
                 betRequest.setConstrainedActualBetAmount(maxPossibleBet);
