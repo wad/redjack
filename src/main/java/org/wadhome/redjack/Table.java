@@ -299,7 +299,7 @@ public class Table {
             Seat seat = seats.get(seatNumber);
             if (seat.hasPlayer()) {
                 Player player = seat.getPlayer();
-                if (player.getBankroll().isGreaterThanOrEqualTo(minBet)) {
+                if (player.getBankroll().getCurrencyAmountCopy().isGreaterThanOrEqualTo(minBet)) {
                     numPlayersNotBankrupt++;
                 }
             }
@@ -798,7 +798,7 @@ public class Table {
                 CurrencyAmount initial = player.getInitialBankroll();
                 showAndDisplay("Player " + player.getPlayerName()
                         + " started with " + initial
-                        + " and " + player.getBankroll().getCurrencyAmountCopy().computeDifference(initial)
+                        + " and " + player.getBankroll().getCurrencyAmountCopy().describeDifference(initial)
                         + ".");
             }
         }

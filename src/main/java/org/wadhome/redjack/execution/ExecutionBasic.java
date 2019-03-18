@@ -62,7 +62,7 @@ class ExecutionBasic extends Execution {
         System.out.println();
         System.out.println("Initial player bankrolls: " + initialPlayerFunds);
         System.out.println("Final player bankrolls: " + finalPlayerFunds);
-        System.out.println("Players " + finalPlayerFunds.computeDifference(initialPlayerFunds));
+        System.out.println("Players " + finalPlayerFunds.describeDifference(initialPlayerFunds));
 
         return casino;
     }

@@ -44,7 +44,8 @@ public class PlayStrategyHighLowRealistic extends PlayStrategy {
         int handPoints = hand.computeMaxSum();
         boolean isFirstPlayOnHand = hand.getNumCards() == 2;
         boolean surrenderIsPossible = isFirstPlayOnHand && tableRules.canSurrender();
-        boolean hasFundsToCoverDoubleDownsAndSplits = player.getBankroll().isGreaterThanOrEqualTo(hand.getBetAmount());
+        boolean hasFundsToCoverDoubleDownsAndSplits = player.getBankroll()
+                .getCurrencyAmountCopy().isGreaterThanOrEqualTo(hand.getBetAmount());
         boolean doubleDownIsPossibleOnNine = isFirstPlayOnHand
                 && hasFundsToCoverDoubleDownsAndSplits
                 && tableRules.getDoubleDownOptions() == DoubleDownRuleOptions.Any;

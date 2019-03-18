@@ -78,7 +78,7 @@ public class Player {
         }
 
         if (!isRetired) {
-            if (bankroll.isGreaterThanOrEqualTo(retirementTriggerBankroll)) {
+            if (bankroll.getCurrencyAmountCopy().isGreaterThanOrEqualTo(retirementTriggerBankroll)) {
                 say("I've doubled my initial bankroll, so I'm retiring.");
                 isRetired = true;
             }

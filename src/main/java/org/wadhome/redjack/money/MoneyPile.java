@@ -11,7 +11,18 @@ public class MoneyPile {
         this.currencyAmount = currencyAmount;
     }
 
-    public void moveMoneyToTargetPile(MoneyPile target, CurrencyAmount amount) {
+    public static MoneyPile extractMoneyFromFederalReserve(CurrencyAmount amountToExtract) {
+        if (!federalReserve.canExtract(amountToExtract)) {
+            throw new RuntimeException("Bug! Check first.");
+        }
+
+        federalReserve.currencyAmount.reduceBy(amountToExtract);
+        return new MoneyPile(amountToExtract);
+    }
+
+    public void moveMoneyToTargetPile(
+            MoneyPile target,
+            CurrencyAmount amount) {
         if (!canExtract(amount)) {
             throw new IllegalStateException("Bug! Check first.");
         }
@@ -20,35 +31,12 @@ public class MoneyPile {
         currencyAmount.reduceBy(amount);
     }
 
-    public static MoneyPile extractMoneyFromPileToMakeNewPile(
-            CurrencyAmount amountToExtract,
-            MoneyPile fromPile) {
-        if (!fromPile.canExtract(amountToExtract)) {
-            throw new RuntimeException("Bug! Check first.");
-        }
-
-        fromPile.currencyAmount.reduceBy(amountToExtract);
-        return new MoneyPile(amountToExtract);
-    }
-
-    public static MoneyPile extractMoneyFromFederalReserve(CurrencyAmount amountToExtract) {
-        return extractMoneyFromPileToMakeNewPile(amountToExtract, federalReserve);
-    }
-
     public CurrencyAmount getCurrencyAmountCopy() {
         return currencyAmount.copy();
     }
 
     public boolean canExtract(CurrencyAmount amountToCheck) {
         return amountToCheck.isLessThanOrEqualTo(currencyAmount);
-    }
-
-    public boolean isGreaterThanOrEqualTo(CurrencyAmount target) {
-        return this.currencyAmount.isGreaterThanOrEqualTo(target);
-    }
-
-    public CurrencyAmount compute(CurrencyComputation currencyComputation) {
-        return currencyAmount.compute(currencyComputation);
     }
 
     public String format(boolean includeDollarSign) {

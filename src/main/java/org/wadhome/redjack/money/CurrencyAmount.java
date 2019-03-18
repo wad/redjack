@@ -4,7 +4,7 @@ public class CurrencyAmount {
 
     private static final int NUM_CENTS_PER_DOLLAR = 100;
 
-    long numCents;
+    private long numCents;
 
     public CurrencyAmount(long numDollars) {
         this(numDollars, 0);
@@ -28,7 +28,7 @@ public class CurrencyAmount {
         return new CurrencyAmount(0L, numCents);
     }
 
-    public String computeDifference(CurrencyAmount target) {
+    public String describeDifference(CurrencyAmount target) {
         long delta = numCents - target.numCents;
         long absoluteValue = delta;
         boolean isNegative = delta < 0;
