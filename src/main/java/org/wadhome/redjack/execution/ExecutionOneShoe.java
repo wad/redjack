@@ -1,6 +1,9 @@
 package org.wadhome.redjack.execution;
 
-import org.wadhome.redjack.*;
+import org.wadhome.redjack.Casino;
+import org.wadhome.redjack.Gender;
+import org.wadhome.redjack.Player;
+import org.wadhome.redjack.Table;
 import org.wadhome.redjack.bet.BettingStrategyAlwaysFavorite;
 import org.wadhome.redjack.bet.BettingStrategyBukofsky;
 import org.wadhome.redjack.bet.BukofskyBankrollLevel;

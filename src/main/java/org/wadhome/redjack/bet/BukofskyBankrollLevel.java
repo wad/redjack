@@ -44,6 +44,10 @@ public enum BukofskyBankrollLevel {
     CurrencyAmount getBet(
             int trueCount,
             boolean beSuspiciouslyPerfect) {
+        if (trueCount < 3) {
+            throw new IllegalStateException("Bug! TrueCount is " + trueCount + ", should be at least 3.");
+        }
+
         int[] betMatrix = beSuspiciouslyPerfect ? perfectBetMatrix : realisticBetMatrix;
         int indexIntoMatrix = trueCount - 3; // only have extra bets when the true count is >= 3
         if (indexIntoMatrix >= betMatrix.length) {

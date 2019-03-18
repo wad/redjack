@@ -1,9 +1,8 @@
 package org.wadhome.redjack.bet;
 
+import org.wadhome.redjack.Player;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.money.CurrencyComputation;
-import org.wadhome.redjack.money.MoneyPile;
-import org.wadhome.redjack.Player;
 
 public class BettingStrategyBukofsky extends BettingStrategy {
 

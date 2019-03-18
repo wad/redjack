@@ -14,14 +14,13 @@ import org.wadhome.redjack.strategy.PlayStrategyBasic;
 import static org.junit.Assert.*;
 
 public class BetRequestTest {
-
-    Casino casino;
-    Table table;
-    Player player;
+    private Casino casino;
+    private Table table;
+    private Player player;
 
     @Before
     public void setup() {
-        casino = new Casino("test", 1L, false, false);
+        casino = new Casino();
         table = casino.createTable(0, TableRules.getDefaultRules());
         player = new Player(
                 "test",

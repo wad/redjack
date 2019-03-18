@@ -14,7 +14,7 @@ public class Casino {
     private Output output;
 
     // used for testing
-    Casino() {
+    public Casino() {
         this(
                 "test",
                 Randomness.generateRandomSeed(),
