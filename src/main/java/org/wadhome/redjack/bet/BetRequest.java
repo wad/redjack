@@ -1,7 +1,9 @@
 package org.wadhome.redjack.bet;
 
+import org.wadhome.redjack.Casino;
 import org.wadhome.redjack.Player;
 import org.wadhome.redjack.Randomness;
+import org.wadhome.redjack.Table;
 import org.wadhome.redjack.money.CurrencyAmount;
 
 public class BetRequest {
@@ -17,17 +19,15 @@ public class BetRequest {
     private boolean canPlaceBet = true;
 
     public BetRequest(
-            Player player,
-            Randomness randomness,
-            CurrencyAmount desiredBet,
-            CurrencyAmount minPossibleBet,
-            CurrencyAmount maxPossibleBet) {
+            Casino casino,
+            Table table,
+            Player player) {
 
         this.player = player;
-        this.randomness = randomness;
-        this.desiredBet = desiredBet;
-        this.minPossibleBet = minPossibleBet;
-        this.maxPossibleBet = maxPossibleBet;
+        this.randomness = casino.getRandomness();
+        this.desiredBet = player.getFavoriteBet(); // can be overridden by strategy
+        this.minPossibleBet = table.getTableRules().getMinBet();
+        this.maxPossibleBet = table.getTableRules().getMaxBet();
         this.availableBankroll = player.getBankroll().getCurrencyAmountCopy();
 
         validateAndAdjust();
@@ -82,11 +82,15 @@ public class BetRequest {
         return maxPossibleBet.copy();
     }
 
-    int getTrueCount() {
+    Integer getTrueCount() {
         return trueCount;
     }
 
     CurrencyAmount setConstrainedActualBetAmount(CurrencyAmount calculatedBet) {
+        if (actualBetAmount != null) {
+            throw new IllegalStateException("Bug! Setting a bet more than once?");
+        }
+
         if (!canPlaceBet) {
             throw new IllegalStateException("bug! min=" + minPossibleBet
                     + " max=" + maxPossibleBet

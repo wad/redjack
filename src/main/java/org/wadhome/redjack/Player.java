@@ -5,7 +5,6 @@ import org.wadhome.redjack.cardcount.CardCountStatus;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.BlackjackPlay;
-import org.wadhome.redjack.rules.TableRules;
 import org.wadhome.redjack.strategy.PlayStrategy;
 
 public class Player {
@@ -40,6 +39,14 @@ public class Player {
 
     String getPlayerName() {
         return playerName;
+    }
+
+    public void setFavoriteBet(CurrencyAmount favoriteBet) {
+        this.favoriteBet = favoriteBet;
+    }
+
+    public CurrencyAmount getFavoriteBet() {
+        return favoriteBet;
     }
 
     public void setNotes(String notes) {
@@ -96,13 +103,7 @@ public class Player {
             return CurrencyAmount.zero();
         }
 
-        TableRules tableRules = table.getTableRules();
-        BetRequest betRequest = new BetRequest(
-                this,
-                casino.getRandomness(),
-                favoriteBet,
-                tableRules.getMinBet(),
-                tableRules.getMaxBet());
+        BetRequest betRequest = new BetRequest(casino, table, this);
         playStrategy.getBet(betRequest);
         if (betRequest.canPlaceBet()) {
             String comment = betRequest.getBetComment();
