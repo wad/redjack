@@ -85,7 +85,7 @@ public class CardCountMethodHighLowRealistic extends CardCountMethod {
     }
 
     // Accuracy is to half a deck
-    static double estimateNumDecksRemainingInShoe(
+    private static double estimateNumDecksRemainingInShoe(
             int numDecks,
             double numDecksInDiscardTray) {
         return ((double) numDecks) - numDecksInDiscardTray;
