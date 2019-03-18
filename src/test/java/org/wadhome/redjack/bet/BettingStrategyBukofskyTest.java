@@ -33,7 +33,7 @@ public class BettingStrategyBukofskyTest {
     }
 
     @Test
-    public void testGetBet_perfect() {
+    public void testGetBet() {
         BettingStrategyBukofsky bettingStrategyBukofsky = new BettingStrategyBukofsky(true);
         BetRequest betRequest = new BetRequest(casino, table, player);
         betRequest.setTrueCount(2);
@@ -42,5 +42,25 @@ public class BettingStrategyBukofskyTest {
         assertEquals("$10.00", betRequest.getActualBetAmount().toString());
     }
 
-    // todo: lots more tests here
+    @Test
+    public void testGetBet_level2kPerfect() {
+        player.getPlayStrategy().getCardCountMethod().setBukofskyBankrollLevelDesired(BukofskyBankrollLevel.Level2k);
+        BettingStrategyBukofsky bettingStrategyBukofsky = new BettingStrategyBukofsky(true);
+        BetRequest betRequest = new BetRequest(casino, table, player);
+        betRequest.setTrueCount(6);
+        bettingStrategyBukofsky.getBet(betRequest);
+        assertTrue(betRequest.canPlaceBet());
+        assertEquals("$26.00", betRequest.getActualBetAmount().toString());
+    }
+
+    @Test
+    public void testGetBet_level2kNotPerfect() {
+        player.getPlayStrategy().getCardCountMethod().setBukofskyBankrollLevelDesired(BukofskyBankrollLevel.Level2k);
+        BettingStrategyBukofsky bettingStrategyBukofsky = new BettingStrategyBukofsky(false);
+        BetRequest betRequest = new BetRequest(casino, table, player);
+        betRequest.setTrueCount(6);
+        bettingStrategyBukofsky.getBet(betRequest);
+        assertTrue(betRequest.canPlaceBet());
+        assertEquals("$25.00", betRequest.getActualBetAmount().toString());
+    }
 }
