@@ -2,6 +2,8 @@ package org.wadhome.redjack;
 
 import org.wadhome.redjack.bet.BetRequest;
 import org.wadhome.redjack.cardcount.CardCountStatus;
+import org.wadhome.redjack.money.CurrencyAmount;
+import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.BlackjackPlay;
 import org.wadhome.redjack.rules.TableRules;
 import org.wadhome.redjack.strategy.PlayStrategy;
@@ -10,13 +12,13 @@ public class Player {
     private String playerName;
     private String notes;
     private Gender gender;
-    private MoneyPile initialBankroll;
-    private MoneyPile retirementTriggerBankroll;
+    private CurrencyAmount initialBankroll;
+    private CurrencyAmount retirementTriggerBankroll;
     private boolean isRetired = false;
     private boolean isBankrupt = false;
     private MoneyPile bankroll;
     private boolean takesMaxInsurance = false;
-    private MoneyPile favoriteBet;
+    private CurrencyAmount favoriteBet;
     private PlayStrategy playStrategy;
     private Casino casino;
 
@@ -26,13 +28,13 @@ public class Player {
             Casino casino,
             MoneyPile bankroll,
             PlayStrategy playStrategy,
-            MoneyPile favoriteBet) {
+            CurrencyAmount favoriteBet) {
         this.playerName = playerName;
         this.gender = gender;
         this.casino = casino;
-        this.initialBankroll = bankroll.copy();
+        this.initialBankroll = bankroll.getCurrencyAmountCopy();
         this.bankroll = bankroll;
-        this.favoriteBet = favoriteBet;
+        this.favoriteBet = favoriteBet.copy();
         this.playStrategy = playStrategy;
     }
 
@@ -48,8 +50,8 @@ public class Player {
         return notes;
     }
 
-    public void setRetirementTriggerBankroll(MoneyPile retirementTriggerBankroll) {
-        this.retirementTriggerBankroll = retirementTriggerBankroll;
+    public void setRetirementTriggerBankroll(CurrencyAmount retirementTriggerBankroll) {
+        this.retirementTriggerBankroll = retirementTriggerBankroll.copy();
     }
 
     void setTakesMaxInsurance(
@@ -62,7 +64,7 @@ public class Player {
                 getPlayerName() + " says, \"" + message + "\"");
     }
 
-    public MoneyPile getInitialBankroll() {
+    public CurrencyAmount getInitialBankroll() {
         return initialBankroll.copy();
     }
 
@@ -88,10 +90,10 @@ public class Player {
         return isBankrupt;
     }
 
-    MoneyPile getBet(Table table) {
+    CurrencyAmount getBet(Table table) {
 
         if (isRetired() || isBankrupt()) {
-            return MoneyPile.zero();
+            return CurrencyAmount.zero();
         }
 
         TableRules tableRules = table.getTableRules();
@@ -100,8 +102,7 @@ public class Player {
                 casino.getRandomness(),
                 favoriteBet,
                 tableRules.getMinBet(),
-                tableRules.getMaxBet(),
-                bankroll.copy());
+                tableRules.getMaxBet());
         playStrategy.getBet(betRequest);
         if (betRequest.canPlaceBet()) {
             String comment = betRequest.getBetComment();
@@ -111,7 +112,7 @@ public class Player {
             return betRequest.getActualBetAmount();
         } else {
             isBankrupt = true;
-            return MoneyPile.zero();
+            return CurrencyAmount.zero();
         }
     }
 
@@ -121,36 +122,37 @@ public class Player {
         return playStrategy.choosePlay(
                 this,
                 hand,
-                dealerUpcard,
-                bankroll.copy());
+                dealerUpcard);
     }
 
     CardCountStatus getCardCountStatus() {
         return playStrategy.getCardCountMethod().getCardCountStatus();
     }
 
-    MoneyPile getInsuranceBet(
-            MoneyPile maximumInsuranceBet,
+    CurrencyAmount getInsuranceBet(
+            CurrencyAmount maximumInsuranceBet,
             PlayerHand hand,
             Card dealerUpcard) {
 
+        CurrencyAmount availableBankrollAmount = bankroll.getCurrencyAmountCopy();
+
         // this overrides strategy
         if (takesMaxInsurance) {
-            if (bankroll.isGreaterThanOrEqualTo(maximumInsuranceBet)) {
+            if (availableBankrollAmount.isGreaterThanOrEqualTo(maximumInsuranceBet)) {
                 return maximumInsuranceBet.copy();
             } else {
-                return bankroll.copy();
+                return availableBankrollAmount;
             }
         }
 
-        MoneyPile desiredInsurance = playStrategy.getInsuranceBet(
+        CurrencyAmount desiredInsurance = playStrategy.getInsuranceBet(
                 maximumInsuranceBet,
                 hand,
                 dealerUpcard,
-                bankroll.copy());
+                availableBankrollAmount);
 
-        if (desiredInsurance.isGreaterThan(bankroll)) {
-            return bankroll.copy();
+        if (desiredInsurance.isGreaterThan(availableBankrollAmount)) {
+            return availableBankrollAmount;
         }
         return desiredInsurance;
     }

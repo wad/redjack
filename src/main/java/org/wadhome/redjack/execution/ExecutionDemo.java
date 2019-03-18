@@ -4,6 +4,8 @@ import org.wadhome.redjack.*;
 import org.wadhome.redjack.bet.BettingStrategyAlwaysFavorite;
 import org.wadhome.redjack.bet.BettingStrategyBukofsky;
 import org.wadhome.redjack.bet.BettingStrategyMaxOnGoodCount;
+import org.wadhome.redjack.money.CurrencyAmount;
+import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.TableRules;
 import org.wadhome.redjack.strategy.PlayStrategyBasic;
 import org.wadhome.redjack.strategy.PlayStrategyHighLowPerfect;
@@ -15,16 +17,16 @@ import java.util.List;
 class ExecutionDemo extends Execution {
     @Override
     Casino execute(Command command) {
-        long playerFavoriteBetInCents = 1000L;
-        long initialPlayerBankrollsInCents = 200000L;
+        CurrencyAmount playerFavoriteBet = new CurrencyAmount(10L);
+        CurrencyAmount initialPlayerBankrolls = new CurrencyAmount(2000L);
         System.out.println("Three players, each with "
-                + new MoneyPile(initialPlayerBankrollsInCents)
-                + ", betting " + new MoneyPile(playerFavoriteBetInCents)
+                + initialPlayerBankrolls
+                + ", betting " + playerFavoriteBet
                 + ", playing one shoe.");
 
         TableRules tableRules = TableRules.getDefaultRules();
-        tableRules.setMinBet(new MoneyPile(500L));
-        tableRules.setMaxBet(new MoneyPile(10000L));
+        tableRules.setMinBet(new CurrencyAmount(5L));
+        tableRules.setMaxBet(new CurrencyAmount(100L));
 
         Casino casino = new Casino(
                 "Redjack (" + command + ")",
@@ -38,9 +40,9 @@ class ExecutionDemo extends Execution {
                 "Alice Adventurer",
                 Gender.female,
                 casino,
-                new MoneyPile(initialPlayerBankrollsInCents),
+                MoneyPile.extractMoneyFromFederalReserve(initialPlayerBankrolls),
                 new PlayStrategyHighLowPerfect(table, new BettingStrategyMaxOnGoodCount()),
-                new MoneyPile(playerFavoriteBetInCents));
+                playerFavoriteBet);
         alice.setNotes("Alice blatantly uses the hi-low count method."
                 + " She bets minimums, except when the count goes to 3, when she bets maximum."
                 + " She's going to get caught.");
@@ -50,9 +52,9 @@ class ExecutionDemo extends Execution {
                 "Brandon Basic",
                 Gender.male,
                 casino,
-                new MoneyPile(initialPlayerBankrollsInCents),
+                MoneyPile.extractMoneyFromFederalReserve(initialPlayerBankrolls),
                 new PlayStrategyBasic(table, new BettingStrategyAlwaysFavorite()),
-                new MoneyPile(playerFavoriteBetInCents));
+                playerFavoriteBet);
         brandon.setNotes("Brandon plays perfect Basic Strategy, doesn't count cards,"
                 + " and he always bets his favorite bet.");
         players.add(brandon);
@@ -61,9 +63,9 @@ class ExecutionDemo extends Execution {
                 "Callie Careful",
                 Gender.female,
                 casino,
-                new MoneyPile(initialPlayerBankrollsInCents),
+                MoneyPile.extractMoneyFromFederalReserve(initialPlayerBankrolls),
                 new PlayStrategyHighLowRealistic(table, new BettingStrategyBukofsky(false)),
-                new MoneyPile(playerFavoriteBetInCents));
+                playerFavoriteBet);
         callie.setNotes("Callie read Bukofsky's book, counts cards using the hi-low method,"
                 + " and is playing with 5% risk of ruin, at the $2000 bankroll level, betting accordingly."
                 + "\nShe is careful to not be too obvious, avoids certain plays,"

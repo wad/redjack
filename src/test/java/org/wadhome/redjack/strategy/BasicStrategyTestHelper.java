@@ -2,12 +2,14 @@ package org.wadhome.redjack.strategy;
 
 import org.wadhome.redjack.*;
 import org.wadhome.redjack.bet.BettingStrategyAlwaysFavorite;
+import org.wadhome.redjack.money.CurrencyAmount;
+import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.BlackjackPlay;
 import org.wadhome.redjack.rules.TableRules;
 
 public class BasicStrategyTestHelper extends TestHelper {
 
-    private MoneyPile bankroll = new MoneyPile(1000000);
+    private MoneyPile bankroll = MoneyPile.extractMoneyFromFederalReserve(new CurrencyAmount(10000L));
     private Seat seat = new Seat(SeatNumber.one);
 
     BlackjackPlay compute(Card... cards) {
@@ -41,7 +43,6 @@ public class BasicStrategyTestHelper extends TestHelper {
         return basicStrategy.choosePlay(
                 player,
                 playerHand,
-                dealerUpcard,
-                bankroll);
+                dealerUpcard);
     }
 }

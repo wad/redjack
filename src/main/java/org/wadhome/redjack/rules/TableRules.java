@@ -1,12 +1,12 @@
 package org.wadhome.redjack.rules;
 
-import org.wadhome.redjack.MoneyPile;
+import org.wadhome.redjack.money.CurrencyAmount;
 
 // todo: make subclasses
 public class TableRules {
 
-    MoneyPile minBet = new MoneyPile(1000);
-    MoneyPile maxBet = new MoneyPile(100000);
+    CurrencyAmount minBet = new CurrencyAmount(10L);
+    CurrencyAmount maxBet = new CurrencyAmount(1000L);
     boolean hitSoftSeventeen = true;
     BlackjackPayOptions blackjackPayOptions = BlackjackPayOptions.ThreeToTwo;
     boolean canDoubleDownAfterSplit = true;
@@ -55,19 +55,19 @@ public class TableRules {
         return "\n=== Table number " + tableNumber + " rules\n" + message;
     }
 
-    public MoneyPile getMinBet() {
+    public CurrencyAmount getMinBet() {
         return minBet;
     }
 
-    public MoneyPile getMaxBet() {
+    public CurrencyAmount getMaxBet() {
         return maxBet;
     }
 
-    public void setMinBet(MoneyPile minBet) {
+    public void setMinBet(CurrencyAmount minBet) {
         this.minBet = minBet;
     }
 
-    public void setMaxBet(MoneyPile maxBet) {
+    public void setMaxBet(CurrencyAmount maxBet) {
         this.maxBet = maxBet;
     }
 

@@ -1,5 +1,7 @@
 package org.wadhome.redjack;
 
+import org.wadhome.redjack.money.CurrencyAmount;
+import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.TableRules;
 
 import java.util.HashMap;
@@ -8,7 +10,7 @@ import java.util.Map;
 public class Casino {
     private Randomness randomness;
     private Map<Integer, Table> tables = new HashMap<>();
-    private MoneyPile houseBankroll = new MoneyPile(100000000000000L);
+    private MoneyPile houseBankroll = MoneyPile.extractMoneyFromFederalReserve(new CurrencyAmount(1000000000L));
     private Output output;
 
     // used for testing

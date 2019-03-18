@@ -1,5 +1,7 @@
 package org.wadhome.redjack;
 
+import org.wadhome.redjack.money.CurrencyAmount;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,9 +42,9 @@ public class Seat {
         return hands;
     }
 
-    PlayerHand addNewHand(MoneyPile betAmount) {
+    PlayerHand addNewHand(CurrencyAmount betAmount) {
         PlayerHand hand = new PlayerHand(this);
-        hand.setBetAmount(betAmount);
+        hand.setBetAmount(betAmount.copy());
         addHand(hand);
         return hand;
     }
@@ -55,10 +57,10 @@ public class Seat {
         hands.clear();
     }
 
-    MoneyPile computeBetSum() {
-        MoneyPile sum = MoneyPile.zero();
+    CurrencyAmount computeBetSum() {
+        CurrencyAmount sum = CurrencyAmount.zero();
         for (PlayerHand hand : hands) {
-            sum.addToPile(hand.getBetAmount());
+            sum.increaseBy(hand.getBetAmount());
         }
         return sum;
     }

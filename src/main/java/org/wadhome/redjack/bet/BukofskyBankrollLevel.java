@@ -1,6 +1,6 @@
 package org.wadhome.redjack.bet;
 
-import org.wadhome.redjack.MoneyPile;
+import org.wadhome.redjack.money.CurrencyAmount;
 
 public enum BukofskyBankrollLevel {
     Level100k(100000, 500,
@@ -41,7 +41,7 @@ public enum BukofskyBankrollLevel {
         this.realisticBetMatrix = realisticBetMatrix;
     }
 
-    MoneyPile getBet(
+    CurrencyAmount getBet(
             int trueCount,
             boolean beSuspiciouslyPerfect) {
         int[] betMatrix = beSuspiciouslyPerfect ? perfectBetMatrix : realisticBetMatrix;
@@ -50,12 +50,12 @@ public enum BukofskyBankrollLevel {
             indexIntoMatrix = betMatrix.length - 1;
         }
         int betAmountInDollars = betMatrix[indexIntoMatrix];
-        return new MoneyPile(betAmountInDollars * MoneyPile.NUM_CENTS_PER_DOLLAR);
+        return new CurrencyAmount(betAmountInDollars);
     }
 
-    static BukofskyBankrollLevel determine(MoneyPile initialBankroll) {
+    static BukofskyBankrollLevel determine(CurrencyAmount initialBankroll) {
         for (BukofskyBankrollLevel level : values()) {
-            if (initialBankroll.isGreaterThanOrEqualTo(level.minimumBankrollInDollars)) {
+            if (initialBankroll.isGreaterThanOrEqualToDollars(level.minimumBankrollInDollars)) {
                 return level;
             }
         }

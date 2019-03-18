@@ -1,6 +1,7 @@
 package org.wadhome.redjack.rules;
 
-import org.wadhome.redjack.MoneyPile;
+import org.wadhome.redjack.money.CurrencyAmount;
+import org.wadhome.redjack.money.CurrencyComputation;
 
 public enum BlackjackPayOptions {
     TwoToOne("2:1"),
@@ -14,14 +15,14 @@ public enum BlackjackPayOptions {
     }
 
     // this doesn't include their original bet, which is returned.
-    public MoneyPile computePlayerBlackjackWinnings(MoneyPile betAmount) {
+    public CurrencyAmount computePlayerBlackjackWinnings(CurrencyAmount betAmount) {
         switch (this) {
             case TwoToOne:
-                return betAmount.computeDouble();
+                return betAmount.compute(CurrencyComputation.doubleOf);
             case ThreeToTwo:
-                return betAmount.computeOneAndHalf();
+                return betAmount.compute(CurrencyComputation.oneAndHalfOf);
             case SixToFive:
-                return betAmount.computeSixFifths();
+                return betAmount.compute(CurrencyComputation.sixFifthsOf);
             default:
                 throw new IllegalStateException("bug");
         }

@@ -1,33 +1,35 @@
 package org.wadhome.redjack;
 
+import org.wadhome.redjack.money.CurrencyAmount;
+
 public class PlayerHand extends Hand {
     private Seat seat;
-    private MoneyPile betAmount = MoneyPile.zero();
+    private CurrencyAmount betAmount = CurrencyAmount.zero();
     private boolean isSplitHandAndIsFinished;
 
     public PlayerHand(Seat seat) {
         this.seat = seat;
     }
 
-    public MoneyPile getBetAmount() {
-        return betAmount;
+    public CurrencyAmount getBetAmount() {
+        return betAmount.copy();
     }
 
-    MoneyPile removeBet() {
-        MoneyPile toReturn = betAmount.copy();
-        this.betAmount = MoneyPile.zero();
-        return toReturn;
+    void setBetAmount(CurrencyAmount betAmount) {
+        this.betAmount = betAmount.copy();
     }
 
-    void setBetAmount(MoneyPile betAmount) {
-        this.betAmount = betAmount;
+    CurrencyAmount removeBet() {
+        CurrencyAmount betToRemove = this.betAmount.copy();
+        this.betAmount = CurrencyAmount.zero();
+        return betToRemove;
     }
 
     public Seat getSeat() {
         return seat;
     }
 
-    PlayerHand separateOutRightSplit(MoneyPile betAmount) {
+    PlayerHand separateOutRightSplit(CurrencyAmount betAmount) {
         Card leftSplitCard = this.getFirstCard();
         Card rightSplitCard = this.getSecondCard();
         removeCards();

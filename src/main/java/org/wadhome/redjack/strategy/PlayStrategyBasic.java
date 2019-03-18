@@ -3,6 +3,7 @@ package org.wadhome.redjack.strategy;
 import org.wadhome.redjack.*;
 import org.wadhome.redjack.bet.BettingStrategy;
 import org.wadhome.redjack.cardcount.CardCountMethodNone;
+import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.rules.Blackjack;
 import org.wadhome.redjack.rules.BlackjackPlay;
 import org.wadhome.redjack.rules.DoubleDownRuleOptions;
@@ -23,23 +24,24 @@ public class PlayStrategyBasic extends PlayStrategy {
     }
 
     @Override
-    public MoneyPile getInsuranceBet(
-            MoneyPile maximumInsuranceBet,
+    public CurrencyAmount getInsuranceBet(
+            CurrencyAmount maximumInsuranceBet,
             PlayerHand hand,
             Card dealerUpcard,
-            MoneyPile bankrollAvailable) {
+            CurrencyAmount bankrollAvailable) {
 
         // When you don't know the true count, don't get insurance.
-        return MoneyPile.zero();
+        return CurrencyAmount.zero();
     }
 
+    @Override
     public BlackjackPlay choosePlay(
             Player player,
             PlayerHand hand,
-            Card dealerUpcard,
-            MoneyPile bankrollAvailable) {
+            Card dealerUpcard) {
 
         validateHand(hand);
+        CurrencyAmount bankrollAvailable = player.getBankroll().getCurrencyAmountCopy();
 
         if (hand.isPair()) {
             return handlePair(
@@ -67,7 +69,7 @@ public class PlayStrategyBasic extends PlayStrategy {
             PlayerHand hand,
             Card dealerUpcard,
             boolean isAfterSplit,
-            MoneyPile bankrollAvailable) {
+            CurrencyAmount bankrollAvailable) {
         Value upcardValue = dealerUpcard.getValue();
         int sum = hand.computeMaxSum();
 
@@ -147,7 +149,7 @@ public class PlayStrategyBasic extends PlayStrategy {
             PlayerHand hand,
             Card dealerUpcard,
             boolean isAfterSplit,
-            MoneyPile bankrollAvailable) {
+            CurrencyAmount bankrollAvailable) {
         int sumWithLowAces = hand.computeMinSum();
 
         int eleven = Blackjack.MAX_VALID_HAND_POINTS - OPTIONAL_EXTRA_ACE_POINTS;
@@ -223,7 +225,7 @@ public class PlayStrategyBasic extends PlayStrategy {
     private BlackjackPlay handlePair(
             PlayerHand hand,
             Card dealerUpcard,
-            MoneyPile bankrollAvailable) {
+            CurrencyAmount bankrollAvailable) {
 
         if (hand.getNumCards() != 2) {
             throw new RuntimeException("Bug! Hand: " + hand);

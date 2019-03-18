@@ -15,7 +15,6 @@ public enum Command {
     playHiLoPerfectBuk10M,
     playHiLoRealisticBukBut4k,
     playHiLoPerfectBuk,
-    play100k,
     play100kBetMaxOnGoodCount,
     unknown;
 
@@ -55,9 +54,6 @@ public enum Command {
                 break;
             case playHiLoPerfectBuk:
                 execution = new ExecutionPerfectBuk();
-                break;
-            case play100k:
-                execution = new Execution100k();
                 break;
             case play100kBetMaxOnGoodCount:
                 execution = new ExecutionHiLoCounterBallzy();

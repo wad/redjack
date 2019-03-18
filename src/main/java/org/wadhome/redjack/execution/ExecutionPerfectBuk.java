@@ -2,6 +2,9 @@ package org.wadhome.redjack.execution;
 
 import org.wadhome.redjack.*;
 import org.wadhome.redjack.bet.BettingStrategyBukofsky;
+import org.wadhome.redjack.money.CurrencyAmount;
+import org.wadhome.redjack.money.CurrencyComputation;
+import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.TableRules;
 import org.wadhome.redjack.strategy.PlayStrategyHighLowPerfect;
 
@@ -14,16 +17,16 @@ class ExecutionPerfectBuk extends Execution {
     @Override
     Casino execute(Command command) {
         int numRoundsToPlay = 100000;
-        long playerFavoriteBetInCents = 500L;
-        long initialPlayerBankrollsInCents = 200000L;
+        CurrencyAmount playerFavoriteBet = new CurrencyAmount(5L);
+        CurrencyAmount initialPlayerBankrolls = new CurrencyAmount(2000L);
         System.out.println("Seven players, each with "
-                + new MoneyPile(initialPlayerBankrollsInCents)
-                + ", betting " + new MoneyPile(playerFavoriteBetInCents)
+                + initialPlayerBankrolls
+                + ", betting " + playerFavoriteBet
                 + ", playing until double, bankrupt, or " + numRoundsToPlay + " rounds.");
 
         TableRules tableRules = TableRules.getDefaultRules();
-        tableRules.setMinBet(new MoneyPile(500L));
-        tableRules.setMaxBet(new MoneyPile(10000L));
+        tableRules.setMinBet(new CurrencyAmount(5L));
+        tableRules.setMaxBet(new CurrencyAmount(100L));
 
         Casino casino = new Casino(
                 "Redjack (" + command + ")",
@@ -42,15 +45,16 @@ class ExecutionPerfectBuk extends Execution {
             add("Perfect Buky Fran");
             add("Perfect Buky Grace");
         }}.stream().map(name -> {
-            MoneyPile initialPlayerBankroll = new MoneyPile(initialPlayerBankrollsInCents);
+            MoneyPile initialPlayerBankroll = MoneyPile.extractMoneyFromFederalReserve(initialPlayerBankrolls);
             Player player = new Player(
                     name,
                     Gender.female,
                     casino,
                     initialPlayerBankroll,
                     new PlayStrategyHighLowPerfect(table, new BettingStrategyBukofsky(true)),
-                    new MoneyPile(playerFavoriteBetInCents));
-            player.setRetirementTriggerBankroll(initialPlayerBankroll.computeDouble());
+                    playerFavoriteBet);
+            CurrencyAmount doubled = initialPlayerBankroll.getCurrencyAmountCopy().compute(CurrencyComputation.doubleOf);
+            player.setRetirementTriggerBankroll(doubled);
             return player;
         }).collect(toList());
 

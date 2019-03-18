@@ -1,6 +1,10 @@
 package org.wadhome.redjack.execution;
 
-import org.wadhome.redjack.*;
+import org.wadhome.redjack.Casino;
+import org.wadhome.redjack.Player;
+import org.wadhome.redjack.Randomness;
+import org.wadhome.redjack.Table;
+import org.wadhome.redjack.money.CurrencyAmount;
 
 import java.util.List;
 
@@ -32,10 +36,10 @@ public abstract class Execution {
         }
     }
 
-    MoneyPile getSumOfPlayerBankrolls(List<Player> players) {
-        MoneyPile sum = MoneyPile.zero();
+    CurrencyAmount getSumOfPlayerBankrolls(List<Player> players) {
+        CurrencyAmount sum = CurrencyAmount.zero();
         for (Player player : players) {
-            sum.addToPile(player.getBankroll());
+            sum.increaseBy(player.getBankroll().getCurrencyAmountCopy());
         }
         return sum;
     }

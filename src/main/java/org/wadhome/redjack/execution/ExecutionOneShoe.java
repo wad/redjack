@@ -4,6 +4,8 @@ import org.wadhome.redjack.*;
 import org.wadhome.redjack.bet.BettingStrategyAlwaysFavorite;
 import org.wadhome.redjack.bet.BettingStrategyBukofsky;
 import org.wadhome.redjack.bet.BukofskyBankrollLevel;
+import org.wadhome.redjack.money.CurrencyAmount;
+import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.TableRules;
 import org.wadhome.redjack.strategy.PlayStrategyBasic;
 import org.wadhome.redjack.strategy.PlayStrategyHighLowPerfect;
@@ -15,16 +17,16 @@ import java.util.List;
 class ExecutionOneShoe extends Execution {
     @Override
     Casino execute(Command command) {
-        long playerFavoriteBetInCents = 2500L;
-        long initialPlayerBankrollsInCents = 10000000L;
+        CurrencyAmount playerFavoriteBet = new CurrencyAmount(25L);
+        CurrencyAmount initialPlayerBankrolls = new CurrencyAmount(100000L);
         System.out.println("Two players, each with "
-                + new MoneyPile(initialPlayerBankrollsInCents)
-                + ", betting " + new MoneyPile(playerFavoriteBetInCents)
+                + initialPlayerBankrolls
+                + ", betting " + playerFavoriteBet
                 + ", playing one shoe.");
 
         TableRules tableRules = TableRules.getDefaultRules();
-        tableRules.setMinBet(new MoneyPile(2500L));
-        tableRules.setMaxBet(new MoneyPile(30000L));
+        tableRules.setMinBet(new CurrencyAmount(25L));
+        tableRules.setMaxBet(new CurrencyAmount(300L));
 
         Casino casino = new Casino(
                 "Redjack (" + command + ")",
@@ -38,9 +40,9 @@ class ExecutionOneShoe extends Execution {
                 "AndyAdvancedPerfect",
                 Gender.male,
                 casino,
-                new MoneyPile(initialPlayerBankrollsInCents),
+                MoneyPile.extractMoneyFromFederalReserve(initialPlayerBankrolls),
                 new PlayStrategyHighLowPerfect(table, new BettingStrategyBukofsky(true)),
-                new MoneyPile(playerFavoriteBetInCents));
+                playerFavoriteBet);
         andy.getPlayStrategy().getCardCountMethod().setBukofskyBankrollLevelDesired(
                 BukofskyBankrollLevel.Level20k);
         players.add(andy);
@@ -49,9 +51,9 @@ class ExecutionOneShoe extends Execution {
                 "AndyAdvancedRealistic",
                 Gender.male,
                 casino,
-                new MoneyPile(initialPlayerBankrollsInCents),
+                MoneyPile.extractMoneyFromFederalReserve(initialPlayerBankrolls),
                 new PlayStrategyHighLowRealistic(table, new BettingStrategyBukofsky(false)),
-                new MoneyPile(playerFavoriteBetInCents));
+                playerFavoriteBet);
         andy2.getPlayStrategy().getCardCountMethod().setBukofskyBankrollLevelDesired(
                 BukofskyBankrollLevel.Level20k);
         players.add(andy2);
@@ -60,9 +62,9 @@ class ExecutionOneShoe extends Execution {
                 "BobbyBasic",
                 Gender.male,
                 casino,
-                new MoneyPile(initialPlayerBankrollsInCents),
+                MoneyPile.extractMoneyFromFederalReserve(initialPlayerBankrolls),
                 new PlayStrategyBasic(table, new BettingStrategyAlwaysFavorite()),
-                new MoneyPile(playerFavoriteBetInCents)));
+                playerFavoriteBet));
 
         assignPlayersToTable(players, table);
         table.playRoundsUntilEndOfShoe();

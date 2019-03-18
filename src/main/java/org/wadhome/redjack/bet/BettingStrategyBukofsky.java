@@ -1,6 +1,8 @@
 package org.wadhome.redjack.bet;
 
-import org.wadhome.redjack.MoneyPile;
+import org.wadhome.redjack.money.CurrencyAmount;
+import org.wadhome.redjack.money.CurrencyComputation;
+import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.Player;
 
 public class BettingStrategyBukofsky extends BettingStrategy {
@@ -21,8 +23,8 @@ public class BettingStrategyBukofsky extends BettingStrategy {
                     betRequest.setConstrainedActualBetAmount(betRequest.getMinPossibleBet());
                 } else {
                     if (betRequest.getRandomness().checkRandomPercentChance(20)) {
-                        MoneyPile betToUse = betRequest.getMinPossibleBet().copy();
-                        betToUse.addToPile(betRequest.getMinPossibleBet().computeHalf());
+                        CurrencyAmount betToUse = betRequest.getMinPossibleBet();
+                        betToUse.increaseBy(betRequest.getMinPossibleBet().compute(CurrencyComputation.halfOf));
                         betRequest.setBetComment("True count is only " + trueCount + ", so I'd like to bet the minimum."
                                 + " But that looks suspicious, so I'll bet a little more.");
                         betRequest.setConstrainedActualBetAmount(betToUse);
@@ -40,8 +42,8 @@ public class BettingStrategyBukofsky extends BettingStrategy {
                     level = BukofskyBankrollLevel.determine(player.getInitialBankroll());
                 }
 
-                MoneyPile desiredBet = level.getBet(trueCount, beSuspiciouslyPerfect);
-                MoneyPile actualBet = betRequest.setConstrainedActualBetAmount(desiredBet);
+                CurrencyAmount desiredBet = level.getBet(trueCount, beSuspiciouslyPerfect);
+                CurrencyAmount actualBet = betRequest.setConstrainedActualBetAmount(desiredBet);
                 if (actualBet.equals(desiredBet)) {
                     betRequest.setBetComment("True count is " + trueCount + ", so I'm betting " + desiredBet + ".");
                 } else {

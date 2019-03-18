@@ -2,6 +2,8 @@ package org.wadhome.redjack.execution;
 
 import org.wadhome.redjack.*;
 import org.wadhome.redjack.bet.BettingStrategyBukofsky;
+import org.wadhome.redjack.money.CurrencyAmount;
+import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.TableRules;
 import org.wadhome.redjack.strategy.PlayStrategyHighLowRealistic;
 
@@ -14,17 +16,17 @@ class ExecutionRealisticBukBut4k extends Execution {
     @Override
     Casino execute(Command command) {
         int numRoundsToPlay = 100000;
-        long playerFavoriteBetInCents = 500L;
-        long initialPlayerBankrollsInCents = 400000L;
-        long retirementBankroll = initialPlayerBankrollsInCents + 100000L;
+        CurrencyAmount playerFavoriteBet = new CurrencyAmount(5L);
+        CurrencyAmount initialPlayerBankrolls = new CurrencyAmount(4000L);
+        CurrencyAmount retirementBankroll = new CurrencyAmount(5000L);
         System.out.println("Seven players, each with "
-                + new MoneyPile(initialPlayerBankrollsInCents)
-                + ", betting " + new MoneyPile(playerFavoriteBetInCents)
-                + ", playing until " + new MoneyPile(retirementBankroll) + ", bankrupt, or " + numRoundsToPlay + " rounds.");
+                + initialPlayerBankrolls
+                + ", betting " + playerFavoriteBet
+                + ", playing until " + retirementBankroll + ", bankrupt, or " + numRoundsToPlay + " rounds.");
 
         TableRules tableRules = TableRules.getDefaultRules();
-        tableRules.setMinBet(new MoneyPile(500L));
-        tableRules.setMaxBet(new MoneyPile(10000L));
+        tableRules.setMinBet(new CurrencyAmount(50L));
+        tableRules.setMaxBet(new CurrencyAmount(100L));
 
         Casino casino = new Casino(
                 "Redjack (" + command + ")",
@@ -43,15 +45,14 @@ class ExecutionRealisticBukBut4k extends Execution {
             add("Real Buky Fran");
             add("Real Buky Grace");
         }}.stream().map(name -> {
-            MoneyPile initialPlayerBankroll = new MoneyPile(initialPlayerBankrollsInCents);
             Player player = new Player(
                     name,
                     Gender.female,
                     casino,
-                    initialPlayerBankroll,
+                    MoneyPile.extractMoneyFromFederalReserve(initialPlayerBankrolls),
                     new PlayStrategyHighLowRealistic(table, new BettingStrategyBukofsky(false)),
-                    new MoneyPile(playerFavoriteBetInCents));
-            player.setRetirementTriggerBankroll(new MoneyPile(retirementBankroll));
+                    playerFavoriteBet);
+            player.setRetirementTriggerBankroll(retirementBankroll);
             return player;
         }).collect(toList());
 

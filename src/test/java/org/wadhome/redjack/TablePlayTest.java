@@ -2,6 +2,8 @@ package org.wadhome.redjack;
 
 import org.junit.Test;
 import org.wadhome.redjack.bet.BettingStrategyAlwaysFavorite;
+import org.wadhome.redjack.money.CurrencyAmount;
+import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.TableRules;
 import org.wadhome.redjack.strategy.PlayStrategyBasic;
 
@@ -22,9 +24,9 @@ public class TablePlayTest {
                 "Alex",
                 Gender.male,
                 casino,
-                new MoneyPile(50000L),
+                MoneyPile.extractMoneyFromFederalReserve(new CurrencyAmount(500L)),
                 new PlayStrategyBasic(table, new BettingStrategyAlwaysFavorite()),
-                new MoneyPile(2500L));
+                new CurrencyAmount(25L));
         table.assignPlayerToSeat(SeatNumber.one, alex);
         table.assignPlayerToSeat(SeatNumber.two, alex);
 
@@ -32,45 +34,44 @@ public class TablePlayTest {
                 "Becky",
                 Gender.female,
                 casino,
-                new MoneyPile(50000L),
+                MoneyPile.extractMoneyFromFederalReserve(new CurrencyAmount(500L)),
                 new PlayStrategyBasic(table, new BettingStrategyAlwaysFavorite()),
-                new MoneyPile(1000L));
+                new CurrencyAmount(10L));
         table.assignPlayerToSeat(SeatNumber.three, becky);
 
         Player charles = new Player(
                 "Charles",
                 Gender.male,
                 casino,
-                new MoneyPile(10000L),
+                MoneyPile.extractMoneyFromFederalReserve(new CurrencyAmount(500L)),
                 new PlayStrategyBasic(table, new BettingStrategyAlwaysFavorite()),
-                new MoneyPile(10000L));
+                new CurrencyAmount(100L));
         table.assignPlayerToSeat(SeatNumber.five, charles);
 
-        MoneyPile initialCasinoBankroll = casino.getBankroll().copy();
-        MoneyPile initialSumOfPlayerBankrolls = new MoneyPile(
-                alex.getBankroll(),
-                becky.getBankroll(),
-                charles.getBankroll());
-        MoneyPile initialMoney = new MoneyPile(initialCasinoBankroll, initialSumOfPlayerBankrolls);
+        CurrencyAmount initialCasinoBankroll = casino.getBankroll().getCurrencyAmountCopy();
+
+        CurrencyAmount initialSumOfPlayerBankrolls = CurrencyAmount.zero();
+        initialCasinoBankroll.increaseBy(alex.getBankroll().getCurrencyAmountCopy());
+        initialCasinoBankroll.increaseBy(becky.getBankroll().getCurrencyAmountCopy());
+        initialCasinoBankroll.increaseBy(charles.getBankroll().getCurrencyAmountCopy());
+
+        CurrencyAmount initialMoney = CurrencyAmount.zero();
+        initialMoney.increaseBy(initialCasinoBankroll);
+        initialMoney.increaseBy(initialSumOfPlayerBankrolls);
 
         table.playRounds(3);
 
-        MoneyPile finalCasinoBankroll = casino.getBankroll().copy();
-        MoneyPile finalSumOfPlayerBankrolls = new MoneyPile(
-                alex.getBankroll(),
-                becky.getBankroll(),
-                charles.getBankroll());
-        MoneyPile finalMoney = new MoneyPile(finalCasinoBankroll, finalSumOfPlayerBankrolls);
+        CurrencyAmount finalCasinoBankroll = casino.getBankroll().getCurrencyAmountCopy();
+        CurrencyAmount finalSumOfPlayerBankrolls = CurrencyAmount.zero();
+        finalSumOfPlayerBankrolls.increaseBy(alex.getBankroll().getCurrencyAmountCopy());
+        finalSumOfPlayerBankrolls.increaseBy(becky.getBankroll().getCurrencyAmountCopy());
+        finalSumOfPlayerBankrolls.increaseBy(charles.getBankroll().getCurrencyAmountCopy());
 
-        /*
-        System.out.println("Initial casino bankroll: " + initialCasinoBankroll);
-        System.out.println("Final casino bankroll: " + finalCasinoBankroll);
+        CurrencyAmount finalMoney = CurrencyAmount.zero();
+        finalMoney.increaseBy(finalCasinoBankroll);
+        finalMoney.increaseBy(finalSumOfPlayerBankrolls);
 
-        System.out.println("Initial player bankrolls: " + initialSumOfPlayerBankrolls);
-        System.out.println("Final player bankrolls: " + finalSumOfPlayerBankrolls);
-        */
-
-        assertEquals(initialMoney, finalMoney);
+        assertEquals(initialMoney.toString(), finalMoney.toString());
 
         table.removePlayerFromSeat(SeatNumber.one);
         table.removePlayerFromSeat(SeatNumber.two);

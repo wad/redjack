@@ -2,6 +2,8 @@ package org.wadhome.redjack.execution;
 
 import org.wadhome.redjack.*;
 import org.wadhome.redjack.bet.BettingStrategyBukofsky;
+import org.wadhome.redjack.money.CurrencyAmount;
+import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.TableRules;
 import org.wadhome.redjack.strategy.PlayStrategyHighLowPerfect;
 
@@ -14,16 +16,16 @@ class ExecutionHiLoCounterPerfect extends Execution {
     @Override
     Casino execute(Command command) {
         int numRoundsToPlay = 100000;
-        long playerFavoriteBetInCents = 1000L;
-        long initialPlayerBankrollsInCents = 1000000L;
+        CurrencyAmount playerFavoriteBet = new CurrencyAmount(10L);
+        CurrencyAmount initialPlayerBankrolls = new CurrencyAmount(10000L);
         System.out.println("Seven players, each with "
-                + new MoneyPile(initialPlayerBankrollsInCents)
-                + ", betting " + new MoneyPile(playerFavoriteBetInCents)
+                + initialPlayerBankrolls
+                + ", betting " + playerFavoriteBet
                 + ", playing " + numRoundsToPlay + " rounds.");
 
         TableRules tableRules = TableRules.getDefaultRules();
-        tableRules.setMinBet(new MoneyPile(1000L));
-        tableRules.setMaxBet(new MoneyPile(30000L));
+        tableRules.setMinBet(new CurrencyAmount(10L));
+        tableRules.setMaxBet(new CurrencyAmount(300L));
 
         Casino casino = new Casino(
                 "Redjack (" + command + ")",
@@ -45,22 +47,22 @@ class ExecutionHiLoCounterPerfect extends Execution {
                 name,
                 Gender.female,
                 casino,
-                new MoneyPile(initialPlayerBankrollsInCents),
+                MoneyPile.extractMoneyFromFederalReserve(initialPlayerBankrolls),
                 new PlayStrategyHighLowPerfect(table, new BettingStrategyBukofsky(true)),
-                new MoneyPile(playerFavoriteBetInCents))).
+                playerFavoriteBet)).
                 collect(toList());
 
-        MoneyPile initialPlayerBankrolls = getSumOfPlayerBankrolls(players);
+        CurrencyAmount initialPlayerFunds = getSumOfPlayerBankrolls(players);
 
         assignPlayersToTable(players, table);
         table.playRounds(numRoundsToPlay);
 
-        MoneyPile finalPlayerBankrolls = getSumOfPlayerBankrolls(players);
+        CurrencyAmount finalPlayerFunds = getSumOfPlayerBankrolls(players);
 
         System.out.println();
-        System.out.println("Initial player bankrolls: " + initialPlayerBankrolls);
-        System.out.println("Final player bankrolls: " + finalPlayerBankrolls);
-        System.out.println("Players " + MoneyPile.computeDifference(finalPlayerBankrolls, initialPlayerBankrolls));
+        System.out.println("Initial player bankrolls: " + initialPlayerFunds);
+        System.out.println("Final player bankrolls: " + finalPlayerFunds);
+        System.out.println("Players " + finalPlayerFunds.computeDifference(initialPlayerFunds));
 
         return casino;
     }

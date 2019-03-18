@@ -3,6 +3,8 @@ package org.wadhome.redjack.strategy;
 import org.wadhome.redjack.*;
 import org.wadhome.redjack.bet.BetRequest;
 import org.wadhome.redjack.cardcount.CardCountMethod;
+import org.wadhome.redjack.money.CurrencyAmount;
+import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.BlackjackPlay;
 import org.wadhome.redjack.rules.TableRules;
 
@@ -22,11 +24,11 @@ public abstract class PlayStrategy {
         this.cardCountMethod = cardCountMethod;
     }
 
-    public abstract MoneyPile getInsuranceBet(
-            MoneyPile maximumInsuranceBet,
+    public abstract CurrencyAmount getInsuranceBet(
+            CurrencyAmount maximumInsuranceBet,
             PlayerHand hand,
             Card dealerUpcard,
-            MoneyPile bankrollAvailable);
+            CurrencyAmount bankrollAvailable);
 
     public void getBet(BetRequest betRequest) {
         getCardCountMethod().getBet(betRequest);
@@ -35,12 +37,11 @@ public abstract class PlayStrategy {
     public abstract BlackjackPlay choosePlay(
             Player player,
             PlayerHand hand,
-            Card dealerUpcard,
-            MoneyPile bankrollAvailable);
+            Card dealerUpcard);
 
     boolean canHandBeSplit(
             PlayerHand hand,
-            MoneyPile bankrollAvailable) {
+            CurrencyAmount bankrollAvailable) {
         int numSplitsSoFar = hand.getSeat().getNumSplitsSoFar();
 
         boolean canAffordToSplit = bankrollAvailable.isGreaterThanOrEqualTo(hand.getBetAmount());
@@ -70,7 +71,7 @@ public abstract class PlayStrategy {
     boolean canDoubleDown(
             PlayerHand hand,
             boolean isAfterSplit,
-            MoneyPile bankrollAvailable) {
+            CurrencyAmount bankrollAvailable) {
 
         if (isAfterSplit && !tableRules.canDoubleDownAfterSplit()) {
             return false;

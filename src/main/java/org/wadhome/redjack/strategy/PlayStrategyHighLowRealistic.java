@@ -3,6 +3,7 @@ package org.wadhome.redjack.strategy;
 import org.wadhome.redjack.*;
 import org.wadhome.redjack.bet.BettingStrategy;
 import org.wadhome.redjack.cardcount.CardCountMethodHighLowRealistic;
+import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.rules.BlackjackPlay;
 import org.wadhome.redjack.rules.DoubleDownRuleOptions;
 
@@ -22,30 +23,28 @@ public class PlayStrategyHighLowRealistic extends PlayStrategy {
     }
 
     @Override
-    public MoneyPile getInsuranceBet(
-            MoneyPile maximumInsuranceBet,
+    public CurrencyAmount getInsuranceBet(
+            CurrencyAmount maximumInsuranceBet,
             PlayerHand hand,
             Card dealerUpcard,
-            MoneyPile bankrollAvailable) {
+            CurrencyAmount bankrollAvailable) {
         if (getTrueCount(table) > 3) {
             return maximumInsuranceBet;
         }
-        return MoneyPile.zero();
+        return CurrencyAmount.zero();
     }
 
     @Override
     public BlackjackPlay choosePlay(
             Player player,
             PlayerHand hand,
-            Card dealerUpcard,
-            MoneyPile bankrollAvailable) {
-
+            Card dealerUpcard) {
         int trueCount = getTrueCount(table);
         int runningCount = getRunningCount();
         int handPoints = hand.computeMaxSum();
         boolean isFirstPlayOnHand = hand.getNumCards() == 2;
         boolean surrenderIsPossible = isFirstPlayOnHand && tableRules.canSurrender();
-        boolean hasFundsToCoverDoubleDownsAndSplits = bankrollAvailable.isGreaterThanOrEqualTo(hand.getBetAmount());
+        boolean hasFundsToCoverDoubleDownsAndSplits = player.getBankroll().isGreaterThanOrEqualTo(hand.getBetAmount());
         boolean doubleDownIsPossibleOnNine = isFirstPlayOnHand
                 && hasFundsToCoverDoubleDownsAndSplits
                 && tableRules.getDoubleDownOptions() == DoubleDownRuleOptions.Any;
@@ -177,8 +176,7 @@ public class PlayStrategyHighLowRealistic extends PlayStrategy {
         return basicStrategy.choosePlay(
                 player,
                 hand,
-                dealerUpcard,
-                bankrollAvailable);
+                dealerUpcard);
     }
 
     private int getTrueCount(Table table) {

@@ -1,6 +1,6 @@
 package org.wadhome.redjack.bet;
 
-import org.wadhome.redjack.MoneyPile;
+import org.wadhome.redjack.money.CurrencyAmount;
 
 public class BettingStrategyMaxOnGoodCount extends BettingStrategy {
 
@@ -9,7 +9,7 @@ public class BettingStrategyMaxOnGoodCount extends BettingStrategy {
         if (betRequest.canPlaceBet()) {
             int trueCount = betRequest.getTrueCount();
             if (trueCount >= 3) {
-                MoneyPile maxPossibleBet = betRequest.getMaxPossibleBet();
+                CurrencyAmount maxPossibleBet = betRequest.getMaxPossibleBet();
                 betRequest.setConstrainedActualBetAmount(maxPossibleBet);
                 betRequest.setBetComment("True count is " + trueCount + ", so I'm betting " + maxPossibleBet + ".");
             } else {

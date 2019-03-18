@@ -1,17 +1,17 @@
 package org.wadhome.redjack.bet;
 
-import org.wadhome.redjack.MoneyPile;
 import org.wadhome.redjack.Player;
 import org.wadhome.redjack.Randomness;
+import org.wadhome.redjack.money.CurrencyAmount;
 
 public class BetRequest {
     private Player player;
     private Randomness randomness;
-    private MoneyPile desiredBet;
-    private MoneyPile minPossibleBet;
-    private MoneyPile maxPossibleBet;
-    private MoneyPile availableBankroll;
-    private MoneyPile actualBetAmount;
+    private CurrencyAmount desiredBet;
+    private CurrencyAmount minPossibleBet;
+    private CurrencyAmount maxPossibleBet;
+    private CurrencyAmount availableBankroll;
+    private CurrencyAmount actualBetAmount = null;
     private Integer trueCount = null;
     private String betComment = null;
     private boolean canPlaceBet = true;
@@ -19,17 +19,16 @@ public class BetRequest {
     public BetRequest(
             Player player,
             Randomness randomness,
-            MoneyPile desiredBet,
-            MoneyPile minPossibleBet,
-            MoneyPile maxPossibleBet,
-            MoneyPile availableBankroll) {
+            CurrencyAmount desiredBet,
+            CurrencyAmount minPossibleBet,
+            CurrencyAmount maxPossibleBet) {
 
         this.player = player;
         this.randomness = randomness;
         this.desiredBet = desiredBet;
         this.minPossibleBet = minPossibleBet;
         this.maxPossibleBet = maxPossibleBet;
-        this.availableBankroll = availableBankroll;
+        this.availableBankroll = player.getBankroll().getCurrencyAmountCopy();
 
         validateAndAdjust();
     }
@@ -71,23 +70,23 @@ public class BetRequest {
         return randomness;
     }
 
-    MoneyPile getDesiredBet() {
-        return desiredBet;
+    CurrencyAmount getDesiredBet() {
+        return desiredBet.copy();
     }
 
-    MoneyPile getMinPossibleBet() {
-        return minPossibleBet;
+    CurrencyAmount getMinPossibleBet() {
+        return minPossibleBet.copy();
     }
 
-    MoneyPile getMaxPossibleBet() {
-        return maxPossibleBet;
+    CurrencyAmount getMaxPossibleBet() {
+        return maxPossibleBet.copy();
     }
 
     int getTrueCount() {
         return trueCount;
     }
 
-    MoneyPile setConstrainedActualBetAmount(final MoneyPile calculatedBet) {
+    CurrencyAmount setConstrainedActualBetAmount(CurrencyAmount calculatedBet) {
         if (!canPlaceBet) {
             throw new IllegalStateException("bug! min=" + minPossibleBet
                     + " max=" + maxPossibleBet
@@ -110,7 +109,7 @@ public class BetRequest {
         return actualBetAmount;
     }
 
-    public MoneyPile getActualBetAmount() {
+    public CurrencyAmount getActualBetAmount() {
         return actualBetAmount;
     }
 

@@ -3,6 +3,8 @@ package org.wadhome.redjack;
 import org.junit.Before;
 import org.junit.Test;
 import org.wadhome.redjack.bet.BettingStrategyAlwaysFavorite;
+import org.wadhome.redjack.money.CurrencyAmount;
+import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.TableRules;
 import org.wadhome.redjack.strategy.PlayStrategyBasic;
 
@@ -26,9 +28,9 @@ public class TableTest extends TestHelper {
                 "Abe",
                 Gender.male,
                 casino,
-                new MoneyPile(10000L),
+                MoneyPile.extractMoneyFromFederalReserve(new CurrencyAmount(100L)),
                 new PlayStrategyBasic(table, new BettingStrategyAlwaysFavorite()),
-                new MoneyPile(1000L));
+                new CurrencyAmount(10L));
         SeatNumber seatNumber = SeatNumber.one;
         table.assignPlayerToSeat(seatNumber, player);
     }
@@ -64,7 +66,7 @@ public class TableTest extends TestHelper {
     @Test
     public void testSurrender() {
         tableRules.setCanSurrender(true);
-        shoe.addCardToBottom(cT(), cT(), c6(), cT(), cT());
+        shoe.addCardToBottom(cT(), cT(), c6(), cT());
         table.playRound();
         assertEquals("$95.00", player.getBankroll().toString());
     }

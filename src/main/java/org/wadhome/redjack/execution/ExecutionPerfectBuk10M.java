@@ -3,6 +3,8 @@ package org.wadhome.redjack.execution;
 import org.wadhome.redjack.*;
 import org.wadhome.redjack.bet.BettingStrategyBukofsky;
 import org.wadhome.redjack.bet.BukofskyBankrollLevel;
+import org.wadhome.redjack.money.CurrencyAmount;
+import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.TableRules;
 import org.wadhome.redjack.strategy.PlayStrategyHighLowPerfect;
 
@@ -15,16 +17,15 @@ class ExecutionPerfectBuk10M extends Execution {
     @Override
     Casino execute(Command command) {
         int numRoundsToPlay = 10000000;
-        long playerFavoriteBetInCents = 2500L;
-        long initialPlayerBankrollsInCents = 10000000L;
+        CurrencyAmount playerFavoriteBet = new CurrencyAmount(25L);
+        CurrencyAmount initialPlayerBankrolls = new CurrencyAmount(100000L);
         System.out.println("Seven players, each with "
-                + new MoneyPile(initialPlayerBankrollsInCents)
-                + ", betting " + new MoneyPile(playerFavoriteBetInCents)
-                + ", playing until double, bankrupt, or " + numRoundsToPlay + " rounds.");
+                + initialPlayerBankrolls
+                + ", playing until bankrupt, or " + numRoundsToPlay + " rounds.");
 
         TableRules tableRules = TableRules.getDefaultRules();
-        tableRules.setMinBet(new MoneyPile(2500L));
-        tableRules.setMaxBet(new MoneyPile(50000L));
+        tableRules.setMinBet(new CurrencyAmount(25L));
+        tableRules.setMaxBet(new CurrencyAmount(500L));
 
         Casino casino = new Casino(
                 "Redjack (" + command + ")",
@@ -43,14 +44,14 @@ class ExecutionPerfectBuk10M extends Execution {
             add("Buky Fran");
             add("Buky Grace");
         }}.stream().map(name -> {
-            MoneyPile initialPlayerBankroll = new MoneyPile(initialPlayerBankrollsInCents);
+            MoneyPile initialPlayerBankroll = MoneyPile.extractMoneyFromFederalReserve(initialPlayerBankrolls);
             Player player = new Player(
                     name,
                     Gender.female,
                     casino,
                     initialPlayerBankroll,
                     new PlayStrategyHighLowPerfect(table, new BettingStrategyBukofsky(true)),
-                    new MoneyPile(playerFavoriteBetInCents));
+                    playerFavoriteBet);
             player.getPlayStrategy().getCardCountMethod().setBukofskyBankrollLevelDesired(BukofskyBankrollLevel.Level10k);
             return player;
         }).collect(toList());
@@ -59,8 +60,7 @@ class ExecutionPerfectBuk10M extends Execution {
         table.playRounds(numRoundsToPlay);
 
         System.out.println();
-        System.out.println("Retired players: " + countRetiredPlayers(players)
-                + ". Bankrupt players: " + countBankruptPlayers(players) + ".");
+        System.out.println("Bankrupt players: " + countBankruptPlayers(players) + ".");
 
         return casino;
     }
