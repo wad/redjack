@@ -187,7 +187,7 @@ public class PlayStrategyBasicSoftHandsTest extends BasicStrategyTestHelper {
                     break;
                 case Six:
                     assertEquals(BlackjackPlay.DoubleDown, compute(cA(), c8(), c(upcardValue)));
-                    assertEquals(BlackjackPlay.Stand, compute(tableRulesDoubleDownLimited, cA(), c7(), c(upcardValue)));
+                    assertEquals(BlackjackPlay.Stand, compute(tableRulesDoubleDownLimited, cA(), c8(), c(upcardValue)));
                     assertEquals(BlackjackPlay.Stand, compute(cA(), c6(), c2(), c(upcardValue)));
                     break;
                 case Seven:

@@ -178,6 +178,18 @@ public class PlayStrategyHiLoPerfectSoftHandsTest extends HiLoPerfectStrategyTes
         for (Value upcardValue : Value.values()) {
             switch (upcardValue) {
                 case Two:
+                    assertEquals(BlackjackPlay.Stand, compute(cA(), c8(), c(upcardValue)));
+                    assertEquals(BlackjackPlay.Stand, compute(cA(), c6(), c2(), c(upcardValue)));
+                    assertEquals(BlackjackPlay.Stand, compute(cA(), c6(), cA(), cA(), c(upcardValue)));
+
+                    assertEquals(BlackjackPlay.Stand, compute(tc(0), cA(), c8(), c(upcardValue)));
+                    assertEquals(BlackjackPlay.DoubleDown, compute(tc(1), cA(), c8(), c(upcardValue))); // deviate
+                    assertEquals(BlackjackPlay.DoubleDown, compute(tc(2), cA(), c8(), c(upcardValue))); // deviate
+
+                    assertEquals(BlackjackPlay.Stand, compute(tableRulesDoubleDownLimited, tc(0), cA(), c8(), c(upcardValue)));
+                    assertEquals(BlackjackPlay.Stand, compute(tableRulesDoubleDownLimited, tc(1), cA(), c8(), c(upcardValue)));
+                    assertEquals(BlackjackPlay.Stand, compute(tableRulesDoubleDownLimited, tc(2), cA(), c8(), c(upcardValue)));
+                    break;
                 case Three:
                 case Four:
                 case Five:
@@ -187,10 +199,22 @@ public class PlayStrategyHiLoPerfectSoftHandsTest extends HiLoPerfectStrategyTes
                     break;
                 case Six:
                     assertEquals(BlackjackPlay.DoubleDown, compute(cA(), c8(), c(upcardValue)));
-                    assertEquals(BlackjackPlay.Stand, compute(tableRulesDoubleDownLimited, cA(), c7(), c(upcardValue)));
+                    assertEquals(BlackjackPlay.Stand, compute(tableRulesDoubleDownLimited, cA(), c8(), c(upcardValue)));
                     assertEquals(BlackjackPlay.Stand, compute(cA(), c6(), c2(), c(upcardValue)));
                     break;
                 case Seven:
+                    assertEquals(BlackjackPlay.Stand, compute(cA(), c8(), c(upcardValue)));
+                    assertEquals(BlackjackPlay.Stand, compute(cA(), c6(), c2(), c(upcardValue)));
+                    assertEquals(BlackjackPlay.Stand, compute(cA(), c6(), cA(), cA(), c(upcardValue)));
+
+                    assertEquals(BlackjackPlay.Stand, compute(tc(3), cA(), c8(), c(upcardValue)));
+                    assertEquals(BlackjackPlay.DoubleDown, compute(tc(4), cA(), c8(), c(upcardValue))); // deviate
+                    assertEquals(BlackjackPlay.DoubleDown, compute(tc(5), cA(), c8(), c(upcardValue))); // deviate
+
+                    assertEquals(BlackjackPlay.Stand, compute(tableRulesDoubleDownLimited, tc(3), cA(), c8(), c(upcardValue)));
+                    assertEquals(BlackjackPlay.Stand, compute(tableRulesDoubleDownLimited, tc(4), cA(), c8(), c(upcardValue)));
+                    assertEquals(BlackjackPlay.Stand, compute(tableRulesDoubleDownLimited, tc(5), cA(), c8(), c(upcardValue)));
+                    break;
                 case Eight:
                 case Nine:
                 case Ten:

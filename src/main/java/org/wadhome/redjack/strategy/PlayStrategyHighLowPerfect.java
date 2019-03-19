@@ -196,6 +196,7 @@ public class PlayStrategyHighLowPerfect extends PlayStrategy {
             }
         }
 
+        // todo: Bug! HandPoints coming in at 19 instead of 9.
         if (handPoints == 9) {
             if (dealerUpcard.getValue() == Value.Seven) {
                 if (doubleDownIsPossibleOnNine && trueCount >= 4) {
