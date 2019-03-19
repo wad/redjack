@@ -8,8 +8,7 @@ import org.wadhome.redjack.rules.BlackjackPlay;
 import org.wadhome.redjack.rules.TableRules;
 import org.wadhome.redjack.rules.TableRulesForTest;
 
-public class BasicStrategyTestHelper extends TestHelper {
-
+public class HiLoPerfectStrategyTestHelper extends TestHelper {
     private MoneyPile bankroll = MoneyPile.extractMoneyFromFederalReserve(new CurrencyAmount(10000L));
     private Seat seat = new Seat(SeatNumber.one);
 
@@ -33,15 +32,15 @@ public class BasicStrategyTestHelper extends TestHelper {
             playerHand.addCard(cards[i]);
         }
 
-        PlayStrategyBasic basicStrategy = new PlayStrategyBasic(table, new BettingStrategyAlwaysFavorite());
+        PlayStrategyHighLowPerfect strategy = new PlayStrategyHighLowPerfect(table, new BettingStrategyAlwaysFavorite());
         Player player = new Player(
                 "testPlayer",
                 Gender.female,
                 casino,
                 bankroll,
-                basicStrategy,
+                strategy,
                 tableRules.getMinBet());
-        return basicStrategy.choosePlay(
+        return strategy.choosePlay(
                 player,
                 playerHand,
                 dealerUpcard);
