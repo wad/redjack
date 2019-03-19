@@ -6,6 +6,7 @@ import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.money.CurrencyComputation;
 import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.TableRules;
+import org.wadhome.redjack.rules.TableRulesDefault;
 import org.wadhome.redjack.strategy.PlayStrategyHighLowPerfect;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ class ExecutionPerfectBuk extends Execution {
                 + ", betting " + playerFavoriteBet
                 + ", playing until double, bankrupt, or " + numRoundsToPlay + " rounds.");
 
-        TableRules tableRules = TableRules.getDefaultRules();
+        TableRules tableRules = new TableRulesDefault();
         tableRules.setMinBet(new CurrencyAmount(5L));
         tableRules.setMaxBet(new CurrencyAmount(100L));
 

@@ -6,6 +6,7 @@ import org.wadhome.redjack.bet.BettingStrategyAlwaysFavorite;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.TableRules;
+import org.wadhome.redjack.rules.TableRulesDefault;
 import org.wadhome.redjack.strategy.PlayStrategyBasic;
 
 import static org.junit.Assert.assertEquals;
@@ -20,7 +21,7 @@ public class TableTest extends TestHelper {
     @Before
     public void setup() {
         Casino casino = new Casino();
-        tableRules = TableRules.getDefaultRules();
+        tableRules = new TableRulesDefault();
         table = new Table(casino, 0, tableRules);
         shoe = table.getShoe();
         shoe.dumpAllCards();

@@ -3,6 +3,7 @@ package org.wadhome.redjack;
 import org.junit.Test;
 import org.wadhome.redjack.rules.Blackjack;
 import org.wadhome.redjack.rules.TableRules;
+import org.wadhome.redjack.rules.TableRulesDefault;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,7 +13,7 @@ public class ShoeTest extends TestHelper {
         int numDecks = 2;
         int tableNumber = 0;
         Casino casino = new Casino();
-        TableRules tableRules = TableRules.getDefaultRules();
+        TableRules tableRules = new TableRulesDefault();
         Table table = new Table(casino, tableNumber, tableRules);
         Shoe shoe = new Shoe(numDecks, table);
         assertEquals(Blackjack.NUM_CARDS_PER_DECK * 2, shoe.cards.size());

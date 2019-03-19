@@ -2,8 +2,7 @@ package org.wadhome.redjack.rules;
 
 import org.wadhome.redjack.money.CurrencyAmount;
 
-// todo: make subclasses
-public class TableRules {
+public abstract class TableRules {
 
     CurrencyAmount minBet = new CurrencyAmount(10L);
     CurrencyAmount maxBet = new CurrencyAmount(1000L);
@@ -18,24 +17,6 @@ public class TableRules {
     int numCardsAfterCutCard = Blackjack.NUM_CARDS_AFTER_CUT_CARD_FOR_ONE_POINT_FIVE_DECKS;
     boolean canSurrender = false;
     boolean sevenCardCharlieRuleIsActive = true;
-
-    private TableRules() {
-        // use a creator method
-    }
-
-    public static TableRules getDefaultRules() {
-        return new TableRules();
-    }
-
-    public static TableRules getRulesForHomeCasino() {
-        return new TableRules();
-    }
-
-    public static TableRules getRulesForHomeCasinoWithSurrender() {
-        TableRules tableRules = new TableRules();
-        tableRules.canSurrender = true;
-        return tableRules;
-    }
 
     @Override
     public String toString() {

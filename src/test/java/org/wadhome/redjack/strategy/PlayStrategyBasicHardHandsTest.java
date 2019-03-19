@@ -5,6 +5,7 @@ import org.wadhome.redjack.Value;
 import org.wadhome.redjack.rules.BlackjackPlay;
 import org.wadhome.redjack.rules.DoubleDownRuleOptions;
 import org.wadhome.redjack.rules.TableRules;
+import org.wadhome.redjack.rules.TableRulesDefault;
 
 import static org.junit.Assert.assertEquals;
 
@@ -35,7 +36,7 @@ public class PlayStrategyBasicHardHandsTest extends BasicStrategyTestHelper {
 
     @Test
     public void testSumsOfNine() {
-        TableRules rulesDoubleDownLimited = TableRules.getDefaultRules();
+        TableRules rulesDoubleDownLimited = new TableRulesDefault();
         rulesDoubleDownLimited.setDoubleDownOptions(DoubleDownRuleOptions.TenAndAceOnly);
 
         for (Value upcardValue : Value.values()) {
@@ -193,10 +194,10 @@ public class PlayStrategyBasicHardHandsTest extends BasicStrategyTestHelper {
 
     @Test
     public void testSumsOfFifteen() {
-        TableRules tableRulesCannotSurrender = TableRules.getDefaultRules();
+        TableRules tableRulesCannotSurrender = new TableRulesDefault();
         tableRulesCannotSurrender.setCanSurrender(false);
 
-        TableRules tableRulesCanSurrender = TableRules.getDefaultRules();
+        TableRules tableRulesCanSurrender = new TableRulesDefault();
         tableRulesCanSurrender.setCanSurrender(true);
 
         for (Value upcardValue : Value.values()) {
@@ -240,10 +241,10 @@ public class PlayStrategyBasicHardHandsTest extends BasicStrategyTestHelper {
 
     @Test
     public void testSumsOfSixteen() {
-        TableRules tableRulesCannotSurrender = TableRules.getDefaultRules();
+        TableRules tableRulesCannotSurrender = new TableRulesDefault();
         tableRulesCannotSurrender.setCanSurrender(false);
 
-        TableRules tableRulesCanSurrender = TableRules.getDefaultRules();
+        TableRules tableRulesCanSurrender = new TableRulesDefault();
         tableRulesCanSurrender.setCanSurrender(true);
 
         for (Value upcardValue : Value.values()) {
@@ -303,10 +304,10 @@ public class PlayStrategyBasicHardHandsTest extends BasicStrategyTestHelper {
 
     @Test
     public void testSumsOfSeventeen() {
-        TableRules tableRulesCannotSurrender = TableRules.getDefaultRules();
+        TableRules tableRulesCannotSurrender = new TableRulesDefault();
         tableRulesCannotSurrender.setCanSurrender(false);
 
-        TableRules tableRulesCanSurrender = TableRules.getDefaultRules();
+        TableRules tableRulesCanSurrender = new TableRulesDefault();
         tableRulesCanSurrender.setCanSurrender(true);
 
         for (Value upcardValue : Value.values()) {

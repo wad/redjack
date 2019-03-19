@@ -5,6 +5,7 @@ import org.wadhome.redjack.bet.BettingStrategyBukofsky;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.TableRules;
+import org.wadhome.redjack.rules.TableRulesDefault;
 import org.wadhome.redjack.strategy.PlayStrategyHighLowPerfect;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ class ExecutionHiLoCounterPerfect extends Execution {
                 + ", betting " + playerFavoriteBet
                 + ", playing " + numRoundsToPlay + " rounds.");
 
-        TableRules tableRules = TableRules.getDefaultRules();
+        TableRules tableRules = new TableRulesDefault();
         tableRules.setMinBet(new CurrencyAmount(10L));
         tableRules.setMaxBet(new CurrencyAmount(300L));
 

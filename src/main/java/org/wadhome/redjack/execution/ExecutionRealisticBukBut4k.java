@@ -5,6 +5,7 @@ import org.wadhome.redjack.bet.BettingStrategyBukofsky;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.TableRules;
+import org.wadhome.redjack.rules.TableRulesDefault;
 import org.wadhome.redjack.strategy.PlayStrategyHighLowRealistic;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ class ExecutionRealisticBukBut4k extends Execution {
                 + ", betting " + playerFavoriteBet
                 + ", playing until " + retirementBankroll + ", bankrupt, or " + numRoundsToPlay + " rounds.");
 
-        TableRules tableRules = TableRules.getDefaultRules();
+        TableRules tableRules = new TableRulesDefault();
         tableRules.setMinBet(new CurrencyAmount(50L));
         tableRules.setMaxBet(new CurrencyAmount(100L));
 

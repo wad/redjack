@@ -8,7 +8,7 @@ import org.wadhome.redjack.Player;
 import org.wadhome.redjack.Table;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.money.MoneyPile;
-import org.wadhome.redjack.rules.TableRules;
+import org.wadhome.redjack.rules.TableRulesDefault;
 import org.wadhome.redjack.strategy.PlayStrategyBasic;
 
 import static org.junit.Assert.assertEquals;
@@ -22,7 +22,7 @@ public class BettingStrategyBukofskyTest {
     @Before
     public void setup() {
         casino = new Casino();
-        table = casino.createTable(0, TableRules.getDefaultRules());
+        table = casino.createTable(0, new TableRulesDefault());
         player = new Player(
                 "test",
                 Gender.female,
