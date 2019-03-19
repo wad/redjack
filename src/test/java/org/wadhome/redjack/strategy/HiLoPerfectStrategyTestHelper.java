@@ -14,24 +14,24 @@ public class HiLoPerfectStrategyTestHelper extends TestHelper {
     private Seat seat = new Seat(SeatNumber.one);
 
     BlackjackPlay compute(Card... cards) {
-        return compute(null, new TableRulesForTest(), cards);
+        return compute(new TableRulesForTest(), null, cards);
     }
 
     BlackjackPlay compute(
             CardCountStatus cardCountStatus,
             Card... cards) {
-        return compute(cardCountStatus, new TableRulesForTest(), cards);
+        return compute(new TableRulesForTest(), cardCountStatus, cards);
     }
 
     BlackjackPlay compute(
             TableRules tableRules,
             Card... cards) {
-        return compute(null, tableRules, cards);
+        return compute(tableRules, null, cards);
     }
 
     BlackjackPlay compute(
-            CardCountStatus cardCountStatus,
             TableRules tableRules,
+            CardCountStatus cardCountStatus,
             Card... cards) {
         Casino casino = new Casino();
         Table table = casino.createTable(0, tableRules);
