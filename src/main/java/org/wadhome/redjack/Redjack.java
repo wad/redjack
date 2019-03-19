@@ -8,6 +8,10 @@ package org.wadhome.redjack;
 
 // todo: test insurance with card counting
 
+// todo: look at two other hi-lo card-counting basic strategy deviation charts, compare with the one used here
+
+// todo: code up basic strategy tables according to table rule variation. Also update card counting deviations from those.
+
 import org.wadhome.redjack.execution.Command;
 
 class Redjack {

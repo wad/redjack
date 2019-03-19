@@ -90,7 +90,7 @@ public class PlayStrategyHighLowPerfect extends PlayStrategy {
                 }
             }
             if (dealerUpcard.getValue() == Value.Nine) {
-                if (surrenderIsPossible && runningCount >= 2) {
+                if (surrenderIsPossible && trueCount >= 2) {
                     player.say("Because the running count >= 2, I'm going to deviate from basic, and surrender.");
                     return BlackjackPlay.Surrender;
                 }
