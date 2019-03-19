@@ -3,6 +3,7 @@ package org.wadhome.redjack.strategy;
 import org.wadhome.redjack.*;
 import org.wadhome.redjack.bet.BettingStrategy;
 import org.wadhome.redjack.cardcount.CardCountMethodHighLowRealistic;
+import org.wadhome.redjack.cardcount.CardCountStatusRunningAndTrue;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.rules.BlackjackPlay;
 import org.wadhome.redjack.rules.DoubleDownRuleOptions;
@@ -28,7 +29,8 @@ public class PlayStrategyHighLowRealistic extends PlayStrategy {
             PlayerHand hand,
             Card dealerUpcard,
             CurrencyAmount bankrollAvailable) {
-        if (getTrueCount(table) > 3) {
+        CardCountStatusRunningAndTrue count = (CardCountStatusRunningAndTrue) getCardCountMethod().getCardCountStatus();
+        if (count.getTrueCount() > 3) {
             return maximumInsuranceBet;
         }
         return CurrencyAmount.zero();
@@ -39,8 +41,9 @@ public class PlayStrategyHighLowRealistic extends PlayStrategy {
             Player player,
             PlayerHand hand,
             Card dealerUpcard) {
-        int trueCount = getTrueCount(table);
-        int runningCount = getRunningCount();
+        CardCountStatusRunningAndTrue count = (CardCountStatusRunningAndTrue) getCardCountMethod().getCardCountStatus();
+        int trueCount = count.getTrueCount();
+        int runningCount = count.getRunningCount();
         int handPoints = hand.computeMaxSum();
         boolean isFirstPlayOnHand = hand.getNumCards() == 2;
         boolean surrenderIsPossible = isFirstPlayOnHand && tableRules.getCanSurrender();
@@ -178,15 +181,5 @@ public class PlayStrategyHighLowRealistic extends PlayStrategy {
                 player,
                 hand,
                 dealerUpcard);
-    }
-
-    private int getTrueCount(Table table) {
-        CardCountMethodHighLowRealistic cardCountMethod = (CardCountMethodHighLowRealistic) getCardCountMethod();
-        return cardCountMethod.getTrueCount(table.getDiscardTray());
-    }
-
-    private int getRunningCount() {
-        CardCountMethodHighLowRealistic cardCountMethod = (CardCountMethodHighLowRealistic) getCardCountMethod();
-        return cardCountMethod.getRunningCount();
     }
 }

@@ -12,6 +12,14 @@ public class CardCountStatusRunningAndTrue extends CardCountStatus {
         this.trueCount = trueCount;
     }
 
+    public int getRunningCount() {
+        return runningCount;
+    }
+
+    public int getTrueCount() {
+        return trueCount;
+    }
+
     @Override
     public String getReport() {
         return "RC=" + runningCount + " TC=" + trueCount;

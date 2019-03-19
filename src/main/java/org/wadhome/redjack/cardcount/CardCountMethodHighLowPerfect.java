@@ -19,7 +19,7 @@ public class CardCountMethodHighLowPerfect extends CardCountMethod {
     }
 
     @Override
-    public CardCountStatus getCardCountStatus() {
+    protected CardCountStatus getCardCountStatusHelper() {
         return new CardCountStatusRunningAndTrue(
                 runningCount,
                 getTrueCount(table.getShoe().numCards()));
@@ -62,11 +62,11 @@ public class CardCountMethodHighLowPerfect extends CardCountMethod {
         bettingStrategy.getBet(betRequest);
     }
 
-    public int getRunningCount() {
+    private int getRunningCount() {
         return runningCount;
     }
 
-    public int getTrueCount(int numCardsRemainingInShoe) {
+    private int getTrueCount(int numCardsRemainingInShoe) {
         double numDecksRemaining = ((double) (numCardsRemainingInShoe)) / ((double) Blackjack.NUM_CARDS_PER_DECK);
         double exactTrueCount = ((double) runningCount) / numDecksRemaining;
         return roundToInt(exactTrueCount);

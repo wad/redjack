@@ -6,6 +6,8 @@ package org.wadhome.redjack;
 
 // todo: make log at shoe level
 
+// todo: test insurance with card counting
+
 import org.wadhome.redjack.execution.Command;
 
 class Redjack {

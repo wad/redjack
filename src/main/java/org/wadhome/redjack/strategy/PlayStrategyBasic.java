@@ -30,7 +30,7 @@ public class PlayStrategyBasic extends PlayStrategy {
             Card dealerUpcard,
             CurrencyAmount bankrollAvailable) {
 
-        // When you don't know the true count, don't get insurance.
+        // When you don't know the count, don't get insurance.
         return CurrencyAmount.zero();
     }
 

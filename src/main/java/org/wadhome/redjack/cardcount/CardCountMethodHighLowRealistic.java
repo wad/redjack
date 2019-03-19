@@ -21,7 +21,7 @@ public class CardCountMethodHighLowRealistic extends CardCountMethod {
     }
 
     @Override
-    public CardCountStatus getCardCountStatus() {
+    protected CardCountStatus getCardCountStatusHelper() {
         return new CardCountStatusRunningAndTrue(
                 runningCount,
                 getTrueCount(table.getDiscardTray()));

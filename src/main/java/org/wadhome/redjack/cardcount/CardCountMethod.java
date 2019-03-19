@@ -14,6 +14,9 @@ public abstract class CardCountMethod {
     BettingStrategy bettingStrategy;
     private BukofskyBankrollLevel bukofskyBankrollLevelDesired = null;
 
+    // used for testing
+    private CardCountStatus overriddenCardCountStatus = null;
+
     CardCountMethod(
             Table table,
             BettingStrategy bettingStrategy) {
@@ -22,7 +25,21 @@ public abstract class CardCountMethod {
         this.bettingStrategy = bettingStrategy;
     }
 
-    public abstract CardCountStatus getCardCountStatus();
+    public CardCountStatus getCardCountStatus() {
+        if (overriddenCardCountStatus != null) {
+            CardCountStatus toReturn = overriddenCardCountStatus;
+            overriddenCardCountStatus = null;
+            return toReturn;
+        }
+
+        return getCardCountStatusHelper();
+    }
+
+    protected abstract CardCountStatus getCardCountStatusHelper();
+
+    public void temporarilyOverrideCardCountStatus(CardCountStatus cardCountStatus) {
+        overriddenCardCountStatus = cardCountStatus;
+    }
 
     public abstract void observeCard(Card card);
 

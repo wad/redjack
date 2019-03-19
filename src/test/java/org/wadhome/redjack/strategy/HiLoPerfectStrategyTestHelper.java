@@ -2,6 +2,7 @@ package org.wadhome.redjack.strategy;
 
 import org.wadhome.redjack.*;
 import org.wadhome.redjack.bet.BettingStrategyAlwaysFavorite;
+import org.wadhome.redjack.cardcount.CardCountStatus;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.BlackjackPlay;
@@ -13,10 +14,23 @@ public class HiLoPerfectStrategyTestHelper extends TestHelper {
     private Seat seat = new Seat(SeatNumber.one);
 
     BlackjackPlay compute(Card... cards) {
-        return compute(new TableRulesForTest(), cards);
+        return compute(null, new TableRulesForTest(), cards);
     }
 
     BlackjackPlay compute(
+            CardCountStatus cardCountStatus,
+            Card... cards) {
+        return compute(cardCountStatus, new TableRulesForTest(), cards);
+    }
+
+    BlackjackPlay compute(
+            TableRules tableRules,
+            Card... cards) {
+        return compute(null, tableRules, cards);
+    }
+
+    BlackjackPlay compute(
+            CardCountStatus cardCountStatus,
             TableRules tableRules,
             Card... cards) {
         Casino casino = new Casino();
@@ -40,6 +54,11 @@ public class HiLoPerfectStrategyTestHelper extends TestHelper {
                 bankroll,
                 strategy,
                 tableRules.getMinBet());
+
+        if (cardCountStatus != null) {
+            strategy.getCardCountMethod().temporarilyOverrideCardCountStatus(cardCountStatus);
+        }
+
         return strategy.choosePlay(
                 player,
                 playerHand,

@@ -3,6 +3,7 @@ package org.wadhome.redjack.strategy;
 import org.wadhome.redjack.*;
 import org.wadhome.redjack.bet.BettingStrategy;
 import org.wadhome.redjack.cardcount.CardCountMethodHighLowPerfect;
+import org.wadhome.redjack.cardcount.CardCountStatusRunningAndTrue;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.rules.BlackjackPlay;
 import org.wadhome.redjack.rules.DoubleDownRuleOptions;
@@ -28,7 +29,8 @@ public class PlayStrategyHighLowPerfect extends PlayStrategy {
             PlayerHand hand,
             Card dealerUpcard,
             CurrencyAmount bankrollAvailable) {
-        if (getTrueCount(table) > 3) {
+        CardCountStatusRunningAndTrue count = (CardCountStatusRunningAndTrue) getCardCountMethod().getCardCountStatus();
+        if (count.getTrueCount() > 3) {
             return maximumInsuranceBet;
         }
         return CurrencyAmount.zero();
@@ -39,9 +41,9 @@ public class PlayStrategyHighLowPerfect extends PlayStrategy {
             Player player,
             PlayerHand hand,
             Card dealerUpcard) {
-
-        int trueCount = getTrueCount(table);
-        int runningCount = getRunningCount();
+        CardCountStatusRunningAndTrue count = (CardCountStatusRunningAndTrue) getCardCountMethod().getCardCountStatus();
+        int trueCount = count.getTrueCount();
+        int runningCount = count.getRunningCount();
         int handPoints = hand.computeMaxSum();
         boolean isFirstPlayOnHand = hand.getNumCards() == 2;
         boolean surrenderIsPossible = isFirstPlayOnHand && tableRules.getCanSurrender();
@@ -213,15 +215,5 @@ public class PlayStrategyHighLowPerfect extends PlayStrategy {
                 player,
                 hand,
                 dealerUpcard);
-    }
-
-    private int getTrueCount(Table table) {
-        CardCountMethodHighLowPerfect cardCountMethod = (CardCountMethodHighLowPerfect) getCardCountMethod();
-        return cardCountMethod.getTrueCount(table.getShoe().numCards());
-    }
-
-    private int getRunningCount() {
-        CardCountMethodHighLowPerfect cardCountMethod = (CardCountMethodHighLowPerfect) getCardCountMethod();
-        return cardCountMethod.getRunningCount();
     }
 }

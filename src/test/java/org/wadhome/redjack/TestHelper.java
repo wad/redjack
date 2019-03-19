@@ -1,5 +1,8 @@
 package org.wadhome.redjack;
 
+import org.wadhome.redjack.cardcount.CardCountStatus;
+import org.wadhome.redjack.cardcount.CardCountStatusRunningAndTrue;
+
 public abstract class TestHelper {
 
     // The deck number cycles, so that the sets in hands don't collapse duplicate cards.
@@ -58,6 +61,18 @@ public abstract class TestHelper {
     protected Card cA() {
         checkDeckNumber();
         return new Card(deckNumber++, Suite.Spades, Value.Ace);
+    }
+
+    protected CardCountStatus rc(int runningCount) {
+        return new CardCountStatusRunningAndTrue(runningCount, 0);
+    }
+
+    protected CardCountStatus tc(int trueCount) {
+        return new CardCountStatusRunningAndTrue(0, trueCount);
+    }
+
+    protected CardCountStatus tcrc(int runningCount, int trueCount) {
+        return new CardCountStatusRunningAndTrue(runningCount, trueCount);
     }
 
     private void checkDeckNumber() {

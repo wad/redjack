@@ -271,6 +271,15 @@ public class PlayStrategyHiLoPerfectHardHandsTest extends HiLoPerfectStrategyTes
                     // handle conditions where can't surrender due to table rules
                     assertEquals(BlackjackPlay.Hit, compute(tableRulesCannotSurrender, c6(), cT(), c(upcardValue)));
                     assertEquals(BlackjackPlay.Hit, compute(tableRulesCannotSurrender, c7(), c9(), c(upcardValue)));
+
+                    // new stuff
+                    assertEquals(BlackjackPlay.Hit, compute(tc(4), c6(), cT(), c(upcardValue)));
+                    assertEquals(BlackjackPlay.Stand, compute(tc(5), c6(), cT(), c(upcardValue))); // deviate
+                    assertEquals(BlackjackPlay.Stand, compute(tc(6), c6(), cT(), c(upcardValue))); // deviate
+                    assertEquals(BlackjackPlay.Hit, compute(tc(4), c7(), c9(), c(upcardValue)));
+                    assertEquals(BlackjackPlay.Stand, compute(tc(5), c7(), c9(), c(upcardValue))); // deviate
+                    assertEquals(BlackjackPlay.Stand, compute(tc(6), c7(), c9(), c(upcardValue))); // deviate
+
                     break;
                 case Ten:
                 case Jack:
