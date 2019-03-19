@@ -5,7 +5,7 @@ import org.wadhome.redjack.bet.BettingStrategyMaxOnGoodCount;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.TableRules;
-import org.wadhome.redjack.rules.TableRulesDefault;
+import org.wadhome.redjack.rules.TableRulesCustomMinMaxBets;
 import org.wadhome.redjack.strategy.PlayStrategyHighLowPerfect;
 
 import java.util.ArrayList;
@@ -24,9 +24,7 @@ class ExecutionHiLoCounterBallzy extends Execution {
                 + ", betting " + playerFavoriteBet
                 + ", playing " + numRoundsToPlay + " rounds.");
 
-        TableRules tableRules = new TableRulesDefault();
-        tableRules.setMinBet(new CurrencyAmount(10L));
-        tableRules.setMaxBet(new CurrencyAmount(300L));
+        TableRules tableRules = new TableRulesCustomMinMaxBets(10, 300);
 
         Casino casino = new Casino(
                 "Redjack (" + command + ")",

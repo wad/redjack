@@ -6,7 +6,7 @@ import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.BlackjackPlay;
 import org.wadhome.redjack.rules.TableRules;
-import org.wadhome.redjack.rules.TableRulesDefault;
+import org.wadhome.redjack.rules.TableRulesForTest;
 
 public class BasicStrategyTestHelper extends TestHelper {
 
@@ -14,7 +14,7 @@ public class BasicStrategyTestHelper extends TestHelper {
     private Seat seat = new Seat(SeatNumber.one);
 
     BlackjackPlay compute(Card... cards) {
-        return compute(new TableRulesDefault(), cards);
+        return compute(new TableRulesForTest(), cards);
     }
 
     BlackjackPlay compute(

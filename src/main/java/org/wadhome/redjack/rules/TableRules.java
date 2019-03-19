@@ -4,31 +4,47 @@ import org.wadhome.redjack.money.CurrencyAmount;
 
 public abstract class TableRules {
 
-    CurrencyAmount minBet = new CurrencyAmount(10L);
-    CurrencyAmount maxBet = new CurrencyAmount(1000L);
-    boolean hitSoftSeventeen = true;
-    BlackjackPayOptions blackjackPayOptions = BlackjackPayOptions.ThreeToTwo;
-    boolean canDoubleDownAfterSplit = true;
-    DoubleDownRuleOptions doubleDownOptions = DoubleDownRuleOptions.Any;
-    boolean canHitSplitAces = false;
-    int maxNumSplits = 3; // This means that a hand can turn into a max of 4 split hands.
-    int numBurnCards = 1;
-    int numDecks = 6;
-    int numCardsAfterCutCard = Blackjack.NUM_CARDS_AFTER_CUT_CARD_FOR_ONE_POINT_FIVE_DECKS;
-    boolean canSurrender = false;
-    boolean sevenCardCharlieRuleIsActive = true;
+    protected CurrencyAmount minBet;
+    protected CurrencyAmount maxBet;
+    protected boolean hitSoftSeventeen;
+    protected BlackjackPayOptions blackjackPayOptions;
+    protected boolean canDoubleDownAfterSplit;
+    protected DoubleDownRuleOptions doubleDownOptions;
+    protected boolean canHitSplitAces;
+    protected int maxNumSplits;
+    protected int numBurnCards;
+    protected int numDecks;
+    protected int numCardsAfterCutCard;
+    protected boolean canSurrender;
+    protected boolean sevenCardCharlieRuleIsActive;
+
+    public TableRules() {
+        minBet = new CurrencyAmount(10L);
+        maxBet = new CurrencyAmount(1000L);
+        hitSoftSeventeen = true;
+        blackjackPayOptions = BlackjackPayOptions.ThreeToTwo;
+        canDoubleDownAfterSplit = true;
+        doubleDownOptions = DoubleDownRuleOptions.Any;
+        canHitSplitAces = false;
+        maxNumSplits = 3; // This means that a hand can turn into a max of 4 split hands.
+        numBurnCards = 1;
+        numDecks = 6;
+        numCardsAfterCutCard = Blackjack.NUM_CARDS_AFTER_CUT_CARD_FOR_ONE_POINT_FIVE_DECKS;
+        canSurrender = false;
+        sevenCardCharlieRuleIsActive = true;
+    }
 
     @Override
     public String toString() {
         return "=== Number of decks: " + getNumDecks() + "\n" +
                 "=== Minimum bet: " + getMinBet() + "\n" +
                 "=== Maximum bet: " + getMaxBet() + "\n" +
-                "=== Dealer hits soft 17: " + (mustHitSoftSeventeen() ? "yes" : "no") + "\n" +
+                "=== Dealer hits soft 17: " + (getMustHitSoftSeventeen() ? "yes" : "no") + "\n" +
                 "=== Blackjack pays: " + getBlackjackPayOptions().displayValue + "\n" +
-                "=== Can double down after split: " + (canDoubleDownAfterSplit() ? "yes" : "no") + "\n" +
-                "=== Can hit split aces: " + (canHitSplitAces() ? "yes" : "no") + "\n" +
+                "=== Can double down after split: " + (getCanDoubleDownAfterSplit() ? "yes" : "no") + "\n" +
+                "=== Can hit split aces: " + (getCanHitSplitAces() ? "yes" : "no") + "\n" +
                 "=== Maximum number of splits: " + getMaxNumSplits() + "\n" +
-                "=== Surrender allowed: " + (canSurrender() ? "yes" : "no") + "\n";
+                "=== Surrender allowed: " + (getCanSurrender() ? "yes" : "no") + "\n";
     }
 
     public String getRulesDisplay(int tableNumber) {
@@ -44,15 +60,7 @@ public abstract class TableRules {
         return maxBet;
     }
 
-    public void setMinBet(CurrencyAmount minBet) {
-        this.minBet = minBet;
-    }
-
-    public void setMaxBet(CurrencyAmount maxBet) {
-        this.maxBet = maxBet;
-    }
-
-    public boolean mustHitSoftSeventeen() {
+    public boolean getMustHitSoftSeventeen() {
         return hitSoftSeventeen;
     }
 
@@ -60,7 +68,7 @@ public abstract class TableRules {
         return blackjackPayOptions;
     }
 
-    public boolean canDoubleDownAfterSplit() {
+    public boolean getCanDoubleDownAfterSplit() {
         return canDoubleDownAfterSplit;
     }
 
@@ -68,7 +76,7 @@ public abstract class TableRules {
         return this.doubleDownOptions;
     }
 
-    public boolean canHitSplitAces() {
+    public boolean getCanHitSplitAces() {
         return canHitSplitAces;
     }
 
@@ -88,23 +96,11 @@ public abstract class TableRules {
         return numCardsAfterCutCard;
     }
 
-    public boolean canSurrender() {
+    public boolean getCanSurrender() {
         return canSurrender;
     }
 
-    public boolean sevenCardCharlieRuleIsActive() {
+    public boolean isSevenCardCharlieRuleIsActive() {
         return sevenCardCharlieRuleIsActive;
-    }
-
-    public void setCanSurrender(boolean canSurrender) {
-        this.canSurrender = canSurrender;
-    }
-
-    public void setCanHitSplitAces(boolean canHitSplitAces) {
-        this.canHitSplitAces = canHitSplitAces;
-    }
-
-    public void setDoubleDownOptions(DoubleDownRuleOptions tenAndAceOnly) {
-        this.doubleDownOptions = tenAndAceOnly;
     }
 }

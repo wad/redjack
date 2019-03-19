@@ -5,7 +5,7 @@ import org.wadhome.redjack.bet.BettingStrategyAlwaysFavorite;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.TableRules;
-import org.wadhome.redjack.rules.TableRulesDefault;
+import org.wadhome.redjack.rules.TableRulesForTest;
 import org.wadhome.redjack.strategy.PlayStrategyBasic;
 
 import static org.junit.Assert.assertEquals;
@@ -16,7 +16,7 @@ public class TablePlayTest {
     public void testRunningBankrollBalance() {
         int tableNumber = 1;
         Casino casino = new Casino("test", Randomness.generateRandomSeed(), false, false);
-        TableRules tableRules = new TableRulesDefault();
+        TableRules tableRules = new TableRulesForTest();
         casino.createTable(tableNumber, tableRules);
         Table table = casino.getTable(tableNumber);
         table.shuffleAndStuff();

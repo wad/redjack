@@ -44,7 +44,7 @@ public class PlayStrategyHighLowPerfect extends PlayStrategy {
         int runningCount = getRunningCount();
         int handPoints = hand.computeMaxSum();
         boolean isFirstPlayOnHand = hand.getNumCards() == 2;
-        boolean surrenderIsPossible = isFirstPlayOnHand && tableRules.canSurrender();
+        boolean surrenderIsPossible = isFirstPlayOnHand && tableRules.getCanSurrender();
         CurrencyAmount bankrollAvailable = player.getBankroll().getCurrencyAmountCopy();
         boolean hasFundsToCoverDoubleDownsAndSplits = bankrollAvailable.isGreaterThanOrEqualTo(hand.getBetAmount());
         boolean doubleDownIsPossibleOnNine = isFirstPlayOnHand

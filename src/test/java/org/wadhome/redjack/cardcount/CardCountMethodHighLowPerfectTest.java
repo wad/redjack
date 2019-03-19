@@ -5,7 +5,7 @@ import org.wadhome.redjack.Casino;
 import org.wadhome.redjack.Table;
 import org.wadhome.redjack.TestHelper;
 import org.wadhome.redjack.bet.BettingStrategyAlwaysFavorite;
-import org.wadhome.redjack.rules.TableRulesDefault;
+import org.wadhome.redjack.rules.TableRulesForTest;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,7 +14,7 @@ public class CardCountMethodHighLowPerfectTest extends TestHelper {
     @Test
     public void testCounting() {
         Casino casino = new Casino();
-        Table table = casino.createTable(0, new TableRulesDefault());
+        Table table = casino.createTable(0, new TableRulesForTest());
         CardCountMethodHighLowPerfect method = new CardCountMethodHighLowPerfect(table, new BettingStrategyAlwaysFavorite());
         assertEquals("RC=0 TC=0", method.getCardCountStatus().getReport());
 

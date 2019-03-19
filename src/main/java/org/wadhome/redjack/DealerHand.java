@@ -16,7 +16,7 @@ class DealerHand extends Hand {
 
     boolean shouldHit(TableRules tableRules) {
         boolean isSoftSeventeen = hasAtLeastOneAce() && computeMinSum() == SEVEN;
-        if (isSoftSeventeen && tableRules.mustHitSoftSeventeen()) {
+        if (isSoftSeventeen && tableRules.getMustHitSoftSeventeen()) {
             return true;
         }
 

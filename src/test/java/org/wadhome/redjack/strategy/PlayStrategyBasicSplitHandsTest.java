@@ -3,8 +3,7 @@ package org.wadhome.redjack.strategy;
 import org.junit.Test;
 import org.wadhome.redjack.Value;
 import org.wadhome.redjack.rules.BlackjackPlay;
-import org.wadhome.redjack.rules.TableRules;
-import org.wadhome.redjack.rules.TableRulesDefault;
+import org.wadhome.redjack.rules.TableRulesForTest;
 
 import static org.junit.Assert.assertEquals;
 
@@ -116,10 +115,10 @@ public class PlayStrategyBasicSplitHandsTest extends BasicStrategyTestHelper {
 
     @Test
     public void testPairOfSevens() {
-        TableRules tableRulesCannotSurrender = new TableRulesDefault();
+        TableRulesForTest tableRulesCannotSurrender = new TableRulesForTest();
         tableRulesCannotSurrender.setCanSurrender(false);
 
-        TableRules tableRulesCanSurrender = new TableRulesDefault();
+        TableRulesForTest tableRulesCanSurrender = new TableRulesForTest();
         tableRulesCanSurrender.setCanSurrender(true);
 
         for (Value upcardValue : Value.values()) {

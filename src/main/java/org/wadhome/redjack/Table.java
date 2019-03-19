@@ -562,7 +562,7 @@ public class Table {
             return false;
         }
 
-        if (hand.isCharlie() && tableRules.sevenCardCharlieRuleIsActive()) {
+        if (hand.isCharlie() && tableRules.isSevenCardCharlieRuleIsActive()) {
             handlePlayerCharlie(initialHand, hitCard, hand);
             return false;
         }
@@ -684,7 +684,7 @@ public class Table {
         show(seat, "got " + cardForRightSplit.toString(true, false)
                 + " on the right split, and now has " + rightSplitHand + ".");
 
-        if (areSplitAces && !tableRules.canHitSplitAces()) {
+        if (areSplitAces && !tableRules.getCanHitSplitAces()) {
             // blackjacks pay just like 21, and you can't hit anymore.
             leftSplitHand.setSplitHandAndIsFinished();
             rightSplitHand.setSplitHandAndIsFinished();

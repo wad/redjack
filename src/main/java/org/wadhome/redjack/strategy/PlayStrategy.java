@@ -58,7 +58,7 @@ public abstract class PlayStrategy {
 
         boolean isPairOfAces = hand.getFirstCard().getValue() == Ace;
         if (isPairOfAces) {
-            if (!tableRules.canHitSplitAces()) {
+            if (!tableRules.getCanHitSplitAces()) {
                 //noinspection RedundantIfStatement
                 if (numSplitsSoFar > 0) {
                     // can't split aces if it's not the first split, and the table rules say you can't hit split aces.
@@ -75,7 +75,7 @@ public abstract class PlayStrategy {
             boolean isAfterSplit,
             CurrencyAmount bankrollAvailable) {
 
-        if (isAfterSplit && !tableRules.canDoubleDownAfterSplit()) {
+        if (isAfterSplit && !tableRules.getCanDoubleDownAfterSplit()) {
             return false;
         }
 

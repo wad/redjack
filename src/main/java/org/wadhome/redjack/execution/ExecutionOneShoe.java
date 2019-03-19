@@ -10,7 +10,7 @@ import org.wadhome.redjack.bet.BukofskyBankrollLevel;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.TableRules;
-import org.wadhome.redjack.rules.TableRulesDefault;
+import org.wadhome.redjack.rules.TableRulesCustomMinMaxBets;
 import org.wadhome.redjack.strategy.PlayStrategyBasic;
 import org.wadhome.redjack.strategy.PlayStrategyHighLowPerfect;
 import org.wadhome.redjack.strategy.PlayStrategyHighLowRealistic;
@@ -28,9 +28,7 @@ class ExecutionOneShoe extends Execution {
                 + ", betting " + playerFavoriteBet
                 + ", playing one shoe.");
 
-        TableRules tableRules = new TableRulesDefault();
-        tableRules.setMinBet(new CurrencyAmount(25L));
-        tableRules.setMaxBet(new CurrencyAmount(300L));
+        TableRules tableRules = new TableRulesCustomMinMaxBets(25, 300);
 
         Casino casino = new Casino(
                 "Redjack (" + command + ")",

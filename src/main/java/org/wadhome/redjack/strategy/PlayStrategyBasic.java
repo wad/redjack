@@ -118,7 +118,7 @@ public class PlayStrategyBasic extends PlayStrategy {
         }
 
         // take care of the surrender scenarios now
-        if (tableRules.canSurrender() && hand.getNumCards() == 2) {
+        if (tableRules.getCanSurrender() && hand.getNumCards() == 2) {
             if (sum == 15 && (upcardValue.isTen() || upcardValue == Ace)) {
                 return Surrender;
             }
@@ -270,7 +270,7 @@ public class PlayStrategyBasic extends PlayStrategy {
                 if (upcardValue.isTen() || upcardValue == Ace) {
                     return Hit;
                 }
-                if (hand.getSeat().getNumSplitsSoFar() > 0 && !tableRules.canDoubleDownAfterSplit()) {
+                if (hand.getSeat().getNumSplitsSoFar() > 0 && !tableRules.getCanDoubleDownAfterSplit()) {
                     return Hit;
                 }
                 if (canDoubleDown) {
@@ -291,7 +291,7 @@ public class PlayStrategyBasic extends PlayStrategy {
                 return Split;
             case Seven:
                 if (upcardValue.isTen()) {
-                    if (tableRules.canSurrender()) {
+                    if (tableRules.getCanSurrender()) {
                         return Surrender;
                     }
                 }
@@ -333,7 +333,7 @@ public class PlayStrategyBasic extends PlayStrategy {
             case King:
                 return Stand;
             case Ace:
-                boolean acesHaveAlreadyBeenSplit = !tableRules.canHitSplitAces() && hand.getSeat().getNumSplitsSoFar() > 0;
+                boolean acesHaveAlreadyBeenSplit = !tableRules.getCanHitSplitAces() && hand.getSeat().getNumSplitsSoFar() > 0;
                 if (acesHaveAlreadyBeenSplit) {
                     return Hit;
                 }

@@ -4,8 +4,7 @@ import org.junit.Test;
 import org.wadhome.redjack.Value;
 import org.wadhome.redjack.rules.BlackjackPlay;
 import org.wadhome.redjack.rules.DoubleDownRuleOptions;
-import org.wadhome.redjack.rules.TableRules;
-import org.wadhome.redjack.rules.TableRulesDefault;
+import org.wadhome.redjack.rules.TableRulesForTest;
 
 import static org.junit.Assert.assertEquals;
 
@@ -127,7 +126,7 @@ public class PlayStrategyBasicSoftHandsTest extends BasicStrategyTestHelper {
 
     @Test
     public void testAceWithSeven() {
-        TableRules tableRulesDoubleDownLimited = new TableRulesDefault();
+        TableRulesForTest tableRulesDoubleDownLimited = new TableRulesForTest();
         tableRulesDoubleDownLimited.setDoubleDownOptions(DoubleDownRuleOptions.TenAndAceOnly);
 
         for (Value upcardValue : Value.values()) {
@@ -173,7 +172,7 @@ public class PlayStrategyBasicSoftHandsTest extends BasicStrategyTestHelper {
 
     @Test
     public void testAceWithEight() {
-        TableRules tableRulesDoubleDownLimited = new TableRulesDefault();
+        TableRulesForTest tableRulesDoubleDownLimited = new TableRulesForTest();
         tableRulesDoubleDownLimited.setDoubleDownOptions(DoubleDownRuleOptions.TenAndAceOnly);
 
         for (Value upcardValue : Value.values()) {
@@ -209,7 +208,7 @@ public class PlayStrategyBasicSoftHandsTest extends BasicStrategyTestHelper {
 
     @Test
     public void testAceWithNine() {
-        TableRules tableRulesDoubleDownLimited = new TableRulesDefault();
+        TableRulesForTest tableRulesDoubleDownLimited = new TableRulesForTest();
         tableRulesDoubleDownLimited.setDoubleDownOptions(DoubleDownRuleOptions.TenAndAceOnly);
 
         for (Value upcardValue : Value.values()) {

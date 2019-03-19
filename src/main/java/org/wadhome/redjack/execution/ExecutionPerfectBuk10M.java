@@ -6,7 +6,7 @@ import org.wadhome.redjack.bet.BukofskyBankrollLevel;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.TableRules;
-import org.wadhome.redjack.rules.TableRulesDefault;
+import org.wadhome.redjack.rules.TableRulesCustomMinMaxBets;
 import org.wadhome.redjack.strategy.PlayStrategyHighLowPerfect;
 
 import java.util.ArrayList;
@@ -24,9 +24,7 @@ class ExecutionPerfectBuk10M extends Execution {
                 + initialPlayerBankrolls
                 + ", playing until bankrupt, or " + numRoundsToPlay + " rounds.");
 
-        TableRules tableRules = new TableRulesDefault();
-        tableRules.setMinBet(new CurrencyAmount(25L));
-        tableRules.setMaxBet(new CurrencyAmount(500L));
+        TableRules tableRules = new TableRulesCustomMinMaxBets(25, 500);
 
         Casino casino = new Casino(
                 "Redjack (" + command + ")",
