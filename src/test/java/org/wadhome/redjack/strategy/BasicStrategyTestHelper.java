@@ -45,6 +45,6 @@ class BasicStrategyTestHelper extends TestHelper {
         return basicStrategy.choosePlay(
                 player,
                 playerHand,
-                dealerUpcard);
+                dealerUpcard).getBlackjackPlay();
     }
 }

@@ -100,6 +100,6 @@ class HiLoRealisticStrategyTestHelper extends TestHelper {
         return strategy.choosePlay(
                 player,
                 playerHand,
-                dealerUpcard);
+                dealerUpcard).getBlackjackPlay();
     }
 }

@@ -7,6 +7,7 @@ import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.rules.Blackjack;
 import org.wadhome.redjack.rules.BlackjackPlay;
 import org.wadhome.redjack.rules.DoubleDownRuleOptions;
+import org.wadhome.redjack.rules.PlayerDecision;
 
 import static org.wadhome.redjack.casino.Value.*;
 import static org.wadhome.redjack.rules.BlackjackPlay.*;
@@ -35,7 +36,7 @@ public class PlayStrategyBasic extends PlayStrategy {
     }
 
     @Override
-    public BlackjackPlay choosePlay(
+    public PlayerDecision choosePlay(
             Player player,
             PlayerHand hand,
             Card dealerUpcard) {
@@ -44,25 +45,25 @@ public class PlayStrategyBasic extends PlayStrategy {
         CurrencyAmount bankrollAvailable = player.getBankroll().getCurrencyAmountCopy();
 
         if (hand.isPair()) {
-            return handlePair(
+            return new PlayerDecision(handlePair(
                     hand,
                     dealerUpcard,
-                    bankrollAvailable);
+                    bankrollAvailable));
         }
 
         if (hand.hasAtLeastOneAce()) {
-            return handleSoftHand(
+            return new PlayerDecision(handleSoftHand(
                     hand,
                     dealerUpcard,
                     false,
-                    bankrollAvailable);
+                    bankrollAvailable));
         }
 
-        return handleHardHand(
+        return new PlayerDecision(handleHardHand(
                 hand,
                 dealerUpcard,
                 false,
-                bankrollAvailable);
+                bankrollAvailable));
     }
 
     private BlackjackPlay handleHardHand(

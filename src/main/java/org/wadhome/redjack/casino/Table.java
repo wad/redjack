@@ -6,6 +6,7 @@ import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.money.CurrencyComputation;
 import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.BlackjackPlay;
+import org.wadhome.redjack.rules.PlayerDecision;
 import org.wadhome.redjack.rules.TableRules;
 
 import java.util.ArrayList;
@@ -509,7 +510,9 @@ public class Table {
                         boolean shallContinue = true;
                         while (shallContinue) {
                             String initialHand = hand.showCardsWithTotal();
-                            BlackjackPlay playerAction = player.getPlay(hand, dealerUpcard);
+                            PlayerDecision playerDecision = player.getPlay(hand, dealerUpcard);
+                            player.say(playerDecision.getPlayerComment());
+                            BlackjackPlay playerAction = playerDecision.getBlackjackPlay();
                             CardCountStatus cardCountStatus = player.getCardCountStatus();
                             switch (playerAction) {
                                 case Stand:

@@ -8,6 +8,7 @@ import static java.util.stream.Collectors.joining;
 
 public enum Command {
     demo,
+    easyMillion,
     playOneShoe,
     playBasic,
     playHiLoPerfect,
@@ -32,6 +33,9 @@ public enum Command {
         switch (this) {
             case demo:
                 execution = new ExecutionDemo();
+                break;
+            case easyMillion:
+                execution = new ExecutionEasyMillion();
                 break;
             case playOneShoe:
                 execution = new ExecutionOneShoe();

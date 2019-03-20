@@ -5,6 +5,7 @@ import org.wadhome.redjack.cardcount.CardCountStatus;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.BlackjackPlay;
+import org.wadhome.redjack.rules.PlayerDecision;
 import org.wadhome.redjack.strategy.PlayStrategy;
 
 public class Player {
@@ -117,7 +118,7 @@ public class Player {
         }
     }
 
-    BlackjackPlay getPlay(
+    PlayerDecision getPlay(
             PlayerHand hand,
             Card dealerUpcard) {
         return playStrategy.choosePlay(

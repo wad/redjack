@@ -7,7 +7,7 @@ import org.wadhome.redjack.casino.Player;
 import org.wadhome.redjack.casino.PlayerHand;
 import org.wadhome.redjack.casino.Table;
 import org.wadhome.redjack.money.CurrencyAmount;
-import org.wadhome.redjack.rules.BlackjackPlay;
+import org.wadhome.redjack.rules.PlayerDecision;
 import org.wadhome.redjack.rules.TableRules;
 
 import static org.wadhome.redjack.casino.Value.Ace;
@@ -36,7 +36,7 @@ public abstract class PlayStrategy {
         getCardCountMethod().getBet(betRequest);
     }
 
-    public abstract BlackjackPlay choosePlay(
+    public abstract PlayerDecision choosePlay(
             Player player,
             PlayerHand hand,
             Card dealerUpcard);
