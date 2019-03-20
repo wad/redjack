@@ -44,69 +44,91 @@ public class PlayStrategyHighLowPerfect extends PlayStrategy {
         CardCountStatusRunningAndTrue count = (CardCountStatusRunningAndTrue) getCardCountMethod().getCardCountStatus();
         int trueCount = count.getTrueCount();
         int runningCount = count.getRunningCount();
-        int handPoints = hand.computeMaxSum();
+        int handPointsMax = hand.computeMaxSum();
+        boolean isSoft = handPointsMax != hand.computeMinSum();
         boolean isFirstPlayOnHand = hand.getNumCards() == 2;
         boolean surrenderIsPossible = isFirstPlayOnHand && tableRules.getCanSurrender();
         CurrencyAmount bankrollAvailable = player.getBankroll().getCurrencyAmountCopy();
         boolean hasFundsToCoverDoubleDownsAndSplits = bankrollAvailable.isGreaterThanOrEqualTo(hand.getBetAmount());
-        boolean doubleDownIsPossibleOnNine = isFirstPlayOnHand
+        boolean doubleDownIsPossibleStuffOtherThanTenOrEleven = isFirstPlayOnHand
                 && hasFundsToCoverDoubleDownsAndSplits
                 && tableRules.getDoubleDownOptions() == DoubleDownRuleOptions.Any;
         boolean doubleDownIsPossibleOnTenOrEleven = isFirstPlayOnHand
                 && hasFundsToCoverDoubleDownsAndSplits;
 
-        if (handPoints == 16) {
-            if (dealerUpcard.getValue().isTen()) {
-                if (runningCount >= 0) {
-                    player.say("Because the running count is positive, I'm going to deviate from basic, and stand.");
-                    return BlackjackPlay.Stand;
+        if (handPointsMax == 19) {
+            boolean isAceWithEight = isSoft && isFirstPlayOnHand;
+            if (isAceWithEight && doubleDownIsPossibleStuffOtherThanTenOrEleven) {
+                if (dealerUpcard.getValue() == Value.Two) {
+                    if (trueCount >= 1) {
+                        player.say("Because the true count is one or more, I'm going to deviate from basic, and double down.");
+                        return BlackjackPlay.DoubleDown;
+                    }
                 }
-            }
-            if (dealerUpcard.getValue() == Value.Nine) {
-                if (trueCount >= 5) {
-                    player.say("Because the true count is more than 5, I'm going to deviate from basic, and stand.");
-                    return BlackjackPlay.Stand;
+                if (dealerUpcard.getValue() == Value.Seven) {
+                    if (trueCount >= 4) {
+                        player.say("Because the true count is four or more, I'm going to deviate from basic, and double down.");
+                        return BlackjackPlay.DoubleDown;
+                    }
                 }
             }
         }
 
-        if (handPoints == 15) {
+        if (handPointsMax == 16) {
+            // We don't want to deviate from Basic Strategy if it's an Ace with five other points.
+            if (!isSoft) {
+                if (dealerUpcard.getValue().isTen()) {
+                    if (runningCount >= 0) {
+                        player.say("Because the running count is positive, I'm going to deviate from basic, and stand.");
+                        return BlackjackPlay.Stand;
+                    }
+                }
+                if (dealerUpcard.getValue() == Value.Nine) {
+                    if (trueCount >= 5) {
+                        player.say("Because the true count is five or more, I'm going to deviate from basic, and stand.");
+                        return BlackjackPlay.Stand;
+                    }
+                }
+            }
+        }
+
+        if (handPointsMax == 15) {
             if (dealerUpcard.getValue() == Value.Ace) {
                 if (surrenderIsPossible && trueCount >= 1) {
-                    player.say("Because the true count >= 1, I'm going to deviate from basic, and surrender.");
+                    player.say("Because the true count is one or more, I'm going to deviate from basic, and surrender.");
                     return BlackjackPlay.Surrender;
                 }
             }
             if (dealerUpcard.getValue().isTen()) {
                 if (surrenderIsPossible && runningCount >= 0) {
-                    player.say("Because the running count >= 0, I'm going to deviate from basic, and surrender.");
+                    player.say("Because the running count is zero or more, I'm going to deviate from basic, and surrender.");
                     return BlackjackPlay.Surrender;
                 }
             }
             if (dealerUpcard.getValue().isTen()) {
                 if (trueCount >= 4) {
-                    player.say("Because the true count >= 4, I'm going to deviate from basic, and stand.");
+                    player.say("Because the true count is four or more, I'm going to deviate from basic, and stand.");
                     return BlackjackPlay.Stand;
                 }
             }
             if (dealerUpcard.getValue() == Value.Nine) {
                 if (surrenderIsPossible && trueCount >= 2) {
-                    player.say("Because the running count >= 2, I'm going to deviate from basic, and surrender.");
+                    player.say("Because the running count two or more, I'm going to deviate from basic, and surrender.");
                     return BlackjackPlay.Surrender;
                 }
             }
         }
 
-        if (handPoints == 14) {
+        if (handPointsMax == 14) {
             if (dealerUpcard.getValue().isTen()) {
                 if (surrenderIsPossible && trueCount >= 3) {
-                    player.say("Because the true count >= 3, I'm going to deviate from basic, and surrender.");
+                    player.say("Because the true count is three or more, I'm going to deviate from basic, and surrender.");
                     return BlackjackPlay.Surrender;
                 }
             }
         }
 
-        if (handPoints == 13) {
+        if (handPointsMax == 13) {
             if (dealerUpcard.getValue() == Value.Two) {
                 if (runningCount < 0) {
                     player.say("Because the running count is negative, I'm going to deviate from basic, and hit.");
@@ -115,22 +137,22 @@ public class PlayStrategyHighLowPerfect extends PlayStrategy {
             }
             if (dealerUpcard.getValue() == Value.Three) {
                 if (trueCount < -1) {
-                    player.say("Because the running count < -1, I'm going to deviate from basic, and hit.");
+                    player.say("Because the running count less than negative one, I'm going to deviate from basic, and hit.");
                     return BlackjackPlay.Hit;
                 }
             }
         }
 
-        if (handPoints == 12) {
+        if (handPointsMax == 12) {
             if (dealerUpcard.getValue() == Value.Two) {
                 if (trueCount >= 4) {
-                    player.say("Because the true count >= 4, I'm going to deviate from basic, and stand.");
+                    player.say("Because the true count four or more, I'm going to deviate from basic, and stand.");
                     return BlackjackPlay.Stand;
                 }
             }
             if (dealerUpcard.getValue() == Value.Three) {
                 if (trueCount >= 2) {
-                    player.say("Because the true count >= 4, I'm going to deviate from basic, and stand.");
+                    player.say("Because the true count is two or more, I'm going to deviate from basic, and stand.");
                     return BlackjackPlay.Stand;
                 }
             }
@@ -142,7 +164,7 @@ public class PlayStrategyHighLowPerfect extends PlayStrategy {
             }
             if (dealerUpcard.getValue() == Value.Five) {
                 if (trueCount < -1) {
-                    player.say("Because the true count < -1, I'm going to deviate from basic, and hit.");
+                    player.say("Because the true count is less than negative one, I'm going to deviate from basic, and hit.");
                     return BlackjackPlay.Hit;
                 }
             }
@@ -154,10 +176,10 @@ public class PlayStrategyHighLowPerfect extends PlayStrategy {
             }
         }
 
-        if (handPoints == 11) {
+        if (handPointsMax == 11) {
             if (dealerUpcard.getValue() == Value.Ace) {
                 if (doubleDownIsPossibleOnTenOrEleven && trueCount >= 1) {
-                    player.say("Because the true count >= 1, I'm going to deviate from basic, and double down.");
+                    player.say("Because the true count is one or more, I'm going to deviate from basic, and double down.");
                     return BlackjackPlay.DoubleDown;
                 }
             }
@@ -168,45 +190,44 @@ public class PlayStrategyHighLowPerfect extends PlayStrategy {
             if (basicStrategy.canHandBeSplit(hand, bankrollAvailable)) {
                 if (dealerUpcard.getValue() == Value.Six) {
                     if (trueCount >= 5) {
-                        player.say("Because the true count >= 5, I'm going to deviate from basic, and split.");
+                        player.say("Because the true count is five or more, I'm going to deviate from basic, and split.");
                         return BlackjackPlay.Split;
                     }
                 }
                 if (dealerUpcard.getValue() == Value.Five) {
                     if (trueCount >= 5) {
-                        player.say("Because the true count >= 5, I'm going to deviate from basic, and split.");
+                        player.say("Because the true count is five or more, I'm going to deviate from basic, and split.");
                         return BlackjackPlay.Split;
                     }
                 }
             }
         }
 
-        if (handPoints == 10) {
+        if (handPointsMax == 10) {
             if (dealerUpcard.getValue() == Value.Ace) {
                 if (doubleDownIsPossibleOnTenOrEleven && trueCount >= 4) {
-                    player.say("Because the true count >= 4, I'm going to deviate from basic, and double down.");
+                    player.say("Because the true count is for our more, I'm going to deviate from basic, and double down.");
                     return BlackjackPlay.DoubleDown;
                 }
             }
             if (dealerUpcard.getValue().isTen()) {
                 if (doubleDownIsPossibleOnTenOrEleven && trueCount >= 4) {
-                    player.say("Because the true count >= 4, I'm going to deviate from basic, and double down.");
+                    player.say("Because the true count is four or more, I'm going to deviate from basic, and double down.");
                     return BlackjackPlay.DoubleDown;
                 }
             }
         }
 
-        // todo: Bug! HandPoints coming in at 19 instead of 9.
-        if (handPoints == 9) {
+        if (handPointsMax == 9) {
             if (dealerUpcard.getValue() == Value.Seven) {
-                if (doubleDownIsPossibleOnNine && trueCount >= 4) {
-                    player.say("Because the true count >= 4, I'm going to deviate from basic, and double down.");
+                if (doubleDownIsPossibleStuffOtherThanTenOrEleven && trueCount >= 4) {
+                    player.say("Because the true count is four or more, I'm going to deviate from basic, and double down.");
                     return BlackjackPlay.DoubleDown;
                 }
             }
             if (dealerUpcard.getValue() == Value.Two) {
-                if (doubleDownIsPossibleOnNine && trueCount >= 1) {
-                    player.say("Because the true count >= 1, I'm going to deviate from basic, and double down.");
+                if (doubleDownIsPossibleStuffOtherThanTenOrEleven && trueCount >= 1) {
+                    player.say("Because the true count is one or more, I'm going to deviate from basic, and double down.");
                     return BlackjackPlay.DoubleDown;
                 }
             }
