@@ -75,8 +75,9 @@ public class PlayStrategyHighLowPerfect extends PlayStrategy {
         }
 
         if (handPointsMax == 16) {
+            boolean isPairOfEights = hand.isPair();
             // We don't want to deviate from Basic Strategy if it's an Ace with five other points.
-            if (!isSoft) {
+            if (!isSoft && !isPairOfEights) {
                 if (dealerUpcard.getValue().isTen()) {
                     if (runningCount >= 0) {
                         player.say("Because the running count is positive, I'm going to deviate from basic, and stand.");

@@ -76,8 +76,9 @@ public class PlayStrategyHighLowRealistic extends PlayStrategy {
         }
 
         if (handPointsMax == 16) {
+            boolean isPairOfEights = hand.isPair();
             // We don't want to deviate from Basic Strategy if it's an Ace with five other points.
-            if (!isSoft) {
+            if (!isSoft && !isPairOfEights) {
                 if (dealerUpcard.getValue().isTen()) {
                     if (runningCount >= 0) {
                         if (randomness.checkRandomPercentChance(75)) {

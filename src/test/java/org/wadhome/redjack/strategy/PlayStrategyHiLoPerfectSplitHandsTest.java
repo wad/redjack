@@ -188,7 +188,31 @@ public class PlayStrategyHiLoPerfectSplitHandsTest extends HiLoPerfectStrategyTe
     @Test
     public void testPairOfTens() {
         for (Value upcardValue : Value.values()) {
-            assertEquals(BlackjackPlay.Stand, compute(cT(), cT(), c(upcardValue)));
+            switch (upcardValue) {
+                case Two:
+                case Three:
+                case Four:
+                    assertEquals(BlackjackPlay.Stand, compute(cT(), cT(), c(upcardValue)));
+                    break;
+                case Five:
+                case Six:
+                    assertEquals(BlackjackPlay.Stand, compute(cT(), cT(), c(upcardValue)));
+
+                    assertEquals(BlackjackPlay.Stand, compute(tc(4), cT(), cT(), c(upcardValue)));
+                    assertEquals(BlackjackPlay.Split, compute(tc(5), cT(), cT(), c(upcardValue))); // deviate
+                    assertEquals(BlackjackPlay.Split, compute(tc(6), cT(), cT(), c(upcardValue))); // deviate
+                    break;
+                case Seven:
+                case Eight:
+                case Nine:
+                case Ten:
+                case Jack:
+                case Queen:
+                case King:
+                case Ace:
+                    assertEquals(BlackjackPlay.Stand, compute(cT(), cT(), c(upcardValue)));
+                    break;
+            }
         }
     }
 
