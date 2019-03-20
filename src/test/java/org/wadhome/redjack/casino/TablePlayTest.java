@@ -48,7 +48,7 @@ public class TablePlayTest {
                 new PlayStrategyBasic(table, new BettingStrategyAlwaysFavorite()),
                 new CurrencyAmount(100L));
         table.assignPlayerToSeat(SeatNumber.five, charles);
-        table.setMuteDisplay(true);
+        table.setMuteDisplay();
 
         CurrencyAmount initialCasinoBankroll = casino.getBankroll().getCurrencyAmountCopy();
 

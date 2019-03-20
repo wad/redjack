@@ -4,19 +4,19 @@ import org.wadhome.redjack.money.CurrencyAmount;
 
 public abstract class TableRules {
 
-    protected CurrencyAmount minBet;
-    protected CurrencyAmount maxBet;
-    protected boolean hitSoftSeventeen;
-    protected BlackjackPayOptions blackjackPayOptions;
-    protected boolean canDoubleDownAfterSplit;
-    protected DoubleDownRuleOptions doubleDownOptions;
-    protected boolean canHitSplitAces;
-    protected int maxNumSplits;
-    protected int numBurnCards;
-    protected int numDecks;
-    protected int numCardsAfterCutCard;
-    protected boolean canSurrender;
-    protected boolean sevenCardCharlieRuleIsActive;
+    CurrencyAmount minBet;
+    CurrencyAmount maxBet;
+    boolean hitSoftSeventeen;
+    BlackjackPayOptions blackjackPayOptions;
+    boolean canDoubleDownAfterSplit;
+    DoubleDownRuleOptions doubleDownOptions;
+    boolean canHitSplitAces;
+    int maxNumSplits;
+    int numBurnCards;
+    int numDecks;
+    int numCardsAfterCutCard;
+    boolean canSurrender;
+    boolean sevenCardCharlieRuleIsActive;
 
     public TableRules() {
         minBet = new CurrencyAmount(10L);

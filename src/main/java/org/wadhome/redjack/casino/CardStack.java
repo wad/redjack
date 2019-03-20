@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 abstract class CardStack {
-    protected List<Card> cards;
+    List<Card> cards;
     private int stackNumber;
 
     void setStackNumber(int stackNumber) {
@@ -32,7 +32,7 @@ abstract class CardStack {
         return topCard;
     }
 
-    protected void extraHandlingOnCardDraw() {
+    void extraHandlingOnCardDraw() {
     }
 
     public int numCards() {

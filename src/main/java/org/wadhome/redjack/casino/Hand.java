@@ -9,7 +9,7 @@ import java.util.List;
 import static org.wadhome.redjack.casino.Value.OPTIONAL_EXTRA_ACE_POINTS;
 
 abstract class Hand {
-    protected List<Card> cards = new ArrayList<>();
+    List<Card> cards = new ArrayList<>();
     private Card firstCard = null;
     private Card secondCard = null;
 

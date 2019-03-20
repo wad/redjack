@@ -19,8 +19,18 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 class ExecutionPerfectBuk extends Execution {
+
+    public static void main(String... args) {
+        new ExecutionPerfectBuk().execute();
+    }
+
     @Override
-    Casino execute(Command command) {
+    Command getCommand() {
+        return Command.playHiLoPerfectBuk;
+    }
+
+    @Override
+    Casino execute() {
         int numRoundsToPlay = 100000;
         CurrencyAmount playerFavoriteBet = new CurrencyAmount(5L);
         CurrencyAmount initialPlayerBankrolls = new CurrencyAmount(2000L);
@@ -32,7 +42,7 @@ class ExecutionPerfectBuk extends Execution {
         TableRules tableRules = new TableRulesCustomMinMaxBets(5, 100);
 
         Casino casino = new Casino(
-                "Redjack (" + command + ")",
+                "Redjack (" + getCommand() + ")",
                 getSeed(),
                 false,
                 true);

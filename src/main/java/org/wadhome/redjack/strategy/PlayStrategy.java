@@ -14,8 +14,8 @@ import static org.wadhome.redjack.casino.Value.Ace;
 
 public abstract class PlayStrategy {
 
-    protected Table table;
-    protected TableRules tableRules;
+    Table table;
+    TableRules tableRules;
     private CardCountMethod cardCountMethod;
 
     PlayStrategy(

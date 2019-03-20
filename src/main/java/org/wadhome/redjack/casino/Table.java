@@ -57,8 +57,8 @@ public class Table {
         return shoe;
     }
 
-    public void setMuteDisplay(boolean muteDisplay) {
-        this.muteDisplay = muteDisplay;
+    void setMuteDisplay() {
+        this.muteDisplay = true;
     }
 
     int getTableNumber() {

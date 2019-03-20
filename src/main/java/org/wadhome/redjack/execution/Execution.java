@@ -8,12 +8,14 @@ import org.wadhome.redjack.money.CurrencyAmount;
 
 import java.util.List;
 
-public abstract class Execution {
+abstract class Execution {
     private Long seedOverride = null;
 
-    abstract Casino execute(Command command);
+    abstract Command getCommand();
 
-    protected void setSeedOverride(Long seedOverride) {
+    abstract Casino execute();
+
+    void setSeedOverride(Long seedOverride) {
         this.seedOverride = seedOverride;
     }
 

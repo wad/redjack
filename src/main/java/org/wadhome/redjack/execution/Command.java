@@ -15,7 +15,6 @@ public enum Command {
     playHiLoPerfectBuk10M,
     playHiLoRealisticBukBut4k,
     playHiLoPerfectBuk,
-    play100kBetMaxOnGoodCount,
     unknown;
 
     public void execute(String[] args) {
@@ -55,9 +54,6 @@ public enum Command {
             case playHiLoPerfectBuk:
                 execution = new ExecutionPerfectBuk();
                 break;
-            case play100kBetMaxOnGoodCount:
-                execution = new ExecutionHiLoCounterBallzy();
-                break;
             case unknown:
                 return;
             default:
@@ -67,7 +63,7 @@ public enum Command {
         execution.setSeedOverride(seed);
         Casino casino = null;
         try {
-            casino = execution.execute(this);
+            casino = execution.execute();
         } finally {
             if (casino != null) {
                 casino.closeCasino();

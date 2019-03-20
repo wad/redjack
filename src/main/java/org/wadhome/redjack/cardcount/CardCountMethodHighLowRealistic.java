@@ -68,7 +68,7 @@ public class CardCountMethodHighLowRealistic extends CardCountMethod {
         return runningCount;
     }
 
-    public int getTrueCount(DiscardTray discardTray) {
+    private int getTrueCount(DiscardTray discardTray) {
         double numDecksInDiscardTray = estimateNumDecksInDiscardTray(discardTray);
         double numDecksRemaining = estimateNumDecksRemainingInShoe(
                 tableRules.getNumDecks(),

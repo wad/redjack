@@ -57,7 +57,7 @@ public class Output {
         return isDisplaying;
     }
 
-    boolean isOutputting() {
+    private boolean isOutputting() {
         return isDisplaying || isLogging;
     }
 

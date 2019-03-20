@@ -25,10 +25,10 @@ public enum BukofskyBankrollLevel {
             new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
 
-    int minimumBankrollInDollars;
-    int minimumBetInDollars;
-    int[] perfectBetMatrix;
-    int[] realisticBetMatrix;
+    private int minimumBankrollInDollars;
+    private int minimumBetInDollars;
+    private int[] perfectBetMatrix;
+    private int[] realisticBetMatrix;
 
     BukofskyBankrollLevel(
             int minimumBankrollInDollars,

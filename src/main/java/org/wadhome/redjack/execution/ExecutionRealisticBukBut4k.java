@@ -18,8 +18,18 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 class ExecutionRealisticBukBut4k extends Execution {
+
+    public static void main(String... args) {
+        new ExecutionRealisticBukBut4k().execute();
+    }
+
     @Override
-    Casino execute(Command command) {
+    Command getCommand() {
+        return Command.playHiLoRealisticBukBut4k;
+    }
+
+    @Override
+    Casino execute() {
         int numRoundsToPlay = 100000;
         CurrencyAmount playerFavoriteBet = new CurrencyAmount(5L);
         CurrencyAmount initialPlayerBankrolls = new CurrencyAmount(4000L);
@@ -32,7 +42,7 @@ class ExecutionRealisticBukBut4k extends Execution {
         TableRules tableRules = new TableRulesCustomMinMaxBets(50, 100);
 
         Casino casino = new Casino(
-                "Redjack (" + command + ")",
+                "Redjack (" + getCommand() + ")",
                 getSeed(),
                 false,
                 true);

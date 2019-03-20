@@ -19,8 +19,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 class ExecutionOneShoe extends Execution {
+
+    public static void main(String... args) {
+        new ExecutionOneShoe().execute();
+    }
+
     @Override
-    Casino execute(Command command) {
+    Command getCommand() {
+        return Command.playOneShoe;
+    }
+
+    @Override
+    Casino execute() {
         CurrencyAmount playerFavoriteBet = new CurrencyAmount(25L);
         CurrencyAmount initialPlayerBankrolls = new CurrencyAmount(100000L);
         System.out.println("Two players, each with "
@@ -31,7 +41,7 @@ class ExecutionOneShoe extends Execution {
         TableRules tableRules = new TableRulesCustomMinMaxBets(25, 300);
 
         Casino casino = new Casino(
-                "Redjack (" + command + ")",
+                "Redjack (" + getCommand() + ")",
                 getSeed(),
                 true,
                 true);

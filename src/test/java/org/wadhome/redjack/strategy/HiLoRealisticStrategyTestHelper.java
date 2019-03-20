@@ -10,7 +10,7 @@ import org.wadhome.redjack.rules.BlackjackPlay;
 import org.wadhome.redjack.rules.TableRules;
 import org.wadhome.redjack.rules.TableRulesForTest;
 
-public class HiLoRealisticStrategyTestHelper extends TestHelper {
+class HiLoRealisticStrategyTestHelper extends TestHelper {
     private MoneyPile bankroll = MoneyPile.extractMoneyFromFederalReserve(new CurrencyAmount(10000L));
     private Seat seat = new Seat(SeatNumber.one);
 
