@@ -1,5 +1,7 @@
-package org.wadhome.redjack;
+package org.wadhome.redjack.casino;
 
+import org.wadhome.redjack.Output;
+import org.wadhome.redjack.Randomness;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.TableRules;

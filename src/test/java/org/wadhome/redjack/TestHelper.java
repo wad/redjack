@@ -2,6 +2,10 @@ package org.wadhome.redjack;
 
 import org.wadhome.redjack.cardcount.CardCountStatus;
 import org.wadhome.redjack.cardcount.CardCountStatusRunningAndTrue;
+import org.wadhome.redjack.casino.Card;
+import org.wadhome.redjack.casino.Deck;
+import org.wadhome.redjack.casino.Suite;
+import org.wadhome.redjack.casino.Value;
 
 public abstract class TestHelper {
 

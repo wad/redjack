@@ -1,9 +1,9 @@
 package org.wadhome.redjack.bet;
 
-import org.wadhome.redjack.Casino;
-import org.wadhome.redjack.Player;
 import org.wadhome.redjack.Randomness;
-import org.wadhome.redjack.Table;
+import org.wadhome.redjack.casino.Casino;
+import org.wadhome.redjack.casino.Player;
+import org.wadhome.redjack.casino.Table;
 import org.wadhome.redjack.money.CurrencyAmount;
 
 public class BetRequest {

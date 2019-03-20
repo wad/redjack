@@ -1,6 +1,6 @@
 package org.wadhome.redjack.execution;
 
-import org.wadhome.redjack.Casino;
+import org.wadhome.redjack.casino.Casino;
 
 import java.util.Arrays;
 

@@ -1,4 +1,4 @@
-package org.wadhome.redjack;
+package org.wadhome.redjack.casino;
 
 import org.junit.Test;
 import org.wadhome.redjack.bet.BettingStrategyAlwaysFavorite;
@@ -15,7 +15,7 @@ public class TablePlayTest {
     @Test
     public void testRunningBankrollBalance() {
         int tableNumber = 1;
-        Casino casino = new Casino("test", Randomness.generateRandomSeed(), false, false);
+        Casino casino = new Casino();
         TableRules tableRules = new TableRulesForTest();
         casino.createTable(tableNumber, tableRules);
         Table table = casino.getTable(tableNumber);
@@ -48,6 +48,7 @@ public class TablePlayTest {
                 new PlayStrategyBasic(table, new BettingStrategyAlwaysFavorite()),
                 new CurrencyAmount(100L));
         table.assignPlayerToSeat(SeatNumber.five, charles);
+        table.setMuteDisplay(true);
 
         CurrencyAmount initialCasinoBankroll = casino.getBankroll().getCurrencyAmountCopy();
 

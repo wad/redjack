@@ -1,6 +1,6 @@
 package org.wadhome.redjack.bet;
 
-import org.wadhome.redjack.Player;
+import org.wadhome.redjack.casino.Player;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.money.CurrencyComputation;
 

@@ -1,15 +1,15 @@
-package org.wadhome.redjack;
+package org.wadhome.redjack.casino;
 
 import org.wadhome.redjack.rules.Blackjack;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class Deck extends CardStack {
+public class Deck extends CardStack {
 
-    static final int MAX_DECK_NUMBER = 9999;
+    public static final int MAX_DECK_NUMBER = 9999;
 
-    Deck(int deckNumber) {
+    public Deck(int deckNumber) {
         if (deckNumber > MAX_DECK_NUMBER) {
             throw new RuntimeException("Deck number > " + MAX_DECK_NUMBER);
         }

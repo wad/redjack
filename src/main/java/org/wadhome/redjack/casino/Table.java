@@ -1,5 +1,6 @@
-package org.wadhome.redjack;
+package org.wadhome.redjack.casino;
 
+import org.wadhome.redjack.Output;
 import org.wadhome.redjack.cardcount.CardCountStatus;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.money.CurrencyComputation;
@@ -21,6 +22,7 @@ public class Table {
     private Map<SeatNumber, Seat> seats;
     private DealerHand dealerHand;
     private Gender dealerGender;
+    private boolean muteDisplay = false;
 
     Table(
             Casino casino,
@@ -53,6 +55,10 @@ public class Table {
 
     public Shoe getShoe() {
         return shoe;
+    }
+
+    public void setMuteDisplay(boolean muteDisplay) {
+        this.muteDisplay = muteDisplay;
     }
 
     int getTableNumber() {
@@ -234,7 +240,7 @@ public class Table {
             }
         }
 
-        if (!output.isDisplaying()) {
+        if (!output.isDisplaying() && !muteDisplay) {
             System.out.println();
         }
         showAndDisplay("Completed " + roundNumber + " rounds, in " + shoeCount + " shoes.");
@@ -805,7 +811,7 @@ public class Table {
     }
 
     private void showAndDisplay(String message) {
-        if (!casino.getOutput().isDisplaying()) {
+        if (!casino.getOutput().isDisplaying() && !muteDisplay) {
             System.out.println(message);
         }
         show(message);

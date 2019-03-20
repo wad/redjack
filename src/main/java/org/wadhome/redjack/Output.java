@@ -1,6 +1,7 @@
 package org.wadhome.redjack;
 
 import org.wadhome.redjack.cardcount.CardCountStatus;
+import org.wadhome.redjack.casino.Player;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -31,7 +32,7 @@ public class Output {
     private boolean isLogging;
     private int sampleFactor = 100; // this works for runs of 100000 rounds.
 
-    Output(
+    public Output(
             boolean isDisplaying,
             boolean isLogging) {
         this.isDisplaying = isDisplaying;
@@ -47,11 +48,12 @@ public class Output {
         sampleFactor = expectedNumRounds / desiredTotalRoundsInBankrollSample;
     }
 
-    boolean isLogging() {
+    public boolean isLogging() {
         return isLogging;
     }
 
-    boolean isDisplaying() {
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    public boolean isDisplaying() {
         return isDisplaying;
     }
 
@@ -59,11 +61,11 @@ public class Output {
         return isDisplaying || isLogging;
     }
 
-    void showMessage(String message) {
+    public void showMessage(String message) {
         showMessage(message, null);
     }
 
-    void showMessage(
+    public void showMessage(
             String message,
             CardCountStatus cardCountStatus) {
         if (isOutputting()) {
@@ -100,7 +102,7 @@ public class Output {
         }
     }
 
-    void closeLogs() {
+    public void closeLogs() {
         if (isLogging) {
             try {
                 writerBankroll.close();
@@ -112,7 +114,7 @@ public class Output {
         }
     }
 
-    void logRound(
+    public void logRound(
             int roundNumber,
             List<Player> players) {
         if (isLogging) {

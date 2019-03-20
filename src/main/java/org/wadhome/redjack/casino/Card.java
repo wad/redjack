@@ -1,11 +1,11 @@
-package org.wadhome.redjack;
+package org.wadhome.redjack.casino;
 
 public class Card {
     private int deckNumber;
     private Suite suite;
     private Value value;
 
-    Card(
+    public Card(
             int deckNumber,
             Suite suite,
             Value value) {

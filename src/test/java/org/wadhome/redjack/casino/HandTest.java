@@ -1,6 +1,7 @@
-package org.wadhome.redjack;
+package org.wadhome.redjack.casino;
 
 import org.junit.Test;
+import org.wadhome.redjack.TestHelper;
 import org.wadhome.redjack.rules.ComparisonResult;
 
 import static org.junit.Assert.*;

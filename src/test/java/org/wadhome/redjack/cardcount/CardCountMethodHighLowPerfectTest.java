@@ -1,10 +1,10 @@
 package org.wadhome.redjack.cardcount;
 
 import org.junit.Test;
-import org.wadhome.redjack.Casino;
-import org.wadhome.redjack.Table;
 import org.wadhome.redjack.TestHelper;
 import org.wadhome.redjack.bet.BettingStrategyAlwaysFavorite;
+import org.wadhome.redjack.casino.Casino;
+import org.wadhome.redjack.casino.Table;
 import org.wadhome.redjack.rules.TableRulesForTest;
 
 import static org.junit.Assert.assertEquals;

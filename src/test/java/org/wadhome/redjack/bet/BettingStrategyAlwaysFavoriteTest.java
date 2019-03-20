@@ -2,10 +2,10 @@ package org.wadhome.redjack.bet;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.wadhome.redjack.Casino;
-import org.wadhome.redjack.Gender;
-import org.wadhome.redjack.Player;
-import org.wadhome.redjack.Table;
+import org.wadhome.redjack.casino.Casino;
+import org.wadhome.redjack.casino.Gender;
+import org.wadhome.redjack.casino.Player;
+import org.wadhome.redjack.casino.Table;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.TableRulesForTest;

@@ -1,4 +1,4 @@
-package org.wadhome.redjack;
+package org.wadhome.redjack.casino;
 
 import java.util.Collections;
 import java.util.List;

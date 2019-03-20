@@ -1,14 +1,14 @@
 package org.wadhome.redjack.strategy;
 
-import org.wadhome.redjack.*;
 import org.wadhome.redjack.bet.BettingStrategy;
 import org.wadhome.redjack.cardcount.CardCountMethodNone;
+import org.wadhome.redjack.casino.*;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.rules.Blackjack;
 import org.wadhome.redjack.rules.BlackjackPlay;
 import org.wadhome.redjack.rules.DoubleDownRuleOptions;
 
-import static org.wadhome.redjack.Value.*;
+import static org.wadhome.redjack.casino.Value.*;
 import static org.wadhome.redjack.rules.BlackjackPlay.*;
 
 public class PlayStrategyBasic extends PlayStrategy {

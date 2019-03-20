@@ -1,4 +1,4 @@
-package org.wadhome.redjack;
+package org.wadhome.redjack.casino;
 
 class RoundResult {
     private boolean allPlayersQuit;

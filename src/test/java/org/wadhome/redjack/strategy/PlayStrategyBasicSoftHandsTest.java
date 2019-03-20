@@ -1,7 +1,7 @@
 package org.wadhome.redjack.strategy;
 
 import org.junit.Test;
-import org.wadhome.redjack.Value;
+import org.wadhome.redjack.casino.Value;
 import org.wadhome.redjack.rules.BlackjackPlay;
 import org.wadhome.redjack.rules.DoubleDownRuleOptions;
 import org.wadhome.redjack.rules.TableRulesForTest;

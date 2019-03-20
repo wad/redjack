@@ -1,9 +1,9 @@
 package org.wadhome.redjack.cardcount;
 
-import org.wadhome.redjack.Card;
-import org.wadhome.redjack.Table;
 import org.wadhome.redjack.bet.BetRequest;
 import org.wadhome.redjack.bet.BettingStrategy;
+import org.wadhome.redjack.casino.Card;
+import org.wadhome.redjack.casino.Table;
 import org.wadhome.redjack.rules.Blackjack;
 
 // This one uses the actual number of remaining cards in the shoe to calculate the true count.

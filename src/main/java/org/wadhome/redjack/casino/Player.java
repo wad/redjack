@@ -1,4 +1,4 @@
-package org.wadhome.redjack;
+package org.wadhome.redjack.casino;
 
 import org.wadhome.redjack.bet.BetRequest;
 import org.wadhome.redjack.cardcount.CardCountStatus;
@@ -37,7 +37,7 @@ public class Player {
         this.playStrategy = playStrategy;
     }
 
-    String getPlayerName() {
+    public String getPlayerName() {
         return playerName;
     }
 

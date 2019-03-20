@@ -1,7 +1,8 @@
-package org.wadhome.redjack;
+package org.wadhome.redjack.casino;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.wadhome.redjack.TestHelper;
 import org.wadhome.redjack.bet.BettingStrategyAlwaysFavorite;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.money.MoneyPile;

@@ -9,12 +9,12 @@ public class Randomness {
     private Long seed;
     private Boolean overrideNextPercentCheckWithThisValue = null;
 
-    Randomness(Long seed) {
+    public Randomness(Long seed) {
         this.seed = seed;
         this.random = new Random(seed);
     }
 
-    boolean getRandomBoolean() {
+    public boolean getRandomBoolean() {
         return (random.nextLong() & 1) == 1;
     }
 
@@ -38,7 +38,7 @@ public class Randomness {
         return getRandomNumberFromZeroToValueExclusive(100) < percentChance;
     }
 
-    void shuffle(List list) {
+    public void shuffle(List list) {
         if (seed == null) {
             Collections.shuffle(list);
         } else {
@@ -51,7 +51,7 @@ public class Randomness {
         return rand.nextLong();
     }
 
-    Long getSeed() {
+    public Long getSeed() {
         return seed;
     }
 

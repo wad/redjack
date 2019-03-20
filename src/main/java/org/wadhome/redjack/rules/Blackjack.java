@@ -1,7 +1,7 @@
 package org.wadhome.redjack.rules;
 
-import org.wadhome.redjack.Suite;
-import org.wadhome.redjack.Value;
+import org.wadhome.redjack.casino.Suite;
+import org.wadhome.redjack.casino.Value;
 
 public class Blackjack {
     public static final int NUM_CARDS_PER_DECK = Value.values().length * Suite.values().length; // 52

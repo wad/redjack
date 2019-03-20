@@ -1,4 +1,4 @@
-package org.wadhome.redjack;
+package org.wadhome.redjack.casino;
 
 public enum Value {
     Two("2", 2),

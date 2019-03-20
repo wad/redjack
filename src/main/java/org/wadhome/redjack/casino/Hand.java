@@ -1,4 +1,4 @@
-package org.wadhome.redjack;
+package org.wadhome.redjack.casino;
 
 import org.wadhome.redjack.rules.Blackjack;
 import org.wadhome.redjack.rules.ComparisonResult;
@@ -6,7 +6,7 @@ import org.wadhome.redjack.rules.ComparisonResult;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.wadhome.redjack.Value.OPTIONAL_EXTRA_ACE_POINTS;
+import static org.wadhome.redjack.casino.Value.OPTIONAL_EXTRA_ACE_POINTS;
 
 abstract class Hand {
     protected List<Card> cards = new ArrayList<>();

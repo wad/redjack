@@ -1,7 +1,11 @@
 package org.wadhome.redjack.execution;
 
-import org.wadhome.redjack.*;
+import org.wadhome.redjack.Output;
 import org.wadhome.redjack.bet.BettingStrategyAlwaysFavorite;
+import org.wadhome.redjack.casino.Casino;
+import org.wadhome.redjack.casino.Gender;
+import org.wadhome.redjack.casino.Player;
+import org.wadhome.redjack.casino.Table;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.TableRules;
