@@ -141,8 +141,8 @@ public class PlayStrategyHiLoPerfectHardHandsTest extends HiLoPerfectStrategyTes
                     assertEquals(BlackjackPlay.Hit, compute(c5(), c7(), c(upcardValue)));
 
                     assertEquals(BlackjackPlay.Hit, compute(tc(3), c5(), c7(), c(upcardValue)));
-                    assertEquals(BlackjackPlay.Stand, compute(tc(4), c5(), c7(), c(upcardValue))); //deviate
-                    assertEquals(BlackjackPlay.Stand, compute(tc(5), c5(), c7(), c(upcardValue))); //deviate
+                    assertEquals(BlackjackPlay.Stand, compute(tc(4), c5(), c7(), c(upcardValue))); // deviate
+                    assertEquals(BlackjackPlay.Stand, compute(tc(5), c5(), c7(), c(upcardValue))); // deviate
                     break;
                 case Three:
                     assertEquals(BlackjackPlay.Hit, compute(c2(), cT(), c(upcardValue)));
@@ -151,8 +151,8 @@ public class PlayStrategyHiLoPerfectHardHandsTest extends HiLoPerfectStrategyTes
                     assertEquals(BlackjackPlay.Hit, compute(c5(), c7(), c(upcardValue)));
 
                     assertEquals(BlackjackPlay.Hit, compute(tc(1), c5(), c7(), c(upcardValue)));
-                    assertEquals(BlackjackPlay.Stand, compute(tc(2), c5(), c7(), c(upcardValue))); //deviate
-                    assertEquals(BlackjackPlay.Stand, compute(tc(3), c5(), c7(), c(upcardValue))); //deviate
+                    assertEquals(BlackjackPlay.Stand, compute(tc(2), c5(), c7(), c(upcardValue))); // deviate
+                    assertEquals(BlackjackPlay.Stand, compute(tc(3), c5(), c7(), c(upcardValue))); // deviate
                     break;
                 case Four:
                     assertEquals(BlackjackPlay.Stand, compute(c2(), cT(), c(upcardValue)));
@@ -160,10 +160,10 @@ public class PlayStrategyHiLoPerfectHardHandsTest extends HiLoPerfectStrategyTes
                     assertEquals(BlackjackPlay.Stand, compute(c4(), c8(), c(upcardValue)));
                     assertEquals(BlackjackPlay.Stand, compute(c5(), c7(), c(upcardValue)));
 
-                    assertEquals(BlackjackPlay.Hit, compute(rc(-2), c5(), c7(), c(upcardValue)));
-                    assertEquals(BlackjackPlay.Hit, compute(rc(-1), c5(), c7(), c(upcardValue)));
-                    assertEquals(BlackjackPlay.Stand, compute(rc(0), c5(), c7(), c(upcardValue))); // deviate
-                    assertEquals(BlackjackPlay.Stand, compute(rc(1), c5(), c7(), c(upcardValue))); // deviate
+                    assertEquals(BlackjackPlay.Hit, compute(rc(-2), c5(), c7(), c(upcardValue))); // deviate
+                    assertEquals(BlackjackPlay.Hit, compute(rc(-1), c5(), c7(), c(upcardValue))); // deviate
+                    assertEquals(BlackjackPlay.Stand, compute(rc(0), c5(), c7(), c(upcardValue)));
+                    assertEquals(BlackjackPlay.Stand, compute(rc(1), c5(), c7(), c(upcardValue)));
                     break;
                 case Five:
                     assertEquals(BlackjackPlay.Stand, compute(c2(), cT(), c(upcardValue)));
@@ -182,8 +182,8 @@ public class PlayStrategyHiLoPerfectHardHandsTest extends HiLoPerfectStrategyTes
                     assertEquals(BlackjackPlay.Stand, compute(c4(), c8(), c(upcardValue)));
                     assertEquals(BlackjackPlay.Stand, compute(c5(), c7(), c(upcardValue)));
 
-                    assertEquals(BlackjackPlay.Hit, compute(rc(-2), c5(), c7(), c(upcardValue))); // Deviate
-                    assertEquals(BlackjackPlay.Hit, compute(rc(-1), c5(), c7(), c(upcardValue))); // Deviate
+                    assertEquals(BlackjackPlay.Hit, compute(rc(-2), c5(), c7(), c(upcardValue))); // deviate
+                    assertEquals(BlackjackPlay.Hit, compute(rc(-1), c5(), c7(), c(upcardValue))); // deviate
                     assertEquals(BlackjackPlay.Stand, compute(rc(0), c5(), c7(), c(upcardValue)));
                     assertEquals(BlackjackPlay.Stand, compute(rc(1), c5(), c7(), c(upcardValue)));
                     break;
@@ -399,35 +399,35 @@ public class PlayStrategyHiLoPerfectHardHandsTest extends HiLoPerfectStrategyTes
                     break;
                 case Nine:
                     assertEquals(BlackjackPlay.Surrender, compute(tableRulesCanSurrender, tc(4), c6(), cT(), c(upcardValue)));
-                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCanSurrender, tc(5), c6(), cT(), c(upcardValue))); //deviate
-                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCanSurrender, tc(6), c6(), cT(), c(upcardValue))); //deviate
+                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCanSurrender, tc(5), c6(), cT(), c(upcardValue))); // deviate
+                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCanSurrender, tc(6), c6(), cT(), c(upcardValue))); // deviate
                     assertEquals(BlackjackPlay.Surrender, compute(tableRulesCanSurrender, tc(4), c7(), c9(), c(upcardValue)));
-                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCanSurrender, tc(5), c7(), c9(), c(upcardValue))); //deviate
-                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCanSurrender, tc(6), c7(), c9(), c(upcardValue))); //deviate
+                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCanSurrender, tc(5), c7(), c9(), c(upcardValue))); // deviate
+                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCanSurrender, tc(6), c7(), c9(), c(upcardValue))); // deviate
 
                     // handle case where can't surrender due to more than 2 cards in hand
                     assertEquals(BlackjackPlay.Hit, compute(tableRulesCanSurrender, tc(4), c3(), c4(), c9(), c(upcardValue)));
-                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCanSurrender, tc(5), c3(), c4(), c9(), c(upcardValue))); //deviate
-                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCanSurrender, tc(6), c3(), c4(), c9(), c(upcardValue))); //deviate
+                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCanSurrender, tc(5), c3(), c4(), c9(), c(upcardValue))); // deviate
+                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCanSurrender, tc(6), c3(), c4(), c9(), c(upcardValue))); // deviate
 
                     // handle conditions where can't surrender due to table rules
                     assertEquals(BlackjackPlay.Hit, compute(tableRulesCannotSurrender, tc(4), c6(), cT(), c(upcardValue)));
-                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCannotSurrender, tc(5), c6(), cT(), c(upcardValue))); //deviate
-                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCannotSurrender, tc(6), c6(), cT(), c(upcardValue))); //deviate
+                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCannotSurrender, tc(5), c6(), cT(), c(upcardValue))); // deviate
+                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCannotSurrender, tc(6), c6(), cT(), c(upcardValue))); // deviate
                     assertEquals(BlackjackPlay.Hit, compute(tableRulesCannotSurrender, tc(4), c7(), c9(), c(upcardValue)));
-                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCannotSurrender, tc(5), c7(), c9(), c(upcardValue))); //deviate
-                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCannotSurrender, tc(6), c7(), c9(), c(upcardValue))); //deviate
+                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCannotSurrender, tc(5), c7(), c9(), c(upcardValue))); // deviate
+                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCannotSurrender, tc(6), c7(), c9(), c(upcardValue))); // deviate
                     break;
                 case Ten:
                 case Jack:
                 case Queen:
                 case King:
                     assertEquals(BlackjackPlay.Surrender, compute(tableRulesCanSurrender, rc(-1), c6(), cT(), c(upcardValue)));
-                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCanSurrender, rc(0), c6(), cT(), c(upcardValue))); //deviate
-                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCanSurrender, rc(1), c6(), cT(), c(upcardValue))); //deviate
+                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCanSurrender, rc(0), c6(), cT(), c(upcardValue))); // deviate
+                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCanSurrender, rc(1), c6(), cT(), c(upcardValue))); // deviate
                     assertEquals(BlackjackPlay.Surrender, compute(tableRulesCanSurrender, rc(-1), c7(), c9(), c(upcardValue)));
-                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCanSurrender, rc(0), c7(), c9(), c(upcardValue))); //deviate
-                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCanSurrender, rc(1), c7(), c9(), c(upcardValue))); //deviate
+                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCanSurrender, rc(0), c7(), c9(), c(upcardValue))); // deviate
+                    assertEquals(BlackjackPlay.Stand, compute(tableRulesCanSurrender, rc(1), c7(), c9(), c(upcardValue))); // deviate
 
                     // handle case where can't surrender due to more than 2 cards in hand
                     assertEquals(BlackjackPlay.Stand, compute(tableRulesCanSurrender, rc(-1), c2(), c4(), cT(), c(upcardValue)));

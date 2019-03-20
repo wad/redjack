@@ -7,6 +7,7 @@ import java.util.Random;
 public class Randomness {
     private Random random;
     private Long seed;
+    private Boolean overrideNextPercentCheckWithThisValue = null;
 
     Randomness(Long seed) {
         this.seed = seed;
@@ -22,6 +23,12 @@ public class Randomness {
     }
 
     public boolean checkRandomPercentChance(int percentChance) {
+        if (overrideNextPercentCheckWithThisValue != null) {
+            boolean result = overrideNextPercentCheckWithThisValue;
+            overrideNextPercentCheckWithThisValue = null;
+            return result;
+        }
+
         if (percentChance <= 0) {
             return false;
         }
@@ -46,5 +53,9 @@ public class Randomness {
 
     Long getSeed() {
         return seed;
+    }
+
+    public void overrideNextPercentCheckWithThisValue(Boolean overrideNextPercentCheckWithThisValue) {
+        this.overrideNextPercentCheckWithThisValue = overrideNextPercentCheckWithThisValue;
     }
 }

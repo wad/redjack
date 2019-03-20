@@ -122,12 +122,12 @@ public class PlayStrategyHighLowRealistic extends PlayStrategy {
                 }
             }
             if (dealerUpcard.getValue() == Value.Nine) {
-                if (surrenderIsPossible && runningCount >= 2) {
+                if (surrenderIsPossible && trueCount >= 2) {
                     if (randomness.checkRandomPercentChance(50)) {
-                        player.say("Because the running count is two or more, I'm going to deviate from basic, and surrender, risking getting exposed as a card counter.");
+                        player.say("Because the true count is two or more, I'm going to deviate from basic, and surrender, risking getting exposed as a card counter.");
                         return BlackjackPlay.Surrender;
                     } else {
-                        player.say("Because the running count is two or more, I'd like to deviate from basic, and surrender, but that looks too suspicious.");
+                        player.say("Because the true count is two or more, I'd like to deviate from basic, and surrender, but that looks too suspicious.");
                     }
                 }
             }

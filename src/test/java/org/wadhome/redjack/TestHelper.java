@@ -71,10 +71,6 @@ public abstract class TestHelper {
         return new CardCountStatusRunningAndTrue(0, trueCount);
     }
 
-    protected CardCountStatus tcrc(int runningCount, int trueCount) {
-        return new CardCountStatusRunningAndTrue(runningCount, trueCount);
-    }
-
     private void checkDeckNumber() {
         if (deckNumber > Deck.MAX_DECK_NUMBER) {
             deckNumber = 0;

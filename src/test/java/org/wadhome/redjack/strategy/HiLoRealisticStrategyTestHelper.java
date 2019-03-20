@@ -2,6 +2,7 @@ package org.wadhome.redjack.strategy;
 
 import org.wadhome.redjack.*;
 import org.wadhome.redjack.bet.BettingStrategyAlwaysFavorite;
+import org.wadhome.redjack.cardcount.CardCountStatus;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.money.MoneyPile;
 import org.wadhome.redjack.rules.BlackjackPlay;
@@ -13,13 +14,63 @@ public class HiLoRealisticStrategyTestHelper extends TestHelper {
     private Seat seat = new Seat(SeatNumber.one);
 
     BlackjackPlay compute(Card... cards) {
-        return compute(new TableRulesForTest(), cards);
+        return compute(
+                new TableRulesForTest(),
+                null,
+                null,
+                cards);
+    }
+
+    BlackjackPlay compute(
+            CardCountStatus cardCountStatus,
+            Card... cards) {
+        return compute(
+                new TableRulesForTest(),
+                cardCountStatus,
+                null,
+                cards);
+    }
+
+    BlackjackPlay compute(
+            CardCountStatus cardCountStatus,
+            boolean overrideNextPercentCheckWithThisValue,
+            Card... cards) {
+        return compute(
+                new TableRulesForTest(),
+                cardCountStatus,
+                overrideNextPercentCheckWithThisValue,
+                cards);
     }
 
     BlackjackPlay compute(
             TableRules tableRules,
             Card... cards) {
+        return compute(
+                tableRules,
+                null,
+                null,
+                cards);
+    }
+
+
+    BlackjackPlay compute(
+            TableRules tableRules,
+            CardCountStatus cardCountStatus,
+            Card... cards) {
+        return compute(
+                tableRules,
+                cardCountStatus,
+                null,
+                cards);
+    }
+
+        BlackjackPlay compute(
+            TableRules tableRules,
+            CardCountStatus cardCountStatus,
+            Boolean overrideNextPercentCheckWithThisValue,
+            Card... cards) {
         Casino casino = new Casino();
+        casino.getRandomness().overrideNextPercentCheckWithThisValue(overrideNextPercentCheckWithThisValue);
         Table table = casino.createTable(0, tableRules);
         int numCards = cards.length;
         if (numCards < 3) {
@@ -40,6 +91,11 @@ public class HiLoRealisticStrategyTestHelper extends TestHelper {
                 bankroll,
                 strategy,
                 tableRules.getMinBet());
+
+        if (cardCountStatus != null) {
+            strategy.getCardCountMethod().temporarilyOverrideCardCountStatus(cardCountStatus);
+        }
+
         return strategy.choosePlay(
                 player,
                 playerHand,
