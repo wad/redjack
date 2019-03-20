@@ -8,7 +8,7 @@ public class MoneyPile {
     private CurrencyAmount currencyAmount;
 
     private MoneyPile(CurrencyAmount currencyAmount) {
-        this.currencyAmount = currencyAmount;
+        this.currencyAmount = currencyAmount.copy();
     }
 
     public static MoneyPile extractMoneyFromFederalReserve(CurrencyAmount amountToExtract) {
