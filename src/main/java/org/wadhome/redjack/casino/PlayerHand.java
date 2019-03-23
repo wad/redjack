@@ -15,7 +15,7 @@ public class PlayerHand extends Hand {
         return betAmount.copy();
     }
 
-    void setBetAmount(CurrencyAmount betAmount) {
+    public void setBetAmount(CurrencyAmount betAmount) {
         this.betAmount = betAmount.copy();
     }
 

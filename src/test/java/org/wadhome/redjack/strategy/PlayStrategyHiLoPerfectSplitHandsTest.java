@@ -218,20 +218,13 @@ public class PlayStrategyHiLoPerfectSplitHandsTest extends HiLoPerfectStrategyTe
 
     @Test
     public void testPairOfAces() {
-        // todo: test splits for various table rules cases
         for (Value upcardValue : Value.values()) {
             switch (upcardValue) {
                 case Two:
                 case Three:
-                    assertEquals(BlackjackPlay.Split, compute(cA(), cA(), c(upcardValue)));
-                    // todo: hit if can't split (splits all used up)
-                    break;
                 case Four:
                 case Five:
                 case Six:
-                    assertEquals(BlackjackPlay.Split, compute(cA(), cA(), c(upcardValue)));
-                    // todo: hit if can't split (splits all used up)
-                    break;
                 case Seven:
                 case Eight:
                 case Nine:
@@ -241,7 +234,7 @@ public class PlayStrategyHiLoPerfectSplitHandsTest extends HiLoPerfectStrategyTe
                 case King:
                 case Ace:
                     assertEquals(BlackjackPlay.Split, compute(cA(), cA(), c(upcardValue)));
-                    // todo: hit if can't split (splits all used up)
+                    assertEquals(BlackjackPlay.Split, computeCannotSplit(cA(), cA(), c(upcardValue)));
                     break;
             }
         }

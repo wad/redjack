@@ -15,22 +15,51 @@ class HiLoPerfectStrategyTestHelper extends TestHelper {
     private Seat seat = new Seat(SeatNumber.one);
 
     BlackjackPlay compute(Card... cards) {
-        return compute(new TableRulesForTest(), null, cards);
+        return compute(
+                false,
+                new TableRulesForTest(),
+                null, cards);
+    }
+
+    BlackjackPlay computeCannotSplit(Card... cards) {
+        return compute(
+                true,
+                new TableRulesForTest(),
+                null, cards);
     }
 
     BlackjackPlay compute(
             CardCountStatus cardCountStatus,
             Card... cards) {
-        return compute(new TableRulesForTest(), cardCountStatus, cards);
+        return compute(
+                false,
+                new TableRulesForTest(),
+                cardCountStatus,
+                cards);
     }
 
     BlackjackPlay compute(
             TableRules tableRules,
             Card... cards) {
-        return compute(tableRules, null, cards);
+        return compute(
+                false,
+                tableRules,
+                null,
+                cards);
     }
 
     BlackjackPlay compute(
+            TableRules tableRules,
+            CardCountStatus cardCountStatus,
+            Card... cards) {
+        return compute(
+                false,
+                tableRules, cardCountStatus,
+                cards);
+    }
+
+    BlackjackPlay compute(
+            boolean preventSplitting,
             TableRules tableRules,
             CardCountStatus cardCountStatus,
             Card... cards) {
@@ -52,7 +81,7 @@ class HiLoPerfectStrategyTestHelper extends TestHelper {
                 "testPlayer",
                 Gender.female,
                 casino,
-                bankroll,
+                preventSplitting ? MoneyPile.extractMoneyFromFederalReserve(CurrencyAmount.zero()) : bankroll,
                 strategy,
                 tableRules.getMinBet());
 

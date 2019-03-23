@@ -16,6 +16,16 @@ class HiLoRealisticStrategyTestHelper extends TestHelper {
 
     BlackjackPlay compute(Card... cards) {
         return compute(
+                false,
+                new TableRulesForTest(),
+                null,
+                null,
+                cards);
+    }
+
+    BlackjackPlay computeCannotSplit(Card... cards) {
+        return compute(
+                true,
                 new TableRulesForTest(),
                 null,
                 null,
@@ -26,6 +36,7 @@ class HiLoRealisticStrategyTestHelper extends TestHelper {
             CardCountStatus cardCountStatus,
             Card... cards) {
         return compute(
+                false,
                 new TableRulesForTest(),
                 cardCountStatus,
                 null,
@@ -37,6 +48,7 @@ class HiLoRealisticStrategyTestHelper extends TestHelper {
             boolean overrideNextPercentCheckWithThisValue,
             Card... cards) {
         return compute(
+                false,
                 new TableRulesForTest(),
                 cardCountStatus,
                 overrideNextPercentCheckWithThisValue,
@@ -47,6 +59,7 @@ class HiLoRealisticStrategyTestHelper extends TestHelper {
             TableRules tableRules,
             Card... cards) {
         return compute(
+                false,
                 tableRules,
                 null,
                 null,
@@ -59,6 +72,7 @@ class HiLoRealisticStrategyTestHelper extends TestHelper {
             CardCountStatus cardCountStatus,
             Card... cards) {
         return compute(
+                false,
                 tableRules,
                 cardCountStatus,
                 null,
@@ -66,6 +80,20 @@ class HiLoRealisticStrategyTestHelper extends TestHelper {
     }
 
     BlackjackPlay compute(
+            TableRules tableRules,
+            CardCountStatus cardCountStatus,
+            Boolean overrideNextPercentCheckWithThisValue,
+            Card... cards) {
+        return compute(
+                false,
+                tableRules,
+                cardCountStatus,
+                overrideNextPercentCheckWithThisValue,
+                cards);
+    }
+
+    BlackjackPlay compute(
+            boolean preventSplitting,
             TableRules tableRules,
             CardCountStatus cardCountStatus,
             Boolean overrideNextPercentCheckWithThisValue,
@@ -89,7 +117,7 @@ class HiLoRealisticStrategyTestHelper extends TestHelper {
                 "testPlayer",
                 Gender.female,
                 casino,
-                bankroll,
+                preventSplitting ? MoneyPile.extractMoneyFromFederalReserve(CurrencyAmount.zero()) : bankroll,
                 strategy,
                 tableRules.getMinBet());
 

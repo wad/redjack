@@ -15,10 +15,21 @@ class BasicStrategyTestHelper extends TestHelper {
     private Seat seat = new Seat(SeatNumber.one);
 
     BlackjackPlay compute(Card... cards) {
-        return compute(new TableRulesForTest(), cards);
+        return compute(false, new TableRulesForTest(), cards);
+    }
+
+    BlackjackPlay computeCannotSplit(Card... cards) {
+        return compute(true, new TableRulesForTest(), cards);
     }
 
     BlackjackPlay compute(
+            TableRules tableRules,
+            Card... cards) {
+        return compute(false, tableRules, cards);
+    }
+
+    BlackjackPlay compute(
+            boolean preventSplitting,
             TableRules tableRules,
             Card... cards) {
         Casino casino = new Casino();
@@ -33,13 +44,14 @@ class BasicStrategyTestHelper extends TestHelper {
         for (int i = 0; i < numCards - 1; i++) {
             playerHand.addCard(cards[i]);
         }
+        playerHand.setBetAmount(tableRules.getMinBet());
 
         PlayStrategyBasic basicStrategy = new PlayStrategyBasic(table, new BettingStrategyAlwaysFavorite());
         Player player = new Player(
                 "testPlayer",
                 Gender.female,
                 casino,
-                bankroll,
+                preventSplitting ? MoneyPile.extractMoneyFromFederalReserve(CurrencyAmount.zero()) : bankroll,
                 basicStrategy,
                 tableRules.getMinBet());
         return basicStrategy.choosePlay(
