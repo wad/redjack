@@ -36,7 +36,6 @@ public class TableTestForSplittingTens extends TestHelper {
         table.assignPlayerToSeat(seatNumber, player);
     }
 
-    // todo: blackjack on split ace shouldn't result in 1.5x winnings
     @Test
     public void testSplitTensOneBlackjackOneBust() {
         table.getCasino().getOutput().enableDisplayForTest();
@@ -44,6 +43,6 @@ public class TableTestForSplittingTens extends TestHelper {
         CardCountStatusRunningAndTrue count = new CardCountStatusRunningAndTrue(0, 10);
         player.getPlayStrategy().getCardCountMethod().temporarilyOverrideCardCountStatus(count);
         table.playRound();
-        assertEquals("$100.00", player.getBankroll().toString());
+        assertEquals("$115.00", player.getBankroll().toString());
     }
 }
