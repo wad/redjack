@@ -4,7 +4,6 @@ import org.wadhome.redjack.bet.BetRequest;
 import org.wadhome.redjack.cardcount.CardCountStatus;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.money.MoneyPile;
-import org.wadhome.redjack.rules.BlackjackPlay;
 import org.wadhome.redjack.rules.PlayerDecision;
 import org.wadhome.redjack.strategy.PlayStrategy;
 

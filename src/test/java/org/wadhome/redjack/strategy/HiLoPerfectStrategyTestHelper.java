@@ -3,6 +3,7 @@ package org.wadhome.redjack.strategy;
 import org.wadhome.redjack.TestHelper;
 import org.wadhome.redjack.bet.BettingStrategyAlwaysFavorite;
 import org.wadhome.redjack.cardcount.CardCountStatus;
+import org.wadhome.redjack.cardcount.CardCountStatusRunningAndTrue;
 import org.wadhome.redjack.casino.*;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.money.MoneyPile;
@@ -93,5 +94,28 @@ class HiLoPerfectStrategyTestHelper extends TestHelper {
                 player,
                 playerHand,
                 dealerUpcard).getBlackjackPlay();
+    }
+
+    CurrencyAmount computeInsuranceBet(int trueCount) {
+        Casino casino = new Casino();
+        Table table = casino.createTable(0, new TableRulesForTest());
+        Seat seat = new Seat(SeatNumber.one);
+        Player player = new Player(
+                "Zack",
+                Gender.male,
+                casino,
+                MoneyPile.extractMoneyFromFederalReserve(new CurrencyAmount(1000L)),
+                new PlayStrategyHighLowPerfect(table, new BettingStrategyAlwaysFavorite()),
+                new CurrencyAmount(30L));
+        PlayerHand hand = new PlayerHand(seat);
+        hand.addCard(cT());
+        hand.addCard(cT());
+        CardCountStatusRunningAndTrue cardCountStatus = new CardCountStatusRunningAndTrue(0, trueCount);
+        player.getPlayStrategy().getCardCountMethod().temporarilyOverrideCardCountStatus(cardCountStatus);
+        return player.getPlayStrategy().getInsuranceBet(
+                new CurrencyAmount(15L),
+                hand,
+                cT(),
+                new CurrencyAmount(500L));
     }
 }

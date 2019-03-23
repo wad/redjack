@@ -1,11 +1,5 @@
 package org.wadhome.redjack;
 
-// todo: add multithreading
-
-// todo: log true counts from table
-
-// todo: make log at shoe level
-
 // todo: test insurance with card counting
 
 // todo: look at two other hi-lo card-counting basic strategy deviation charts, compare with the one used here

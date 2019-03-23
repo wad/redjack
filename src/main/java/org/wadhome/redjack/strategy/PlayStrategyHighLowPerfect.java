@@ -31,7 +31,7 @@ public class PlayStrategyHighLowPerfect extends PlayStrategy {
             Card dealerUpcard,
             CurrencyAmount bankrollAvailable) {
         CardCountStatusRunningAndTrue count = (CardCountStatusRunningAndTrue) getCardCountMethod().getCardCountStatus();
-        if (count.getTrueCount() > 3) {
+        if (count.getTrueCount() >= 3) {
             return maximumInsuranceBet;
         }
         return CurrencyAmount.zero();

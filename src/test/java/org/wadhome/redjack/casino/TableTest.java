@@ -194,8 +194,6 @@ public class TableTest extends TestHelper {
         assertEquals("$70.00", player.getBankroll().toString());
     }
 
-    // todo: test split tens (not using pure basic strategy), and get a blackjack
-
     @Test
     public void testSplitAcesNoHittingAllowed() {
         tableRules.setCanHitSplitAces(false);
@@ -238,7 +236,8 @@ public class TableTest extends TestHelper {
 
     @Test
     public void testSplitAcesHittingAllowedTwoSplits() {
-        // todo: hands processed in the wrong order. A,9 hand is processed last, should be next-to-last.
+        // note: hands processed in the wrong order. A,9 hand is processed last, should be next-to-last.
+        // (probably not worth fixing, cosmetic issue only.)
         tableRules.setCanHitSplitAces(true);
         shoe.addCardToBottom(cA(), cT(), cA(), cT(), cA(), c6(), c2(), c9(), c8(), cT());
         table.playRound();
