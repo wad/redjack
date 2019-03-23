@@ -57,6 +57,10 @@ public class Output {
         return isDisplaying;
     }
 
+    public void enableDisplayForTest() {
+        this.isDisplaying = true;
+    }
+
     private boolean isOutputting() {
         return isDisplaying || isLogging;
     }

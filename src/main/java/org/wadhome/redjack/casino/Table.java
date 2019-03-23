@@ -511,7 +511,10 @@ public class Table {
                         while (shallContinue) {
                             String initialHand = hand.showCardsWithTotal();
                             PlayerDecision playerDecision = player.getPlay(hand, dealerUpcard);
-                            player.say(playerDecision.getPlayerComment());
+                            String playerComment = playerDecision.getPlayerComment();
+                            if (playerComment != null) {
+                                player.say(playerComment);
+                            }
                             BlackjackPlay playerAction = playerDecision.getBlackjackPlay();
                             CardCountStatus cardCountStatus = player.getCardCountStatus();
                             switch (playerAction) {
