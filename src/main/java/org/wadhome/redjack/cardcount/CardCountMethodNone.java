@@ -14,6 +14,10 @@ public class CardCountMethodNone extends CardCountMethod {
     }
 
     @Override
+    protected void resetCounts() {
+    }
+
+    @Override
     protected CardCountStatus getCardCountStatusHelper() {
         return new CardCountStatusNone();
     }

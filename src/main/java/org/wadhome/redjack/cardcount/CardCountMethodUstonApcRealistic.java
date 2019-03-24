@@ -9,11 +9,12 @@ import org.wadhome.redjack.rules.Blackjack;
 
 // This one estimates cards in the discard rack with half-deck precision.
 // It also doesn't make plays that would make it obvious that card-counting is happening.
-public class CardCountMethodHighLowRealistic extends CardCountMethod {
+public class CardCountMethodUstonApcRealistic extends CardCountMethod {
 
     private int runningCount;
+    private int aceCount;
 
-    public CardCountMethodHighLowRealistic(
+    public CardCountMethodUstonApcRealistic(
             Table table,
             BettingStrategy bettingStrategy) {
         super(table, bettingStrategy);
@@ -22,35 +23,47 @@ public class CardCountMethodHighLowRealistic extends CardCountMethod {
     @Override
     protected void resetCounts() {
         runningCount = 0;
+        aceCount = 0;
     }
 
     @Override
     protected CardCountStatus getCardCountStatusHelper() {
-        return new CardCountStatusRunningAndTrue(
+        return new CardCountStatusRunningAndTrueAndAces(
                 runningCount,
-                getTrueCount(table.getDiscardTray()));
+                getTrueCount(table.getDiscardTray()),
+                aceCount);
     }
 
     @Override
     public void observeCard(Card card) {
         switch (card.getValue()) {
             case Two:
+                runningCount += 1;
+                break;
             case Three:
             case Four:
-            case Five:
-            case Six:
-                runningCount++;
+                runningCount += 2;
                 break;
+            case Five:
+                runningCount += 3;
+                break;
+            case Six:
             case Seven:
+                runningCount += 2;
+                break;
             case Eight:
+                runningCount += 1;
+                break;
             case Nine:
+                runningCount -= 1;
                 break;
             case Ten:
             case Jack:
             case Queen:
             case King:
+                runningCount -= 3;
             case Ace:
-                runningCount--;
+                aceCount++;
                 break;
             default:
                 throw new RuntimeException("bug");
@@ -73,25 +86,23 @@ public class CardCountMethodHighLowRealistic extends CardCountMethod {
     }
 
     private int getTrueCount(DiscardTray discardTray) {
-        double numDecksInDiscardTray = estimateNumDecksInDiscardTray(discardTray);
-        double numDecksRemaining = estimateNumDecksRemainingInShoe(
+        double numHalfDecksInDiscardTray = estimateNumHalfDecksInDiscardTray(discardTray);
+        double numHalfDecksRemaining = estimateNumHalfDecksRemainingInShoe(
                 tableRules.getNumDecks(),
-                numDecksInDiscardTray);
-        double exactTrueCount = ((double) runningCount) / numDecksRemaining;
-        return roundToInt(exactTrueCount);
+                numHalfDecksInDiscardTray);
+        return roundToInt(((double) runningCount) / numHalfDecksRemaining);
     }
 
     // Accuracy is to half a deck
-    static double estimateNumDecksInDiscardTray(DiscardTray discardTray) {
-        double numCards = (double) discardTray.numCards();
-        return roundToHalf(numCards
-                / (double) Blackjack.NUM_CARDS_PER_DECK);
+    private static int estimateNumHalfDecksInDiscardTray(DiscardTray discardTray) {
+        return roundToInt((double) discardTray.numCards()
+                / (double) Blackjack.NUM_CARDS_PER_HALF_DECK);
     }
 
     // Accuracy is to half a deck
-    private static double estimateNumDecksRemainingInShoe(
+    private static double estimateNumHalfDecksRemainingInShoe(
             int numDecks,
-            double numDecksInDiscardTray) {
-        return ((double) numDecks) - numDecksInDiscardTray;
+            double numHalfDecksInDiscardTray) {
+        return ((double) (numDecks << 1) - numHalfDecksInDiscardTray);
     }
 }

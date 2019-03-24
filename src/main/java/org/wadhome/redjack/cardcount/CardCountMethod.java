@@ -23,6 +23,7 @@ public abstract class CardCountMethod {
         this.table = table;
         this.tableRules = table.getTableRules();
         this.bettingStrategy = bettingStrategy;
+        resetCounts();
     }
 
     public CardCountStatus getCardCountStatus() {
@@ -34,6 +35,8 @@ public abstract class CardCountMethod {
 
         return getCardCountStatusHelper();
     }
+
+    protected abstract void resetCounts();
 
     protected abstract CardCountStatus getCardCountStatusHelper();
 
