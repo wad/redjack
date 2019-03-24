@@ -3,15 +3,18 @@ package org.wadhome.redjack.cardcount;
 public class CardCountStatusRunningAndTrueAndAces extends CardCountStatus {
 
     private int runningCount;
-    private int trueCount;
     private int aceCount;
+    private int trueCountForPlay;
+    private int trueCountForBet;
 
     public CardCountStatusRunningAndTrueAndAces(
             int runningCount,
-            int trueCount,
-            int aceCount) {
+            int aceCount,
+            int trueCountForPlay,
+            int trueCountForBet) {
         this.runningCount = runningCount;
-        this.trueCount = trueCount;
+        this.trueCountForPlay = trueCountForPlay;
+        this.trueCountForBet = trueCountForBet;
         this.aceCount = aceCount;
     }
 
@@ -19,16 +22,23 @@ public class CardCountStatusRunningAndTrueAndAces extends CardCountStatus {
         return runningCount;
     }
 
-    public int getTrueCount() {
-        return trueCount;
-    }
-
     public int getAceCount() {
         return aceCount;
     }
 
+    public int getTrueCountForPlay() {
+        return trueCountForPlay;
+    }
+
+    public int getTrueCountForBet() {
+        return trueCountForBet;
+    }
+
     @Override
     public String getReport() {
-        return "RC=" + runningCount + " TC=" + trueCount + " AC=" + aceCount;
+        return "RC=" + runningCount
+                + " AC=" + aceCount
+                + " TCP=" + trueCountForPlay
+                + " TCB=" + trueCountForBet;
     }
 }

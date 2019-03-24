@@ -46,7 +46,9 @@ public abstract class CardCountMethod {
 
     public abstract void observeCard(Card card);
 
-    public abstract void observeShuffle();
+    public void observeShuffle() {
+        resetCounts();
+    }
 
     public abstract void getBet(BetRequest betRequest);
 

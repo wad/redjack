@@ -28,11 +28,6 @@ public class CardCountMethodNone extends CardCountMethod {
     }
 
     @Override
-    public void observeShuffle() {
-        // do nothing
-    }
-
-    @Override
     public void getBet(BetRequest betRequest) {
         betRequest.setTrueCount(0); // there really is none, but whatever.
         bettingStrategy.getBet(betRequest);

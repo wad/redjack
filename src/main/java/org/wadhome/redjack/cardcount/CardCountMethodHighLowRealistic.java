@@ -58,11 +58,6 @@ public class CardCountMethodHighLowRealistic extends CardCountMethod {
     }
 
     @Override
-    public void observeShuffle() {
-        runningCount = 0;
-    }
-
-    @Override
     public void getBet(BetRequest betRequest) {
         betRequest.setTrueCount(getTrueCount(table.getDiscardTray()));
         bettingStrategy.getBet(betRequest);
