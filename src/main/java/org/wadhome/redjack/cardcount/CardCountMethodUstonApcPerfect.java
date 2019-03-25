@@ -27,12 +27,13 @@ public class CardCountMethodUstonApcPerfect extends CardCountMethod {
     @Override
     protected CardCountStatus getCardCountStatusHelper() {
         int numCardsRemainingInShoe = table.getShoe().numCards();
+        int runningCountForPlay = getRunningCountForPlay();
         return new CardCountStatusRunningAndTrueAndAces(
-                getRunningCountForPlay(),
+                runningCountForPlay,
                 aceCount,
                 getTrueCount(
                         numCardsRemainingInShoe,
-                        getRunningCountForPlay()),
+                        runningCountForPlay),
                 getTrueCount(
                         numCardsRemainingInShoe,
                         getRunningCountForBet(numCardsRemainingInShoe)));
@@ -88,7 +89,7 @@ public class CardCountMethodUstonApcPerfect extends CardCountMethod {
     }
 
     private int getRunningCountForBet(int numCardsRemainingInShoe) {
-        return runningCount * (3 * getAceWealth(numCardsRemainingInShoe));
+        return runningCount + (3 * getAceWealth(numCardsRemainingInShoe));
     }
 
     // positive numbers indicate this is how many aces above average remain
@@ -105,10 +106,10 @@ public class CardCountMethodUstonApcPerfect extends CardCountMethod {
 
     private int getTrueCount(
             int numCardsRemainingInShoe,
-            int runningCount) {
+            int runningCountToUse) {
         double numHalfDecksRemaining = ((double) numCardsRemainingInShoe)
                 / ((double) Blackjack.NUM_CARDS_PER_HALF_DECK);
-        double exactTrueCount = ((double) runningCount) / numHalfDecksRemaining;
+        double exactTrueCount = ((double) runningCountToUse) / numHalfDecksRemaining;
         return roundToInt(exactTrueCount);
     }
 }

@@ -28,10 +28,13 @@ public class CardCountMethodUstonApcRealistic extends CardCountMethod {
 
     @Override
     protected CardCountStatus getCardCountStatusHelper() {
+        int runningCountForPlay = getRunningCountForPlay();
+        DiscardTray discardTray = table.getDiscardTray();
         return new CardCountStatusRunningAndTrueAndAces(
-                runningCount,
-                getTrueCountForPlay(table.getDiscardTray()),
-                aceCount);
+                runningCountForPlay,
+                aceCount,
+                getTrueCount(discardTray, runningCountForPlay),
+                getTrueCount(discardTray, getRunningCountForBet(discardTray)));
     }
 
     @Override
@@ -72,33 +75,39 @@ public class CardCountMethodUstonApcRealistic extends CardCountMethod {
 
     @Override
     public void getBet(BetRequest betRequest) {
-        betRequest.setTrueCount(getTrueCountForBetting(table.getDiscardTray()));
+        DiscardTray discardTray = table.getDiscardTray();
+        betRequest.setTrueCount(getTrueCount(
+                discardTray,
+                getRunningCountForBet(discardTray)));
         bettingStrategy.getBet(betRequest);
     }
 
-    public int getRunningCount() {
+    public int getRunningCountForPlay() {
         return runningCount;
+    }
+
+    public int getRunningCountForBet(DiscardTray discardTray) {
+        return runningCount + (3 * getAceWealth(discardTray));
     }
 
     // positive numbers indicate this is how many aces above average remain
     // negative numbers indicate this is how many aces below the average density remain
-    private int getAceWealth(int numCardsRemainingInShoe) {
-        int numAcesToExpectRemainAtThisPoint = getNumQuarterDecksLeftInShoe(numCardsRemainingInShoe);
-        return numAcesToExpectRemainAtThisPoint - aceCount;
-    }
+    private int getAceWealth(DiscardTray discardTray) {
+        double numHalfDecksInDiscardTray = estimateNumHalfDecksInDiscardTray(discardTray);
+        int numHalfDecksRemaining = roundToInt(estimateNumHalfDecksRemainingInShoe(
+                tableRules.getNumDecks(),
+                numHalfDecksInDiscardTray));
 
-    private int getNumQuarterDecksLeftInShoe(int numCardsRemainingInShoe) {
-        return roundToInt((double) numCardsRemainingInShoe
-                / (double) Blackjack.NUM_CARDS_PER_QUARTER_DECK);
+        int numAcesToExpectRemainAtThisPoint = numHalfDecksRemaining << 1;
+        return numAcesToExpectRemainAtThisPoint - aceCount;
     }
 
     private int getTrueCount(
             DiscardTray discardTray,
             int runningCount) {
-        double numHalfDecksInDiscardTray = estimateNumHalfDecksInDiscardTray(discardTray);
         double numHalfDecksRemaining = estimateNumHalfDecksRemainingInShoe(
                 tableRules.getNumDecks(),
-                numHalfDecksInDiscardTray);
+                (double) estimateNumHalfDecksInDiscardTray(discardTray));
         return roundToInt(((double) runningCount) / numHalfDecksRemaining);
     }
 
