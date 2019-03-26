@@ -32,7 +32,7 @@ public class PlayStrategyUstonApsPerfect extends PlayStrategy {
             CurrencyAmount bankrollAvailable) {
         CardCountStatusRunningAndTrueAndAces count =
                 (CardCountStatusRunningAndTrueAndAces) getCardCountMethod().getCardCountStatus();
-        if (count.getTrueCount() >= 3) {
+        if (count.getTrueCountForPlay() >= 3) {
             return maximumInsuranceBet;
         }
         return CurrencyAmount.zero();
@@ -45,7 +45,7 @@ public class PlayStrategyUstonApsPerfect extends PlayStrategy {
             Card dealerUpcard) {
         CardCountStatusRunningAndTrueAndAces count =
                 (CardCountStatusRunningAndTrueAndAces) getCardCountMethod().getCardCountStatus();
-        int trueCount = count.getTrueCount();
+        int trueCount = count.getTrueCountForPlay();
         int runningCount = count.getRunningCount();
         int handPointsMax = hand.computeMaxSum();
         boolean isSoft = handPointsMax != hand.computeMinSum();
@@ -58,6 +58,8 @@ public class PlayStrategyUstonApsPerfect extends PlayStrategy {
                 && tableRules.getDoubleDownOptions() == DoubleDownRuleOptions.Any;
         boolean doubleDownIsPossibleOnTenOrEleven = isFirstPlayOnHand
                 && hasFundsToCoverDoubleDownsAndSplits;
+
+        // todo: This logic isn't for the Uston APC yet.
 
         if (handPointsMax == 19) {
             boolean isAceWithEight = isSoft && isFirstPlayOnHand;
