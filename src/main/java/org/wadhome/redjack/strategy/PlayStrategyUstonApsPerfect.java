@@ -59,8 +59,6 @@ public class PlayStrategyUstonApsPerfect extends PlayStrategy {
         boolean doubleDownIsPossibleOnTenOrEleven = isFirstPlayOnHand
                 && hasFundsToCoverDoubleDownsAndSplits;
 
-        // todo: This logic isn't for the Uston APC yet.
-
         if (handPointsMax == 19) {
             boolean isAceWithEight = isSoft && isFirstPlayOnHand;
             if (isAceWithEight && doubleDownIsPossibleStuffOtherThanTenOrEleven) {
@@ -71,11 +69,12 @@ public class PlayStrategyUstonApsPerfect extends PlayStrategy {
                                 "Because the true count is one or more, I'm going to deviate from basic, and double down.");
                     }
                 }
+
                 if (dealerUpcard.getValue() == Value.Seven) {
-                    if (trueCount >= 4) {
+                    if (trueCount >= 5) {
                         return new PlayerDecision(
                                 BlackjackPlay.DoubleDown,
-                                "Because the true count is four or more, I'm going to deviate from basic, and double down.");
+                                "Because the true count is five or more, I'm going to deviate from basic, and double down.");
                     }
                 }
             }
@@ -93,10 +92,10 @@ public class PlayStrategyUstonApsPerfect extends PlayStrategy {
                     }
                 }
                 if (dealerUpcard.getValue() == Value.Nine) {
-                    if (trueCount >= 5) {
+                    if (trueCount >= 6) {
                         return new PlayerDecision(
                                 BlackjackPlay.Stand,
-                                "Because the true count is five or more, I'm going to deviate from basic, and stand.");
+                                "Because the true count is six or more, I'm going to deviate from basic, and stand.");
                     }
                 }
             }
@@ -104,10 +103,10 @@ public class PlayStrategyUstonApsPerfect extends PlayStrategy {
 
         if (handPointsMax == 15) {
             if (dealerUpcard.getValue() == Value.Ace) {
-                if (surrenderIsPossible && trueCount >= 1) {
+                if (surrenderIsPossible && trueCount >= 2) {
                     return new PlayerDecision(
                             BlackjackPlay.Surrender,
-                            "Because the true count is one or more, I'm going to deviate from basic, and surrender.");
+                            "Because the true count is two or more, I'm going to deviate from basic, and surrender.");
                 }
             }
             if (dealerUpcard.getValue().isTen()) {
@@ -125,10 +124,10 @@ public class PlayStrategyUstonApsPerfect extends PlayStrategy {
                 }
             }
             if (dealerUpcard.getValue() == Value.Nine) {
-                if (surrenderIsPossible && trueCount >= 2) {
+                if (surrenderIsPossible && trueCount >= 3) {
                     return new PlayerDecision(
                             BlackjackPlay.Surrender,
-                            "Because the true count is two or more, I'm going to deviate from basic, and surrender.");
+                            "Because the true count is three or more, I'm going to deviate from basic, and surrender.");
                 }
             }
         }
@@ -212,17 +211,17 @@ public class PlayStrategyUstonApsPerfect extends PlayStrategy {
         if (isPairOfTens) {
             if (basicStrategy.canHandBeSplit(hand, bankrollAvailable)) {
                 if (dealerUpcard.getValue() == Value.Six) {
-                    if (trueCount >= 5) {
+                    if (trueCount >= 6) {
                         return new PlayerDecision(
                                 BlackjackPlay.Split,
-                                "Because the true count is five or more, I'm going to deviate from basic, and split.");
+                                "Because the true count is six or more, I'm going to deviate from basic, and split.");
                     }
                 }
                 if (dealerUpcard.getValue() == Value.Five) {
-                    if (trueCount >= 5) {
+                    if (trueCount >= 6) {
                         return new PlayerDecision(
                                 BlackjackPlay.Split,
-                                "Because the true count is five or more, I'm going to deviate from basic, and split.");
+                                "Because the true count is six or more, I'm going to deviate from basic, and split.");
                     }
                 }
             }
@@ -230,27 +229,27 @@ public class PlayStrategyUstonApsPerfect extends PlayStrategy {
 
         if (handPointsMax == 10) {
             if (dealerUpcard.getValue() == Value.Ace) {
-                if (doubleDownIsPossibleOnTenOrEleven && trueCount >= 4) {
+                if (doubleDownIsPossibleOnTenOrEleven && trueCount >= 5) {
                     return new PlayerDecision(
                             BlackjackPlay.DoubleDown,
-                            "Because the true count is for our more, I'm going to deviate from basic, and double down.");
+                            "Because the true count is five or more, I'm going to deviate from basic, and double down.");
                 }
             }
             if (dealerUpcard.getValue().isTen()) {
-                if (doubleDownIsPossibleOnTenOrEleven && trueCount >= 4) {
+                if (doubleDownIsPossibleOnTenOrEleven && trueCount >= 5) {
                     return new PlayerDecision(
                             BlackjackPlay.DoubleDown,
-                            "Because the true count is four or more, I'm going to deviate from basic, and double down.");
+                            "Because the true count is five or more, I'm going to deviate from basic, and double down.");
                 }
             }
         }
 
         if (handPointsMax == 9) {
             if (dealerUpcard.getValue() == Value.Seven) {
-                if (doubleDownIsPossibleStuffOtherThanTenOrEleven && trueCount >= 4) {
+                if (doubleDownIsPossibleStuffOtherThanTenOrEleven && trueCount >= 5) {
                     return new PlayerDecision(
                             BlackjackPlay.DoubleDown,
-                            "Because the true count is four or more, I'm going to deviate from basic, and double down.");
+                            "Because the true count is five or more, I'm going to deviate from basic, and double down.");
                 }
             }
             if (dealerUpcard.getValue() == Value.Two) {

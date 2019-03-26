@@ -61,8 +61,6 @@ public class PlayStrategyHighLowRealistic extends PlayStrategy {
                 && hasFundsToCoverDoubleDownsAndSplits;
         Randomness randomness = table.getCasino().getRandomness();
 
-        // todo: This logic isn't for the Uston APC yet.
-
         if (handPointsMax == 19) {
             boolean isAceWithEight = isSoft && isFirstPlayOnHand;
             if (isAceWithEight && doubleDownIsPossibleStuffOtherThanTenOrEleven) {

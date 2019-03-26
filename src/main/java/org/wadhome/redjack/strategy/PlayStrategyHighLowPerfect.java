@@ -229,7 +229,7 @@ public class PlayStrategyHighLowPerfect extends PlayStrategy {
                 if (doubleDownIsPossibleOnTenOrEleven && trueCount >= 4) {
                     return new PlayerDecision(
                             BlackjackPlay.DoubleDown,
-                            "Because the true count is for our more, I'm going to deviate from basic, and double down.");
+                            "Because the true count is four or more, I'm going to deviate from basic, and double down.");
                 }
             }
             if (dealerUpcard.getValue().isTen()) {
