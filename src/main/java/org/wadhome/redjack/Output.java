@@ -14,7 +14,7 @@ import static java.util.stream.Collectors.joining;
 
 public class Output {
     // The spreadsheet with the chart is set to display 1000 rows of data (rounds).
-    public static final int SPREADHSEET_ROUNDS = 1000;
+    public static final int SPREADSHEET_ROUNDS = 1000;
 
     private static final String BANKROLL_LOG_FILENAME = "bankroll.csv";
     private static final String BANKROLL_SAMPLE_LOG_FILENAME = "bankroll_sample.csv";

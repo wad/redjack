@@ -45,7 +45,7 @@ class ExecutionPerfectBuk10M extends Execution {
                 getSeed(),
                 false,
                 true);
-        casino.getOutput().setSampleFactor(Output.SPREADHSEET_ROUNDS, numRoundsToPlay);
+        casino.getOutput().setSampleFactor(Output.SPREADSHEET_ROUNDS, numRoundsToPlay);
         Table table = casino.createTable(0, tableRules);
 
         List<Player> players = new ArrayList<String>() {{
