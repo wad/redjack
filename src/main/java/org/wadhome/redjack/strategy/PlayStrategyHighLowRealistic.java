@@ -3,7 +3,7 @@ package org.wadhome.redjack.strategy;
 import org.wadhome.redjack.Randomness;
 import org.wadhome.redjack.bet.BettingStrategy;
 import org.wadhome.redjack.cardcount.CardCountMethodHighLowRealistic;
-import org.wadhome.redjack.cardcount.CardCountStatusRunningAndTrueAndAces;
+import org.wadhome.redjack.cardcount.CardCountStatusRunningAndTrue;
 import org.wadhome.redjack.casino.*;
 import org.wadhome.redjack.money.CurrencyAmount;
 import org.wadhome.redjack.rules.BlackjackPlay;
@@ -31,9 +31,9 @@ public class PlayStrategyHighLowRealistic extends PlayStrategy {
             PlayerHand hand,
             Card dealerUpcard,
             CurrencyAmount bankrollAvailable) {
-        CardCountStatusRunningAndTrueAndAces count =
-                (CardCountStatusRunningAndTrueAndAces) getCardCountMethod().getCardCountStatus();
-        if (count.getTrueCountForPlay() > 3) {
+        CardCountStatusRunningAndTrue count =
+                (CardCountStatusRunningAndTrue) getCardCountMethod().getCardCountStatus();
+        if (count.getTrueCount() > 3) {
             return maximumInsuranceBet;
         }
         return CurrencyAmount.zero();
@@ -44,9 +44,9 @@ public class PlayStrategyHighLowRealistic extends PlayStrategy {
             Player player,
             PlayerHand hand,
             Card dealerUpcard) {
-        CardCountStatusRunningAndTrueAndAces count =
-                (CardCountStatusRunningAndTrueAndAces) getCardCountMethod().getCardCountStatus();
-        int trueCount = count.getTrueCountForPlay();
+        CardCountStatusRunningAndTrue count =
+                (CardCountStatusRunningAndTrue) getCardCountMethod().getCardCountStatus();
+        int trueCount = count.getTrueCount();
         int runningCount = count.getRunningCount();
         int handPointsMax = hand.computeMaxSum();
         boolean isSoft = handPointsMax != hand.computeMinSum();
